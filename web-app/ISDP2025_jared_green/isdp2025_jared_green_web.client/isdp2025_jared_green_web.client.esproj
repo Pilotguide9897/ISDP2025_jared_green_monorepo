@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
+  <PropertyGroup>
+    <StartupCommand>npm run dev</StartupCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+    <!-- Allows the build (or compile) script located on package.json to run on Build -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Folder where production build objects will be placed -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\Components\Calendar\" />
+    <Folder Include="src\Components\ImageCard\" />
+    <Folder Include="src\Components\Footer\" />
+    <Folder Include="src\Components\AuthGatekeeper\" />
+    <Folder Include="src\Context\AuthContext\" />
+  </ItemGroup>
+</Project>
