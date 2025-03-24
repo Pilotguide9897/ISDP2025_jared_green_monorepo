@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
 using System.ComponentModel;
+using AutoMapper;
 
 namespace ISDP2025_jared_green_web.Server.Services
 {
@@ -12,15 +13,17 @@ namespace ISDP2025_jared_green_web.Server.Services
     {
         private readonly BullseyeContext _bullseyeContext;
         private readonly ILogger<CustomerOrdersService> _logger;
+        private readonly IMapper _mapper;
 
-        public CustomerOrdersService(BullseyeContext bullseyeContext, ILogger<CustomerOrdersService> logger)
+        public CustomerOrdersService(BullseyeContext bullseyeContext, ILogger<CustomerOrdersService> logger, IMapper mapper)
         {
             _bullseyeContext = bullseyeContext;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mapper = mapper;
         }
 
         // Data Access Methods
-        public async Task CreateOrder(dtoOrder orderDetails)
+        public async Task CreateOrder(dtoOrderCreation orderDetails)
         {
             try
             {
@@ -29,13 +32,13 @@ namespace ISDP2025_jared_green_web.Server.Services
                     TxnStatus = "NEW",
                     EmployeeId = -1,
                     SiteIdfrom = 10000,
-                    SiteIdto = orderDetails.orderSite,
+                    SiteIdto = orderDetails.OrderSite,
                     CreatedDate = DateTime.Now,
                     BarCode = Guid.NewGuid().ToString(),
-                    CustFirstName = orderDetails.firstName,
-                    CustLastName = orderDetails.lastName,
-                    CustEmail = orderDetails.email,
-                    CustPhone = orderDetails.phone,
+                    CustFirstName = orderDetails.CustFirstName,
+                    CustLastName = orderDetails.CustLastName,
+                    CustEmail = orderDetails.CustEmail,
+                    CustPhone = orderDetails.CustPhone,
                     Txnitems = orderDetails.txnitems
                 };
 
@@ -57,33 +60,112 @@ namespace ISDP2025_jared_green_web.Server.Services
             }
         }
 
+        //public async Task<object> GetOrderByOrderID(int txnID)
+        //{
+        //    try
+        //    {
+        //        var order = await _bullseyeContext.Txns
+        //            .Where(txn => txn.TxnId == txnID)
+        //            .Include(s => s.SiteIdtoNavigation)
+        //            .Include(e => e.Txnitems)
+        //            .ThenInclude(f => f.Item)
+        //            .Select(g => new dtoOrder
+        //            {
+        //                txnID = g.TxnId,
+        //                orderSite = g.SiteIdto,
+        //                firstName = g.CustFirstName,
+        //                lastName = g.CustLastName,
+        //                email = g.CustEmail,
+        //                phone = g.CustPhone,
+        //                txnitems = g.Txnitems
+        //            })
+        //            .FirstOrDefaultAsync();
+
+        //        if (order != null)
+        //        {
+        //            return order;
+        //        }
+
+        //        _logger.LogWarning($"No order found for TxnID: {txnID}");
+        //        return $"No order found for TxnID: {txnID}";
+
+        //    }
+        //    catch (MySqlException msqlEx)
+        //    {
+        //        _logger.LogError($":{msqlEx.Message}");
+        //        return null;
+        //    }
+        //    catch (TimeoutException toEx)
+        //    {
+        //        _logger.LogError($":{toEx.Message}");
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($":{ex.Message}");
+        //        return null;
+        //    }
+        //}
+
         public async Task<object> GetOrderByOrderID(int txnID)
         {
             try
             {
                 var order = await _bullseyeContext.Txns
                     .Where(txn => txn.TxnId == txnID)
+                    .Include(s => s.SiteIdtoNavigation)
                     .Include(e => e.Txnitems)
-                    .ThenInclude(f => f.Item)
-                    .Select(g => new dtoOrder
-                    {
-                        txnID = g.TxnId,
-                        orderSite = g.SiteIdto,
-                        firstName = g.CustFirstName,
-                        lastName = g.CustLastName,
-                        email = g.CustEmail,
-                        phone = g.CustPhone,
-                        txnitems = g.Txnitems
-                    })
+                        .ThenInclude(f => f.Item)
                     .FirstOrDefaultAsync();
 
                 if (order != null)
                 {
-                    return order;
+                    var dto = _mapper.Map<dtoOrder>(order); // 👈 AutoMapper in action
+                    return dto;
                 }
 
                 _logger.LogWarning($"No order found for TxnID: {txnID}");
                 return $"No order found for TxnID: {txnID}";
+
+            }
+            catch (MySqlException msqlEx)
+            {
+                _logger.LogError($":{msqlEx.Message}");
+                return null;
+            }
+            catch (TimeoutException toEx)
+            {
+                _logger.LogError($":{toEx.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($":{ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<object> GetOrderByCustomerEmail(string email)
+        {
+            try
+            {
+
+
+                var order = await _bullseyeContext.Txns
+                    .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
+                    .Include(s => s.SiteIdtoNavigation)
+                    .Include(e => e.Txnitems)
+                    .ThenInclude(f => f.Item)
+                    .FirstOrDefaultAsync();
+
+                if (order != null)
+                {
+                    var dto = _mapper.Map<dtoOrder>(order); // 👈 AutoMapper in action
+                    return dto;
+                }
+
+                _logger.LogWarning($"No order found for email: {email}");
+                return $"No order found for email: {email}";
 
             }
             catch (MySqlException msqlEx)
@@ -127,50 +209,50 @@ namespace ISDP2025_jared_green_web.Server.Services
             }
         }
 
-        public async Task<object> GetOrderByCustomerEmail(string email)
-        {
-            try
-            {
-                var order = await _bullseyeContext.Txns
-                    .Where(txn => txn.CustEmail == email)
-                    .Include(e => e.Txnitems)
-                    .ThenInclude(f => f.Item)
-                    .Select(g => new dtoOrder
-                    {
-                        txnID = g.TxnId,
-                        orderSite = g.SiteIdto,
-                        firstName = g.CustFirstName,
-                        lastName = g.CustLastName,
-                        email = g.CustEmail,
-                        phone = g.CustPhone,
-                        txnitems = g.Txnitems
-                    })
-                    .FirstOrDefaultAsync();
+        //public async Task<object> GetOrderByCustomerEmail(string email)
+        //{
+        //    try
+        //    {
+        //        var order = await _bullseyeContext.Txns
+        //            .Where(txn => txn.CustEmail == email)
+        //            .Include(e => e.Txnitems)
+        //            .ThenInclude(f => f.Item)
+        //            .Select(g => new dtoOrder
+        //            {
+        //                txnID = g.TxnId,
+        //                orderSite = g.SiteIdto,
+        //                firstName = g.CustFirstName,
+        //                lastName = g.CustLastName,
+        //                email = g.CustEmail,
+        //                phone = g.CustPhone,
+        //                txnitems = g.Txnitems
+        //            })
+        //            .FirstOrDefaultAsync();
 
-                if (order != null)
-                {
-                    return order;
-                }
+        //        if (order != null)
+        //        {
+        //            return order;
+        //        }
 
-                _logger.LogWarning($"No order found for customer email: {email}");
-                return $"No order found for customer email: {email}";
+        //        _logger.LogWarning($"No order found for customer email: {email}");
+        //        return $"No order found for customer email: {email}";
 
-            }
-            catch (MySqlException msqlEx)
-            {
-                _logger.LogError($":{msqlEx.Message}");
-                return null;
-            }
-            catch (TimeoutException toEx)
-            {
-                _logger.LogError($":{toEx.Message}");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($":{ex.Message}");
-                return null;
-            }
-        }
+        //    }
+        //    catch (MySqlException msqlEx)
+        //    {
+        //        _logger.LogError($":{msqlEx.Message}");
+        //        return null;
+        //    }
+        //    catch (TimeoutException toEx)
+        //    {
+        //        _logger.LogError($":{toEx.Message}");
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($":{ex.Message}");
+        //        return null;
+        //    }
+        //}
     }
 }

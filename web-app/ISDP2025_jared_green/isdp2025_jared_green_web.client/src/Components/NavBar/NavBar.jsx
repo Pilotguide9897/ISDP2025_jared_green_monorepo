@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/bullseye.jpg';
 import Button from 'react-bootstrap/Button';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../Context/AuthContext/AuthContext';
 
 function NavBar() {
     const { token, user, logout } = useAuth();
@@ -20,11 +20,10 @@ function NavBar() {
                     />{' '}
                     Bullseye Sporting Goods
                 </Navbar.Brand>
-                {/*The && operator only returns the second value if the first is truthy! Define an anonymous function to be executed on click*/}
                 {token && (
                     <div className="d-flex align-items-center gap-3">
                         <span className="fw-semibold text-secondary">
-                            Signed in as: <strong>{user?.sub}</strong> {/* or user.name if available */}
+                            Signed in as: <strong>{user?.sub}</strong>
                         </span>
                         <Button variant="warning" onClick={logout}>Sign Out</Button>
                     </div>

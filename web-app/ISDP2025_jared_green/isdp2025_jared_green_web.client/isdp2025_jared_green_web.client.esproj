@@ -13,6 +13,5 @@
     <Folder Include="src\Components\ImageCard\" />
     <Folder Include="src\Components\Footer\" />
     <Folder Include="src\Components\AuthGatekeeper\" />
-    <Folder Include="src\Context\AuthContext\" />
   </ItemGroup>
 </Project>

@@ -2,11 +2,11 @@
 
 namespace ISDP2025_jared_green_web.Server.Models.dto
 {
-    public class dtoOrder
+    public class dtoOrderCreation
     {
         public int TxnId { get; set; }
 
-        public dtoSite OrderSite { get; set; }
+        public int OrderSite { get; set; }
 
         public string CustFirstName { get; set; }
 

@@ -8,6 +8,9 @@ import Button from 'react-bootstrap/Button';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import Footer from "../../Components/Footer/Footer";
 import SignatureBox from '../../Components/SignatureBox/SignatureBox';
+import { useState, useEffect } from 'react'
+import axios from 'axios';
+import AlertMessage from '../../Components/Alert/Alert';
 
 function PickupStoreOrder({ OrderNumber }) {
     const [order, setOrder] = useState(null);
@@ -40,7 +43,13 @@ function PickupStoreOrder({ OrderNumber }) {
 
             </section>
             {
-            loading === null ? null : loading ? (<LoadingSpinner />) : order ? (
+                loading === null ? null : loading ? (<LoadingSpinner />) : error ? (
+                    <>
+                        <AlertMessage variant="danger" message="Something went wrong while loading the order." />
+                        <DataTable data={[]} />
+                    </>
+
+                ) :order ? (
                 <section>
                     <div className="d-flex justify-content-start">
                         <h5>Order ID: { order.orderID }</h5>
@@ -50,18 +59,18 @@ function PickupStoreOrder({ OrderNumber }) {
                     </div>
 
                     <p>{
-                        `This order will be ready to pick up by ${} at our ${} retail store:
-                         ${} 
+                        `This order will be ready to pick up by ${10} at our ${10} retail store:
+                         ${10} 
                         `}
                      </p>
-                    <DataTable />
+                    <DataTable data={ order } />
                     <div className="d-flex justify-content-end">
-                        <h5>Subtotal: { }</h5>
-                        <h5>HST (15%): { }</h5>
-                        <h5>Total: { }</h5>
+                        <h5>Subtotal: { 10 }</h5>
+                        <h5>HST (15%): { 10 }</h5>
+                        <h5>Total: { 10 }</h5>
                     </div>
                 </section>
-                )
+                ) : null
             }
             <Container>
                 <Row>

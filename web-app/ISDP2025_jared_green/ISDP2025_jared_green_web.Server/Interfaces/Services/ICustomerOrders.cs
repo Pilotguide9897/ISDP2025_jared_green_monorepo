@@ -5,7 +5,7 @@ namespace ISDP2025_jared_green_web.Server.Interfaces.Services
 {
     public interface ICustomerOrders
     {
-        public Task CreateOrder(dtoOrder orderDetails);
+        public Task CreateOrder(dtoOrderCreation orderDetails);
 
         public Task<object> GetOrderByOrderID(int orderID);
 

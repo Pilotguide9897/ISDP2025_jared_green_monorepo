@@ -1,4 +1,5 @@
 using ISDP2025_jared_green_web.Server.Interfaces.Services;
+using ISDP2025_jared_green_web.Server.Mappings;
 using ISDP2025_jared_green_web.Server.Models;
 using ISDP2025_jared_green_web.Server.Services;
 using Microsoft.EntityFrameworkCore;
@@ -43,11 +44,22 @@ builder.Services.AddScoped<IEmployees, EmployeeService>();
 builder.Services.AddScoped<ILogin, LoginService>();
 builder.Services.AddScoped<IEncryption, EncryptionService>();
 builder.Services.AddScoped<IJsonWebToken, JsonWebTokenService>();
+builder.Services.AddScoped<ICustomerOrders, CustomerOrdersService>(); ;
+builder.Services.AddScoped<IDeliveries, DeliveriesService>();
+builder.Services.AddScoped<ILocations, LocationsService>();
+builder.Services.AddScoped<IInventory, InventoryService>();
+
+
 
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Register one mapper
+//builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
