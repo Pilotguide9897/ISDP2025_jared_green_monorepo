@@ -11,70 +11,93 @@ namespace ISDP2025_jared_green_web.Server.Controllers
     public class CustomerOrdersController : ControllerBase
     {
         private readonly ICustomerOrders _customerOrderService;
+        private readonly ILogger<CustomerOrdersController> _logger;
 
-        public CustomerOrdersController(ICustomerOrders customerOrderService)
+        public CustomerOrdersController(ICustomerOrders customerOrderService, ILogger<CustomerOrdersController> logger)
         {
             _customerOrderService = customerOrderService;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrder(int id)
         {
-            var result = await _customerOrderService.GetOrderByOrderID(id);
+            try
+            {
+                var result = await _customerOrderService.GetOrderByOrderID(id);
 
-            if (result == null)
-                return NotFound("Order not found.");
+                if (result == null)
+                    return NotFound("Order not found.");
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch order");
+                return StatusCode(500, "An error occurred while querying the orders.");
+            }
         }
+
 
         [AllowAnonymous]
         [HttpGet("search")]
-        public async Task<IActionResult> GetOrder([FromQuery] int? id, [FromQuery] string? email)
+        public async Task<IActionResult> GetOrder([FromQuery] string query)
         {
-            object? result = null;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(query))
+                {
+                    return BadRequest("No Search Query");
+                }
 
-            if (id.HasValue)
+                if (int.TryParse(query, out int orderID))
+                {
+                    object result = await _customerOrderService.GetOrderByOrderID(orderID);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                } else
+                {
+                    object result = await _customerOrderService.GetOrderByCustomerEmail(query);
+                    if (result != null) {
+                        return Ok(result);
+                    }
+                }
+
+                return NotFound("No order found for the given query");
+            } catch (Exception ex)
             {
-                result = await _customerOrderService.GetOrderByOrderID(id.Value);
-            }
-            else if (!string.IsNullOrWhiteSpace(email))
-            {
-                result = await _customerOrderService.GetOrderByCustomerEmail(email);
-            }
-            else
-            {
-                return BadRequest("You must provide either an order ID or email.");
+                _logger.LogError(ex, "Failed to fetch order");
+                return StatusCode(500, "An error occurred while querying the orders.");
             }
 
-            if (result == null)
-            {
-                return BadRequest("Order could not be retrieved.");
-            }
-            else if (result is string)
-            {
-                return NotFound(result);
-            }
-            else
-            {
-                return Ok(result);
-            }
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] dtoOrderCreation transaction)
         {
-            dtoOrder? result = (await _customerOrderService.CreateOrder(transaction)) as dtoOrder;
+            try
+            {
+                dtoOrder? result = (await _customerOrderService.CreateOrder(transaction)) as dtoOrder;
 
-            if (result == null)
-            {
-                return BadRequest("Order Creation Failed");
-            } else
-            {
-                return CreatedAtAction(nameof(GetOrder), new {id = result.TxnId}, result);
+                if (result == null)
+                {
+                    return BadRequest("Order Creation Failed");
+                }
+                else
+                {
+                    return CreatedAtAction(nameof(GetOrder), new { id = result.TxnId }, result);
+                }
             }
-        }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create order");
+                return StatusCode(500, "An error occurred while creating the order.");
+            }
+
+        }        
     }
 }

@@ -11,6 +11,6 @@ namespace ISDP2025_jared_green_web.Server.Interfaces.Services
 {
     public interface IInventory
     {
-        public Task<List<Inventory>> GetInventoryByLocation(int siteId);
+        public Task<List<dtoInventory>> GetInventoryByLocation(int siteId);
     }
 }

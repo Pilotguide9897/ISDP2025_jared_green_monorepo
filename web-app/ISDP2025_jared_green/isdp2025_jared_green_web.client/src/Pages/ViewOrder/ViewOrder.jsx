@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
 import SearchBar from '../../Components/SearchBar/SearchBar';
@@ -6,15 +6,19 @@ import DataTable from '../../Components/DataTable/DataTable';
 import Button from 'react-bootstrap/Button';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import Footer from "../../Components/Footer/Footer";
+import ErrorImage from '../../Components/ErrorImage/file';
 
-function ViewOrder() {
+function ViewOrder( { orderData } ) {
     const [order, setOrder] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
-    const handleSearchBarSubmission = async (searchParameters) => {
+
+    const handleSearchBarSubmission = async (searchParameter) => {
+
         try {
             setLoading(true);
-            const response = await axios.get(`/api/orders?query=${searchParameters}`);
+            setError(false);
+            const response = await axios.get(`/api/orders/search?query=${searchParameter.toString().trim()}`);
             setOrder(response.Data);
         } catch (error) {
             setError(error);
@@ -41,11 +45,11 @@ function ViewOrder() {
                         </div>
 
                         <p>{
-                            `This order will be ready to pick up by ${} at our ${} retail store:
-                             ${} 
+                            `This order will be ready to pick up by ${10} at our ${10} retail store:
+                             ${10} 
                      
                         `}</p>
-                        <DataTable />
+                        <DataTable data={ orderData } />
                         <div className="d-flex justify-content-end">
                             <h5>Subtotal: { }</h5>
                             <h5>HST (15%): { }</h5>
@@ -53,7 +57,7 @@ function ViewOrder() {
                         </div>
                         <Button variant="info">OK</Button>
                     </section>
-                )
+                ) : error ? ( <ErrorImage /> ) : null
             }
             <Footer />
         </>

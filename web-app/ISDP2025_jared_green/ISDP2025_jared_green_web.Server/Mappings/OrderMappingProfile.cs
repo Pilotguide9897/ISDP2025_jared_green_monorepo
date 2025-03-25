@@ -18,6 +18,9 @@ namespace ISDP2025_jared_green_web.Server.Mappings
                 .ForMember(dest => dest.Item, opt => opt.Ignore())
                 .ForMember(dest => dest.Txn, opt => opt.Ignore());
 
+            CreateMap<Inventory, dtoInventory>()
+                .ForMember(dest => dest.Item, opt => opt.MapFrom(src => src.Item));
+
             // No need for special configuring.
             CreateMap<Item, dtoItem>();
 

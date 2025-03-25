@@ -11,6 +11,8 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Site = ISDP2025_jared_green_web.Server.Models.Site;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace ISDP2025_jared_green_web.Server.Services
 {
@@ -18,21 +20,24 @@ namespace ISDP2025_jared_green_web.Server.Services
     {
         private readonly BullseyeContext _bullseyeContext;
         private readonly ILogger<InventoryService> _logger;
-        public InventoryService(BullseyeContext bullseyeContext, ILogger<InventoryService> logger)
+        private readonly IMapper _mapper;
+        public InventoryService(BullseyeContext bullseyeContext, ILogger<InventoryService> logger, IMapper mapper)
         {
             _bullseyeContext = bullseyeContext;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<List<Inventory>> GetInventoryByLocation(int siteId)
+        public async Task<List<dtoInventory>> GetInventoryByLocation(int siteId)
         {
             try
             {
-                var inventory = await (from inv in _bullseyeContext.Inventories
-                                       where inv.SiteId == siteId
-                                       select inv).Include(e => e.Item).ToListAsync();
 
-                return inventory;
+                var inventoryDto = await _bullseyeContext.Inventories
+                    .Where(e => e.SiteId == siteId)
+                    .ProjectTo<dtoInventory>(_mapper.ConfigurationProvider).ToListAsync();
+
+                return inventoryDto;
             }
             catch (MySqlException msqlEx)
             {
