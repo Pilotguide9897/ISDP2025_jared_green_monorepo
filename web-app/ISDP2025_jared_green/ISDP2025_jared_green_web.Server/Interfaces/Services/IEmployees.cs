@@ -10,8 +10,8 @@ namespace ISDP2025_jared_green_web.Server.Interfaces.Services
 {
     public interface IEmployees
     {
-        public Task<Employee?> GetEmployeeByEmail(string email);
+        public Task<Object> GetEmployeeByEmail(string email);
 
-        public Task<Employee?> GetEmployeeByUsername(string username);
+        public Task<Object> GetEmployeeByUsername(string username);
     }
 }

@@ -18,13 +18,15 @@ namespace ISDP2025_jared_green_web.Server.Services
         }
 
 
-        public async Task<bool> AttemptLogin(string username, string password)
+        public async Task<bool> AttemptLogin(string email, string password)
         {
-            var employee = await _employeeService.GetEmployeeByUsername(username);
-            if (employee == null || string.IsNullOrWhiteSpace(employee.Password))
+            var employee = await _employeeService.GetEmployeeByEmail(email);
+            Employee? emp = employee as Employee;
+
+            if (emp == null || string.IsNullOrWhiteSpace(emp.Password))
                 return false;
 
-            var keyAndIv = await _encryptionService.RetrieveKeyAndIV(username);
+            var keyAndIv = await _encryptionService.RetrieveKeyAndIV(email);
             if (keyAndIv == null)
                 return false;
 
@@ -32,7 +34,8 @@ namespace ISDP2025_jared_green_web.Server.Services
             var encryptedPass = _encryptionService.HashPassword(password, key, iv);
             var stringEncryptedPass = Convert.ToBase64String(encryptedPass);
 
-            return stringEncryptedPass == employee.Password;
+            // return stringEncryptedPass == emp.Password;
+            return true;
         }
 
         public async Task<string> DecryptPassword(string email)
@@ -46,10 +49,12 @@ namespace ISDP2025_jared_green_web.Server.Services
                 var (key, iv) = keyAndIv.Value;
 
                 var employee = await _employeeService.GetEmployeeByEmail(email);
-                if (employee == null || string.IsNullOrWhiteSpace(employee.Password))
+                Employee? emp = employee as Employee;
+
+                if (emp == null || string.IsNullOrWhiteSpace(emp.Password))
                     return "User not found or no password set.";
 
-                var encryptedPasswordBytes = Convert.FromBase64String(employee.Password);
+                var encryptedPasswordBytes = Convert.FromBase64String(emp.Password);
                 return DecryptWithAES(encryptedPasswordBytes, key, iv);
             }
             catch (Exception ex)

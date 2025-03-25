@@ -16,6 +16,6 @@ namespace ISDP2025_jared_green_web.Server.Models.dto
 
         public string CustPhone { get; set; }
 
-        public List<Txnitem> txnitems { get; set; } = new();
+        public List<dtoTxnItem> Txnitems { get; set; } = new();
     }
 }

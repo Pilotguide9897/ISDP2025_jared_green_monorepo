@@ -10,7 +10,7 @@ namespace ISDP2025_jared_green_web.Server.Mappings
         public OrderMappingProfile() 
         {
             // Special Configuration required => ForMember
-            CreateMap<Txn, dtoOrder>().ForMember(dest => dest.txnitems, opt => opt.MapFrom(src => src.Txnitems));
+            CreateMap<Txn, dtoOrder>().ForMember(dest => dest.OrderSite, opt => opt.MapFrom(src => src.SiteIdtoNavigation));
 
             CreateMap<Txnitem, dtoTxnItem>().ForMember(dest => dest.Item, opt => opt.MapFrom(src => src.Item));
 

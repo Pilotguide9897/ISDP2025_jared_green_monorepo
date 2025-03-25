@@ -24,7 +24,7 @@ namespace ISDP2025_jared_green_web.Server.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Employee?> GetEmployeeByEmail(string email)
+        public async Task<Object> GetEmployeeByEmail(string email)
         {
             try
             {
@@ -32,7 +32,13 @@ namespace ISDP2025_jared_green_web.Server.Services
                                       where e.Email == email
                                       select e).Include(j => j.Employeeroles).ThenInclude(k => k.Position).FirstOrDefaultAsync();
 
-                return employee;
+                if (employee != null)
+                {
+                    return employee;
+                }
+
+                _logger.LogWarning($"No employee data available for employee with email: {email}.");
+                return $"No employee data available for employee with email: {email}.";
             }
             catch (MySqlException msqlEx)
             {
@@ -51,7 +57,7 @@ namespace ISDP2025_jared_green_web.Server.Services
             }
         }
 
-        public async Task<Employee?> GetEmployeeByUsername(string username)
+        public async Task<Object> GetEmployeeByUsername(string username)
         {
             try
             {
@@ -59,7 +65,13 @@ namespace ISDP2025_jared_green_web.Server.Services
                                       where e.Username == username
                                       select e).Include(s => s.Site).FirstOrDefaultAsync();
 
-                return employee;
+                if (employee != null)
+                {
+                    return employee;
+                }
+
+                _logger.LogWarning($"No employee data available for employee with username: {username}.");
+                return $"No employee data available for employee with username: {username}.";
             }
             catch (MySqlException msqlEx)
             {

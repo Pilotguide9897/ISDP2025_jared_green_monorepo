@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using MySqlConnector;
 using System.ComponentModel;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace ISDP2025_jared_green_web.Server.Services
 {
@@ -23,7 +24,7 @@ namespace ISDP2025_jared_green_web.Server.Services
         }
 
         // Data Access Methods
-        public async Task CreateOrder(dtoOrderCreation orderDetails)
+        public async Task<Txn> CreateOrder(dtoOrderCreation orderDetails)
         {
             try
             {
@@ -45,18 +46,22 @@ namespace ISDP2025_jared_green_web.Server.Services
                 // Add the new order
                 await _bullseyeContext.AddAsync(order);
                 await _bullseyeContext.SaveChangesAsync();
+                return order;
             }
             catch (MySqlException msqlEx)
             {
                 _logger.LogError($":{msqlEx.Message}");
+                throw;
             }
             catch (TimeoutException toEx)
             {
                 _logger.LogError($":{toEx.Message}");
+                throw;
             }
             catch (Exception ex)
             {
                 _logger.LogError($":{ex.Message}");
+                throw;
             }
         }
 
@@ -111,16 +116,26 @@ namespace ISDP2025_jared_green_web.Server.Services
         {
             try
             {
-                var order = await _bullseyeContext.Txns
-                    .Where(txn => txn.TxnId == txnID)
-                    .Include(s => s.SiteIdtoNavigation)
-                    .Include(e => e.Txnitems)
-                        .ThenInclude(f => f.Item)
+                //var order = await _bullseyeContext.Txns
+                //    .Where(txn => txn.TxnId == txnID)
+                //    .Include(s => s.SiteIdtoNavigation)
+                //    .Include(e => e.Txnitems)
+                //    .ThenInclude(f => f.Item)
+                //    .FirstOrDefaultAsync();
+
+                //if (order != null)
+                //{
+                //    var dto = _mapper.Map<dtoOrder>(order);
+                //    return dto;
+                //}
+
+                var dto = await _bullseyeContext.Txns
+                    .Where(txn => txn.TxnId == txnID && txn.ShipDate > DateTime.Now)
+                    .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
-                if (order != null)
+                if (dto != null)
                 {
-                    var dto = _mapper.Map<dtoOrder>(order); // 👈 AutoMapper in action
                     return dto;
                 }
 
@@ -131,17 +146,17 @@ namespace ISDP2025_jared_green_web.Server.Services
             catch (MySqlException msqlEx)
             {
                 _logger.LogError($":{msqlEx.Message}");
-                return null;
+                throw;
             }
             catch (TimeoutException toEx)
             {
                 _logger.LogError($":{toEx.Message}");
-                return null;
+                throw;
             }
             catch (Exception ex)
             {
                 _logger.LogError($":{ex.Message}");
-                return null;
+                throw;
             }
         }
 
@@ -151,16 +166,26 @@ namespace ISDP2025_jared_green_web.Server.Services
             {
 
 
-                var order = await _bullseyeContext.Txns
+                //var order = await _bullseyeContext.Txns
+                //    .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
+                //    .Include(s => s.SiteIdtoNavigation)
+                //    .Include(e => e.Txnitems)
+                //    .ThenInclude(f => f.Item)
+                //    .FirstOrDefaultAsync();
+
+                //if (order != null)
+                //{
+                //    var dto = _mapper.Map<dtoOrder>(order);
+                //    return dto;
+                //}
+
+                var dto = await _bullseyeContext.Txns
                     .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
-                    .Include(s => s.SiteIdtoNavigation)
-                    .Include(e => e.Txnitems)
-                    .ThenInclude(f => f.Item)
+                    .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
-                if (order != null)
+                if (dto != null)
                 {
-                    var dto = _mapper.Map<dtoOrder>(order); // 👈 AutoMapper in action
                     return dto;
                 }
 
@@ -171,43 +196,43 @@ namespace ISDP2025_jared_green_web.Server.Services
             catch (MySqlException msqlEx)
             {
                 _logger.LogError($":{msqlEx.Message}");
-                return null;
+                throw;
             }
             catch (TimeoutException toEx)
             {
                 _logger.LogError($":{toEx.Message}");
-                return null;
+                throw;
             }
             catch (Exception ex)
             {
                 _logger.LogError($":{ex.Message}");
-                return null;
+                throw;
             }
         }
 
-        public async Task<object> CreateOrder(Txn order)
-        {
-            try
-            {
-                await _bullseyeContext.AddAsync(order);
-                return true;
-            }
-            catch (MySqlException msqlEx)
-            {
-                _logger.LogError($":{msqlEx.Message}");
-                return null;
-            }
-            catch (TimeoutException toEx)
-            {
-                _logger.LogError($":{toEx.Message}");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($":{ex.Message}");
-                return null;
-            }
-        }
+        //public async Task<object> CreateOrder(Txn order)
+        //{
+        //    try
+        //    {
+        //        await _bullseyeContext.AddAsync(order);
+        //        return true;
+        //    }
+        //    catch (MySqlException msqlEx)
+        //    {
+        //        _logger.LogError($":{msqlEx.Message}");
+        //        throw;
+        //    }
+        //    catch (TimeoutException toEx)
+        //    {
+        //        _logger.LogError($":{toEx.Message}");
+        //        throw;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($":{ex.Message}");
+        //        throw;
+        //    }
+        //}
 
         //public async Task<object> GetOrderByCustomerEmail(string email)
         //{

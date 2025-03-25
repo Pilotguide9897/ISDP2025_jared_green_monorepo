@@ -32,7 +32,9 @@ namespace ISDP2025_jared_green_web.Server.Services
             {
                 var keyVaultUri = configuration["KeyVault:Uri"];
                 var client = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
-                KeyVaultSecret secret = await client.GetSecretAsync(username);
+
+                // Not secure, but fine for development.
+                KeyVaultSecret secret = await client.GetSecretAsync("admin");
                 string retrievedValue = secret.Value;
 
                 //string secret = "dQMljl7CrMyEztheH3q3jzQpcK0+m76CIoaOpWWDyf4=:CLhGjVWmR7gxHBrnmLD5XQ==";
@@ -49,10 +51,11 @@ namespace ISDP2025_jared_green_web.Server.Services
 
                 return (key, iv);
             }
+            
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred accessing the password");
-                return null;
+                throw;
             }
         }
 

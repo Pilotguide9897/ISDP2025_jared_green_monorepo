@@ -1,5 +1,6 @@
 ﻿using ISDP2025_jared_green_web.Server.Interfaces.Services;
 using ISDP2025_jared_green_web.Server.Models;
+using ISDP2025_jared_green_web.Server.Models.dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,8 +64,7 @@ namespace ISDP2025_jared_green_web.Server.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/orders")]
-        public async Task<IActionResult> CreateOrder([FromBody] Txn transaction)
+        public async Task<IActionResult> CreateOrder([FromBody] dtoOrderCreation transaction)
         {
             Txn? result = (await _customerOrderService.CreateOrder(transaction)) as Txn;
 

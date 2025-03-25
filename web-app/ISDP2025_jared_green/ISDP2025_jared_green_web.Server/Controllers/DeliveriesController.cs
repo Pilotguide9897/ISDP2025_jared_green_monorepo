@@ -1,4 +1,5 @@
 ﻿using ISDP2025_jared_green_web.Server.Interfaces.Services;
+using ISDP2025_jared_green_web.Server.Models.dto;
 using ISDP2025_jared_green_web.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,9 @@ namespace ISDP2025_jared_green_web.Server.Controllers
             try
             {
                 var result = await _deliveryService.GetDeliveries();
+                List<dtoOrder>? orders = result as List<dtoOrder>;
 
-                if (result == null || !result.Any())
+                if (orders == null || !orders.Any())
                     return NoContent();
 
                 return Ok(result);

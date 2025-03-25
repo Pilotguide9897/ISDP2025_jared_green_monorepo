@@ -1,28 +1,41 @@
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
-function DataTable({ data, onRowDoubleClick }) {
+function DataTable({ data, onRowDoubleClick, handleAddItem }) {
     return (
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    {Object.keys(data[0]).map((key, index) => (
+                    {Object.keys(data[0] || {}).map((key, index) => (
                         <th key={index}>{key}</th>
                     ))}
                 </tr>
             </thead>
             <tbody>
-                {data.map((row, i) => (
-                    //On double row click is optional lets me add double clicks if I pass the function prop.
-                    <tr key={i} onDoubleClick={() => onRowDoubleClick?.(row)}>
-                        {Object.values(row).map((value, colIndex) => (
-                            <td key={colIndex}>{value}</td>
-                        ))}
-                    </tr>
-                ))}
+                {data.map((row, i) => {
+                    const values = Object.values(row);
+                    return (
+                        <tr key={i} onDoubleClick={() => onRowDoubleClick?.(row)}>
+                            {values.map((value, colIndex) => (
+                                <td key={colIndex}>
+                                    {colIndex === values.length - 1 ? (
+                                        <Button
+                                            variant="info"
+                                            size="sm"
+                                            onClick={() => handleAddItem?.(row)}>
+                                            Add Item
+                                        </Button>
+                                    ) : (
+                                        value
+                                    )}
+                                </td>
+                            ))}
+                        </tr>
+                    );
+                })}
             </tbody>
         </Table>
     );
 }
-
 
 export default DataTable;
