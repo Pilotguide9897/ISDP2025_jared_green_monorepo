@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
-function AddToCartToast({ show, setShow }) {
+function OrderSubmitToast({ show, setShow, orderId }) {
 
     return (
         <Row>
@@ -15,14 +15,14 @@ function AddToCartToast({ show, setShow }) {
                             className="rounded me-2"
                             alt=""
                         />
-                        <strong className="me-auto">Cart</strong>
+                        <strong className="me-auto">Order Submission</strong>
                         <small>Now</small>
                     </Toast.Header>
-                    <Toast.Body>Item added to cart</Toast.Body>
+                    <Toast.Body>Order Submitted. Order ID: { orderId }.</Toast.Body>
                 </Toast>
             </Col>
         </Row>
     );
 }
 
-export default AddToCartToast;
+export default OrderSubmitToast;

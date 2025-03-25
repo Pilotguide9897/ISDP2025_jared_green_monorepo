@@ -8,8 +8,9 @@ import DataTable from '../../Components/DataTable/DataTable';
 import BasicModal from '../../Components/Modal/BasicModal';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import CustomerDetailsForm from '../../Components/CustomerDetailsForm/CustomerDetailsForm';
-import { v4 as uuidV4 } from 'uuid';
+//import { v4 as uuidV4 } from 'uuid';
 import AddToCartToast from '../../Components/Toast/Toast';
+import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
 
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
@@ -21,6 +22,8 @@ function PlaceOrder() {
     const [modalShow, setModalShow] = useState(false);
     //const [selectedItem, setSelectedItem] = useState();
     const [showToast, setShowToast] = useState(false);
+    const [showOrderToast, setShowOrderToast] = useState(false);
+    const [submittedOrderID, setSubmittedOrderID] = useState(null);
 
     const subtotal = orderData?.reduce(
         (sum, item) => sum + item.price * item.quantity,
@@ -29,8 +32,6 @@ function PlaceOrder() {
     let hst = subtotal * 0.15;
     let total = subtotal + hst;
 
-
-    // Customer Details Form
     const [customerDetails, setCustomerDetails] = useState({
         firstName: '',
         lastName: '',
@@ -78,48 +79,87 @@ function PlaceOrder() {
 
     const submitOrder = async () => {
 
-        try {
+        if (orderData != null && orderData.length > 0) {
+            try {
 
-            const now = new Date();
-            const cutoffHour = 16;
-            const currentHour = now.getHours();
+                const now = new Date();
+                const cutoffHour = 16;
+                const currentHour = now.getHours();
 
-            let pickupTime;
+                let pickupTime;
 
-            if (currentHour < cutoffHour) {
-                pickupTime = new Date(now.getTime() + 60 * 60 * 1000);
-            } else {
-                pickupTime = new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate() + 1,
-                );
+                if (currentHour < cutoffHour) {
+                    pickupTime = new Date(now.getTime() + 60 * 60 * 1000);
+                } else {
+                    pickupTime = new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate() + 1,
+                    );
+                }
+
+                let response = await axios.post('/api/orders', {
+                    //txnId: 0,
+                    //employeeId: 10000,
+                    //siteIdto: selectedStore.SiteId,
+                    //siteIdfrom: 10000,
+                    //txnStatus: "PREPARING",
+                    //shipDate: pickupTime().toISOString(),
+                    //txnType: "Online",
+                    //barCode: uuidV4(),
+                    //createdDate: new Date().toISOString(),
+                    //deliveryId: null,
+                    //emergencyDelivery: 0,
+                    //notes: "",
+                    //custFirstName: customerDetails.firstName,
+                    //custLastName: customerDetails.lastName,
+                    //custEmail: customerDetails.email,
+                    //custPhone: customerDetails.phone,
+                    //txnitems: orderData
+
+                    // Need fields:
+                    // TxnId
+                    // OrderSite
+                    // CustFirstName
+                    // CustLastName
+                    // CustEmail
+                    // CustPhone
+                    // txnitems
+
+                    TxnId: 0,
+                    OrderSite: selectedStore.SiteId,
+                    ShipDate: pickupTime().toISOString(),
+                    CustFirstName: customerDetails.firstName,
+                    CustLastName: customerDetails.lastName,
+                    CustEmail: customerDetails.email,
+                    CustPhone: customerDetails.phone,
+                    txnitems: orderData
+                    // Order data should have fields:
+                        // TxnId
+                        // ItemId
+                        // Quantity
+                        // Notes
+                })
+
+                setSubmittedOrderID(response.orderID)
+                setShowOrderToast(true); 
+
+                setCustomerDetails({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    address: '',
+                    province: '',
+                    phone: ''
+                });
+                setOrderData(null);
+                setSelectedStore(null);
+                setStoreInventory(null);
+                setSubmittedOrderID(null);
+
+            } catch (error) {
+                setError(error);
             }
-
-            let orderItems = [];
-
-            const response = axios.post('/api/orders', {
-                txnId: 0,
-                employeeId: 10000,
-                siteIdto: selectedStore.SiteId,
-                siteIdfrom: 10000,
-                txnStatus: "PREPARING",
-                shipDate: pickupTime().toISOString(),
-                txnType: "Online",
-                barCode: uuidV4(),
-                createdDate: new Date().toISOString(),
-                deliveryId: null,
-                emergencyDelivery: 0,
-                notes: "",
-                custFirstName: customerDetails.firstName,
-                custLastName: customerDetails.lastName,
-                custEmail: customerDetails.email,
-                custPhone: customerDetails.phone,
-                txnitems: []
-            })
-
-        } catch (error) {
-            setError(error);
         }
     }
 
@@ -204,7 +244,9 @@ function PlaceOrder() {
             </div>
             <BasicModal show={modalShow} onHide={() => setModalShow(false)} />
             <CustomerDetailsForm customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} />
-            <AddToCartToast show={ showToast } onHide={ () => setShowToast(false) } />
+            <Button variant="info" onClick={ submitOrder }>Submit Order</Button>
+            <AddToCartToast show={showToast} onHide={() => setShowToast(false)} />
+            <OrderSubmitToast show={showOrderToast} onHide={() => setShowOrderToast(false)} orderID={submittedOrderID ?? "pending"} />
             <Footer />
         </>
     )

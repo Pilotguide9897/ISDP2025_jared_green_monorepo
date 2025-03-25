@@ -66,7 +66,7 @@ namespace ISDP2025_jared_green_web.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] dtoOrderCreation transaction)
         {
-            Txn? result = (await _customerOrderService.CreateOrder(transaction)) as Txn;
+            dtoOrder? result = (await _customerOrderService.CreateOrder(transaction)) as dtoOrder;
 
             if (result == null)
             {

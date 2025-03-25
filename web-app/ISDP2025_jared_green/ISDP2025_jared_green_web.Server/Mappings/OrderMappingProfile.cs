@@ -14,6 +14,10 @@ namespace ISDP2025_jared_green_web.Server.Mappings
 
             CreateMap<Txnitem, dtoTxnItem>().ForMember(dest => dest.Item, opt => opt.MapFrom(src => src.Item));
 
+            CreateMap<dtoOrderItemCreation, Txnitem>()
+                .ForMember(dest => dest.Item, opt => opt.Ignore())
+                .ForMember(dest => dest.Txn, opt => opt.Ignore());
+
             // No need for special configuring.
             CreateMap<Item, dtoItem>();
 

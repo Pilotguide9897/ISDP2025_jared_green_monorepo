@@ -24,15 +24,17 @@ namespace ISDP2025_jared_green_web.Server.Services
         }
 
         // Data Access Methods
-        public async Task<Txn> CreateOrder(dtoOrderCreation orderDetails)
+        public async Task<dtoOrder> CreateOrder(dtoOrderCreation orderDetails)
         {
             try
             {
                 Txn order = new Txn
                 {
                     TxnStatus = "NEW",
-                    EmployeeId = -1,
+                    EmployeeId = 10000,
                     SiteIdfrom = 10000,
+                    TxnType = "Online",
+                    ShipDate = orderDetails.ShipTime,
                     SiteIdto = orderDetails.OrderSite,
                     CreatedDate = DateTime.Now,
                     BarCode = Guid.NewGuid().ToString(),
@@ -40,13 +42,21 @@ namespace ISDP2025_jared_green_web.Server.Services
                     CustLastName = orderDetails.CustLastName,
                     CustEmail = orderDetails.CustEmail,
                     CustPhone = orderDetails.CustPhone,
-                    Txnitems = orderDetails.txnitems
+                    Txnitems = _mapper.Map<List<Txnitem>>(orderDetails.txnitems)
                 };
 
                 // Add the new order
                 await _bullseyeContext.AddAsync(order);
                 await _bullseyeContext.SaveChangesAsync();
-                return order;
+
+                // EF will not set the nav properties until order is loaded or query. Load to return site info. Do the same for items too.
+                // .Reference is used for loading a single navigation property.
+                await _bullseyeContext.Entry(order).Reference(o => o.SiteIdtoNavigation).LoadAsync();
+                // .Collection is used for loading a collection navigation property.
+                await _bullseyeContext.Entry(order).Collection(m => m.Txnitems).Query().Include(j => j.Item).LoadAsync();
+                // Cannot load both at the same time. Do in two statements.
+
+                return _mapper.Map<dtoOrder>(order);
             }
             catch (MySqlException msqlEx)
             {
