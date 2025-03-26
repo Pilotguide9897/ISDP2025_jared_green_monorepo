@@ -6,6 +6,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 function OrderTab({ data }) {
     const [key, setKey] = useState(0);
+    
+    let keys = Object.keys(data[0])
+    console.log(keys);
+
+    console.log(data[0].orderSite);
+
 
     return (
         <Tabs
@@ -15,15 +21,16 @@ function OrderTab({ data }) {
             className="mb-3"
         >
             {data.map((order, i) => (
-                <Tab eventKey={i} title={order.siteName} key={i}>
+                <Tab eventKey={i} title={order.orderSite.siteName} key={i}>
                     <Card>
                         <Card.Body>
                             <h4>{ order.txnType }</h4>
                             <ListGroup>
-                                <ListGroup.Item>{order.address}</ListGroup.Item>
-                                <ListGroup.Item>{order.city}</ListGroup.Item>
-                                <ListGroup.Item>{order.province}</ListGroup.Item>
-                                <ListGroup.Item>{order.postalCode}</ListGroup.Item>
+                                <ListGroup.Item>Site ID: {order.orderSite.siteId} </ListGroup.Item>
+                                <ListGroup.Item>Address: {order.orderSite.address}</ListGroup.Item>
+                                <ListGroup.Item>City:  {order.orderSite.city}</ListGroup.Item>
+                                <ListGroup.Item>Postal Code: {order.orderSite.postalCode}</ListGroup.Item>
+
                             </ListGroup>
                         </Card.Body>
                     </Card>

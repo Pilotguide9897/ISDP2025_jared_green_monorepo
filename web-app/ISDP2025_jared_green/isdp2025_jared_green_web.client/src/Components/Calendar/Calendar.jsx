@@ -20,7 +20,7 @@ const localizer = dateFnsLocalizer({
 
 console.log(localizer);
 
-const MyCalendar = ({ events, setModalOpen, setSelectedEvent }) => {
+const MyCalendar = ({ events, onSelectEvent }) => {
     const [currentView, setCurrentView] = useState('month');
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -30,10 +30,7 @@ const MyCalendar = ({ events, setModalOpen, setSelectedEvent }) => {
                 localizer={localizer}
                 events={events}
                 view={currentView}
-                onSelectEvent={(event) => {
-                    setSelectedEvent(event);
-                    setModalOpen(true);
-                } }
+                onSelectEvent={ (event) => onSelectEvent(event) }
                 onView={(view) => setCurrentView(view)}
                 date={currentDate}
                 onNavigate={(newDate) => { setCurrentDate(newDate)}}

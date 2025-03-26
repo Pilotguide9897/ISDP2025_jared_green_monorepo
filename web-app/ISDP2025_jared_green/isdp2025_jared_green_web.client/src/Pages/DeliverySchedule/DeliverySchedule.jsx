@@ -81,7 +81,7 @@ function Dashboard() {
             const events = Object.entries(eventsGroupedByDate).map(([dateKey, groupedOrders]) => {
                 const start = new Date(dateKey);
                 const end = new Date(new Date(dateKey).setHours(18));
-                const totalWeight = orders.reduce((sum, order) => {
+                const totalWeight = groupedOrders.reduce((sum, order) => {
                     const itemWeights = order.txnitems?.reduce((itemSum, txnItem) => {
                         return itemSum + (txnItem.quantity * (txnItem.item?.weight));
                     }, 0);
@@ -89,7 +89,7 @@ function Dashboard() {
                 }, 0);
 
                 return {
-                    title: `Deliveries: ${groupedOrders.length} order(s) - Vehicle: ${totalWeight}`,
+                    title: `Deliveries: ${groupedOrders.length} order(s) | Vehicle: ${totalWeight > 10000 ? "Heavy" : totalWeight > 5000 ? "Medium" : totalWeight > 1000 ? "Small" : "Van"} | Total Weight: ${totalWeight.toFixed(2)}`,
                     start,
                     end,
                     allDay: true,

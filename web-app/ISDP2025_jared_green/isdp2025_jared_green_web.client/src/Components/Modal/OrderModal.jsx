@@ -16,7 +16,8 @@ function OrderModal({ show, handleClose, data }) {
             <Modal.Body>
                 <div className="mb-3">
                     <strong>Vehicle:</strong> {data.totalWeight > 10000 ? "Heavy" : data.totalWeight > 5000 ? "Medium" : data.totalWeight > 1000 ? "Small" : "Van"} <br />
-                    <strong>Total Weight:</strong> {data.totalWeight} kg
+                    <strong>Total Weight:</strong> {data.totalWeight.toFixed(2)} kg
+                    <br></br>
                     <strong>Total Deliveries:</strong> {data.orders.length || 0}
                 </div>
                 {data.orders.length === 0 ? (

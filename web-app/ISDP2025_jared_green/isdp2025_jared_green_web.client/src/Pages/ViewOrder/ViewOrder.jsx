@@ -66,9 +66,9 @@ function ViewOrder() {
                         <DataTable data={order.txnitems} onRowDoubleClick={showItemImage} />
                         <BasicModal show={modalShow} onHide={() => setModalShow(false)} image={image} />
                         <div className="d-flex justify-content-end">
-                            <h5>Subtotal: { subtotal.toFixed(2) }</h5>
-                            <h5>HST (15%): { hst.toFixed(2) }</h5>
-                            <h5>Total: { total.toFixed(2) }</h5>
+                            <h5>Subtotal: ${ subtotal.toFixed(2) }</h5>
+                            <h5>HST (15%): ${ hst.toFixed(2) }</h5>
+                            <h5>Total: ${ total.toFixed(2) }</h5>
                         </div>
                         <Button variant="info">Exit</Button>
                     </section>
