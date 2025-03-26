@@ -11,6 +11,7 @@ import CustomerDetailsForm from '../../Components/CustomerDetailsForm/CustomerDe
 //import { v4 as uuidV4 } from 'uuid';
 import AddToCartToast from '../../Components/Toast/Toast';
 import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
+import AlreadyInCartToast from '../../Components/Toast/AlreadyInCartToast';
 
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
@@ -23,7 +24,10 @@ function PlaceOrder() {
     //const [selectedItem, setSelectedItem] = useState();
     const [showToast, setShowToast] = useState(false);
     const [showOrderToast, setShowOrderToast] = useState(false);
+    const [showAlreadyInCartToast, setAlreadyInCartToast] = useState(false);
     const [submittedOrderID, setSubmittedOrderID] = useState(null);
+    const [image, setImage] = useState("");
+    let imagePath = "/images/";
 
     const subtotal = orderData?.reduce(
         (sum, item) => sum + item.price * item.quantity,
@@ -47,6 +51,7 @@ function PlaceOrder() {
         const fetchLocations = async () => {
             try {
                 const response = await axios.get('api/locations');
+                console.log(response.data)
                 setLocations(response.data);
             } catch (error) {
                 setError(error);
@@ -65,7 +70,10 @@ function PlaceOrder() {
         const fetchInventoryData = async () => {
             try {
                 const response = await axios.get('')
-                setStoreInventory(response.data);
+
+                const filtered = pickFields(response.data, ["itemId", "sitId", "name", "description", "category", "weight", "retailPrice", "quantity"]);
+
+                setStoreInventory(filtered);
             } catch (error) {
                 setError(error);
             } finally {
@@ -89,7 +97,7 @@ function PlaceOrder() {
                 let pickupTime;
 
                 if (currentHour < cutoffHour) {
-                    pickupTime = new Date(now.getTime() + 60 * 60 * 1000);
+                    pickupTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
                 } else {
                     pickupTime = new Date(
                         now.getFullYear(),
@@ -171,13 +179,39 @@ function PlaceOrder() {
         setOrderData(updatedOrderData);
     };
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (row) => {
+        // Check if the item exists in the cart
+        const existingItem = orderData.find(item => item.itemId == row.itemId);
+        if (existingItem) {
+            setAlreadyInCartToast(true);
+        } else {
+            //const { } =
+            //const FilteredResult =  
+            setOrderData([...orderData, row])
+        }
 
+        setShowToast(true);
     };
 
-    const handleRemoveFromCart = () => {
+    const handleRemoveFromCart = (row) => {
+        const cartAfterRemove = orderData.filter(item => item.itemId === row.itemId)
 
+        setOrderData(cartAfterRemove);
     };
+
+    const showItemImage = async (row) => {
+        let imageSrc = imagePath + row.productName;
+        setImage(imageSrc);
+    }
+
+    function pickFields(obj, fields) {
+        return fields.reduce((result, key) => {
+            if (key in obj) {
+                result[key] = obj[key];
+            }
+            return result;
+        }, {});
+    }
 
 
     const handleStoreChange = (evt) => {
@@ -228,6 +262,7 @@ function PlaceOrder() {
                                         inventory={storeInventory}
                                         onQuantityChange={handleQuantityChange}
                                         onRemoveItem={handleRemoveFromCart}
+                                        onRowDoubleClick={showItemImage}
                                     />
                                 </Card.Body>
                             </Card>
@@ -242,11 +277,12 @@ function PlaceOrder() {
                     </Row>
                 </Container>
             </div>
-            <BasicModal show={modalShow} onHide={() => setModalShow(false)} />
+            <BasicModal show={modalShow} onHide={() => setModalShow(false)} image={image} />
             <CustomerDetailsForm customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} />
             <Button variant="info" onClick={ submitOrder }>Submit Order</Button>
             <AddToCartToast show={showToast} onHide={() => setShowToast(false)} />
             <OrderSubmitToast show={showOrderToast} onHide={() => setShowOrderToast(false)} orderID={submittedOrderID ?? "pending"} />
+            <AlreadyInCartToast show={showAlreadyInCartToast} onHide={() => { setAlreadyInCartToast(false) }} />
             <Footer />
         </>
     )

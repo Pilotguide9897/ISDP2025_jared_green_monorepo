@@ -26,7 +26,7 @@ namespace ISDP2025_jared_green_web.Server.Controllers
             try
             {
                 var result = await _deliveryService.GetDeliveries();
-                List<dtoOrder>? orders = result as List<dtoOrder>;
+                List<dtoDelivery>? orders = result as List<dtoDelivery>;
 
                 if (orders == null || !orders.Any())
                     return NoContent();

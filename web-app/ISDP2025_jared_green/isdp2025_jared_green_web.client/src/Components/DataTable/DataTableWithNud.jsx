@@ -1,6 +1,6 @@
 import { Table, Button } from 'react-bootstrap/Table';
 
-function DataTableWithNud({ data, inventory, handleQuantityChange, handleRemoveItem }) {
+function DataTableWithNud({ data, inventory, handleQuantityChange, handleRemoveItem, onRowDoubleClick}) {
     return (
         <Table striped bordered hover>
             <thead>
@@ -17,7 +17,7 @@ function DataTableWithNud({ data, inventory, handleQuantityChange, handleRemoveI
 
                     // Need return because using curly braces!
                     return (
-                        <tr key={i}>
+                        <tr key={i} onDoubleClick={() => onRowDoubleClick?.(row)}  >
                         {/*Access arr to see if column is the last row*/}
                             {Object.values(row).map((value, colIndex, arr) => (
                                 <td key={colIndex}>

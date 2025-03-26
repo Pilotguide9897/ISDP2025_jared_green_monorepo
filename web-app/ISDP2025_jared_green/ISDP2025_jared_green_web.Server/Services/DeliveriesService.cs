@@ -29,15 +29,9 @@ namespace ISDP2025_jared_green_web.Server.Services
             {
                 string[] orderTypes = new[] { "Back Order", "Store Order", "Emergency Order" };
 
-                //var orders = await (from tx in _bullseyeContext.Txns where orderTypes.Contains(tx.TxnType) && tx.ShipDate > DateTime.Today select tx)
-                //    .Include(t => t.SiteIdtoNavigation)
-                //    .Include(e => e.Txnitems)
-                //    .ThenInclude(f => f.Item).ToListAsync();
-
                 var dto = await _bullseyeContext.Txns
-                    .Where(txn => orderTypes.Contains(txn.TxnType) && txn.ShipDate > DateTime.Now)
-                    .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync();
+                    .Where(txn => orderTypes.Contains(txn.TxnType))
+                    .ProjectTo<dtoDelivery>(_mapper.ConfigurationProvider).ToListAsync();
 
                 if (dto != null)
                 {

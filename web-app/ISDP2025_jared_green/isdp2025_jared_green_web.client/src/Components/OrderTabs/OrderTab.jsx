@@ -24,7 +24,6 @@ function OrderTab({ data }) {
                                 <ListGroup.Item>{order.city}</ListGroup.Item>
                                 <ListGroup.Item>{order.province}</ListGroup.Item>
                                 <ListGroup.Item>{order.postalCode}</ListGroup.Item>
-                                <ListGroup.Item>{order.distanceFromWarehouse}</ListGroup.Item>
                             </ListGroup>
                         </Card.Body>
                     </Card>

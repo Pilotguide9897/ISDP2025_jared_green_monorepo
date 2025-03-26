@@ -75,72 +75,14 @@ namespace ISDP2025_jared_green_web.Server.Services
             }
         }
 
-        //public async Task<object> GetOrderByOrderID(int txnID)
-        //{
-        //    try
-        //    {
-        //        var order = await _bullseyeContext.Txns
-        //            .Where(txn => txn.TxnId == txnID)
-        //            .Include(s => s.SiteIdtoNavigation)
-        //            .Include(e => e.Txnitems)
-        //            .ThenInclude(f => f.Item)
-        //            .Select(g => new dtoOrder
-        //            {
-        //                txnID = g.TxnId,
-        //                orderSite = g.SiteIdto,
-        //                firstName = g.CustFirstName,
-        //                lastName = g.CustLastName,
-        //                email = g.CustEmail,
-        //                phone = g.CustPhone,
-        //                txnitems = g.Txnitems
-        //            })
-        //            .FirstOrDefaultAsync();
-
-        //        if (order != null)
-        //        {
-        //            return order;
-        //        }
-
-        //        _logger.LogWarning($"No order found for TxnID: {txnID}");
-        //        return $"No order found for TxnID: {txnID}";
-
-        //    }
-        //    catch (MySqlException msqlEx)
-        //    {
-        //        _logger.LogError($":{msqlEx.Message}");
-        //        return null;
-        //    }
-        //    catch (TimeoutException toEx)
-        //    {
-        //        _logger.LogError($":{toEx.Message}");
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($":{ex.Message}");
-        //        return null;
-        //    }
-        //}
-
         public async Task<object> GetOrderByOrderID(int txnID)
         {
             try
             {
-                //var order = await _bullseyeContext.Txns
-                //    .Where(txn => txn.TxnId == txnID)
-                //    .Include(s => s.SiteIdtoNavigation)
-                //    .Include(e => e.Txnitems)
-                //    .ThenInclude(f => f.Item)
-                //    .FirstOrDefaultAsync();
-
-                //if (order != null)
-                //{
-                //    var dto = _mapper.Map<dtoOrder>(order);
-                //    return dto;
-                //}
 
                 var dto = await _bullseyeContext.Txns
-                    .Where(txn => txn.TxnId == txnID && txn.ShipDate > DateTime.Now)
+                                        //.Where(txn => txn.TxnId == txnID && txn.ShipDate > DateTime.Now)
+                    .Where(txn => txn.TxnId == txnID)
                     .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
@@ -175,20 +117,6 @@ namespace ISDP2025_jared_green_web.Server.Services
             try
             {
 
-
-                //var order = await _bullseyeContext.Txns
-                //    .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
-                //    .Include(s => s.SiteIdtoNavigation)
-                //    .Include(e => e.Txnitems)
-                //    .ThenInclude(f => f.Item)
-                //    .FirstOrDefaultAsync();
-
-                //if (order != null)
-                //{
-                //    var dto = _mapper.Map<dtoOrder>(order);
-                //    return dto;
-                //}
-
                 var dto = await _bullseyeContext.Txns
                     .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
                     .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
@@ -219,75 +147,5 @@ namespace ISDP2025_jared_green_web.Server.Services
                 throw;
             }
         }
-
-        //public async Task<object> CreateOrder(Txn order)
-        //{
-        //    try
-        //    {
-        //        await _bullseyeContext.AddAsync(order);
-        //        return true;
-        //    }
-        //    catch (MySqlException msqlEx)
-        //    {
-        //        _logger.LogError($":{msqlEx.Message}");
-        //        throw;
-        //    }
-        //    catch (TimeoutException toEx)
-        //    {
-        //        _logger.LogError($":{toEx.Message}");
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($":{ex.Message}");
-        //        throw;
-        //    }
-        //}
-
-        //public async Task<object> GetOrderByCustomerEmail(string email)
-        //{
-        //    try
-        //    {
-        //        var order = await _bullseyeContext.Txns
-        //            .Where(txn => txn.CustEmail == email)
-        //            .Include(e => e.Txnitems)
-        //            .ThenInclude(f => f.Item)
-        //            .Select(g => new dtoOrder
-        //            {
-        //                txnID = g.TxnId,
-        //                orderSite = g.SiteIdto,
-        //                firstName = g.CustFirstName,
-        //                lastName = g.CustLastName,
-        //                email = g.CustEmail,
-        //                phone = g.CustPhone,
-        //                txnitems = g.Txnitems
-        //            })
-        //            .FirstOrDefaultAsync();
-
-        //        if (order != null)
-        //        {
-        //            return order;
-        //        }
-
-        //        _logger.LogWarning($"No order found for customer email: {email}");
-        //        return $"No order found for customer email: {email}";
-
-        //    }
-        //    catch (MySqlException msqlEx)
-        //    {
-        //        _logger.LogError($":{msqlEx.Message}");
-        //        return null;
-        //    }
-        //    catch (TimeoutException toEx)
-        //    {
-        //        _logger.LogError($":{toEx.Message}");
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($":{ex.Message}");
-        //        return null;
-        //    }
-        //}
     }
 }

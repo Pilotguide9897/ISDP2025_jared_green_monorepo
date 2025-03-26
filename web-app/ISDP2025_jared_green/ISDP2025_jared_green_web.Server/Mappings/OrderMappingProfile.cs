@@ -21,6 +21,8 @@ namespace ISDP2025_jared_green_web.Server.Mappings
             CreateMap<Inventory, dtoInventory>()
                 .ForMember(dest => dest.Item, opt => opt.MapFrom(src => src.Item));
 
+            CreateMap<Txn, dtoDelivery>().ForMember(dest => dest.OrderSite, opt => opt.MapFrom(src => src.SiteIdtoNavigation));
+
             // No need for special configuring.
             CreateMap<Item, dtoItem>();
 

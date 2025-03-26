@@ -13,6 +13,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [calendarEvents, setCalendarEvents] = useState(null);
 
     const selectEvent = (event) => {
         setSelectedEvent(event);
@@ -20,10 +21,6 @@ function Dashboard() {
         setModalOpen(true);
         console.log("Orders:", ordersForThatDay);
     };
-
-    const loadCalendar = () => {
-
-    }
 
     function handleModalClose() {
         setModalOpen(false);
@@ -36,7 +33,6 @@ function Dashboard() {
                 setLoading(true);
                 const response = await axios.get(`api/deliveries`);
                 setOrders(response.data);
-                loadCalendar();
             } catch (error) {
                 setError(error);
             } finally {
@@ -47,6 +43,54 @@ function Dashboard() {
         fetchDeliveries();
     }, []);
 
+
+    useEffect(() => {
+        const loadCalendar = () => {
+            let eventsGroupedByDate = {}
+
+            // Group the events
+            orders.forEach(order => {
+                const shipDate = new Date(order.shipDate);
+                // Get just the date
+                const dateKey = shipDate.toISOString().split('T')[0];
+
+                if (!eventsGroupedByDate[dateKey]) {
+                    eventsGroupedByDate[dateKey] = [];
+                }
+
+                eventsGroupedByDate[dateKey].push(order);
+            });
+
+            const events = Object.entries(eventsGroupedByDate).map(([dateKey, groupedOrders]) => {
+                const start = new Date(dateKey);
+                const end = new Date(dateKey).setHours(18);
+                const totalWeight = orders.reduce((sum, order) => {
+                    const itemWeights = order.txnitems?.reduce((itemSum, txnItem) => {
+                        return itemSum + (txnItem.quantity * (txnItem.item?.weight));
+                    }, 0);
+                    return sum + itemWeights;
+                }, 0);
+
+                return {
+                    title: `Deliveries: ${groupedOrders.length} order(s) - Vehicle: ${totalWeight}`,
+                    start,
+                    end,
+                    allDay: true,
+                    orders: groupedOrders, 
+                    totalWeight
+                };
+            });
+
+            setCalendarEvents(events)
+        }
+
+        if (orders.length > 0) {
+            loadCalendar();
+        }
+
+    }, [orders]);
+
+
     return (
         <>
             <Navbar />
@@ -56,10 +100,9 @@ function Dashboard() {
                     <LoadingSpinner />
                 ) : (
                         <CalendarContainer
-                            events={!error ? orders || [] : undefined}
+                            events={!error ? calendarEvents || [] : undefined}
                             onSelectEvent={selectEvent}
                         />
-
                 )
             }
             <DeliveryModal show={modalOpen} data={selectedEvent} handleClose={ handleModalClose } />
