@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoginErrorToast from '../../Components/Toast/LoginErrorToast';
 import Button from 'react-bootstrap/Button';
+import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 
 function Login() {
     const [userEmail, setUserEmail] = useState("");
@@ -30,6 +31,7 @@ function Login() {
             localStorage.setItem("token", response.data.token);
             // Tell axios to use the token.
             axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+            console.log("Navigating to dashboard...");
             navigate("/driverdashboard")
         } catch (er) {
             console.log(er);

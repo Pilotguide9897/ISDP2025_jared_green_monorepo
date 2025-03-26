@@ -45,11 +45,19 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
+    // Set server route
     server: {
         proxy: {
-            '^/weatherforecast': {
+            '^/api': {
                 target,
-                secure: false
+                secure: false,
+                changeOrigin: true,
+
+                // rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+            // Would forward only requests starting with 'weather'.
+            '^/weather': {
+                // Can add additional proxy configs.
             }
         },
         port: 64828,

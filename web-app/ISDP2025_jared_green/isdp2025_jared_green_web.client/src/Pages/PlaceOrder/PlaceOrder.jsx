@@ -106,7 +106,7 @@ function PlaceOrder() {
                     );
                 }
 
-                let response = await axios.post('/api/orders', {
+                let response = await axios.post('api/orders', {
                     //txnId: 0,
                     //employeeId: 10000,
                     //siteIdto: selectedStore.SiteId,

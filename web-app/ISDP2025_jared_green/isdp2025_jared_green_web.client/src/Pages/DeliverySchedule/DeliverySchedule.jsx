@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import DeliveryModal from '../../Components/Modal/OrderModal';
 import axios from 'axios';
 import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
-
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
     const [orders, setOrders] = useState([]);
@@ -14,6 +14,7 @@ function Dashboard() {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [calendarEvents, setCalendarEvents] = useState(null);
+    const navigate = useNavigate();
 
     const selectEvent = (event) => {
         setSelectedEvent(event);
@@ -31,7 +32,23 @@ function Dashboard() {
         const fetchDeliveries = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`api/deliveries`);
+                // Pass config object for auth
+
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    alert("No auth token available, returning to login screen");
+                    navigate("/");
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+                const response = await axios.get(`/api/deliveries`, config);
                 setOrders(response.data);
             } catch (error) {
                 setError(error);
@@ -41,7 +58,7 @@ function Dashboard() {
         }
 
         fetchDeliveries();
-    }, []);
+    }, [navigate]);
 
 
     useEffect(() => {
@@ -63,7 +80,7 @@ function Dashboard() {
 
             const events = Object.entries(eventsGroupedByDate).map(([dateKey, groupedOrders]) => {
                 const start = new Date(dateKey);
-                const end = new Date(dateKey).setHours(18);
+                const end = new Date(new Date(dateKey).setHours(18));
                 const totalWeight = orders.reduce((sum, order) => {
                     const itemWeights = order.txnitems?.reduce((itemSum, txnItem) => {
                         return itemSum + (txnItem.quantity * (txnItem.item?.weight));
