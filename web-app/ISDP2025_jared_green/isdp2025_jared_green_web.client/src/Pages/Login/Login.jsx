@@ -7,12 +7,14 @@ import Logo from '../../assets/bullseye.jpg';
 import Footer from '../../Components/Footer/Footer';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoginErrorToast from '../../Components/Toast/LoginErrorToast';
+import Button from 'react-bootstrap/Button';
 
 function Login() {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    const [loading, setLoading] = useState(null);
-    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -29,49 +31,61 @@ function Login() {
             // Tell axios to use the token.
             axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
             navigate("/driverdashboard")
-        } catch (error) {
+        } catch (er) {
+            console.log(er);
             setError(true);
         } finally {
             setLoading(false);
         }
     }
 
+    if (loading) {
+        return (
+            <LoadingSpinner />
+        )
+    }
+
     return (
         <Container>
             <Row>
-                <Col justify-content="center" align-items="center" md={4} className= "d-none d-md-flex">
+                <Col justify-content="center" align-items="center" xs={12} md={5} className= "d-none d-md-flex justify-content-center">
                     <img src={ Logo } alt="Bullseye Sporting Goods Logo" className='img-fluid'></img>
                 </Col>
-                <Form onSubmit={ handleLogin }>
-                        <Col xs={12} md={ 8 }>
-                            <h2 class="mb-4 fw-bold display-4 text-center text-secondary">
-                                Driver Login
-                            </h2>
+                <LoginErrorToast show={error} setShow={setError} />
+                <Col xs={12} md={7}>
+                    <LoginErrorToast show={error} setShow={setError} />
+                    <Form onSubmit={handleLogin}>
+                        <h2 className="mb-4 fw-bold display-4 text-center text-secondary">
+                            Driver Login
+                        </h2>
 
-                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-                                <Form.Label column sm="2">
-                                    Email
-                                </Form.Label>
-                                <Col sm="10">
-                                    <Form.Control defaultValue="email@example.com" />
-                                </Col>
-                            </Form.Group>
+                        <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
+                            <Form.Label column sm="2">Email</Form.Label>
+                            <Col sm="10">
+                                <Form.Control
+                                    placeholder="email@example.com"
+                                    onChange={(e) => setUserEmail(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
 
-                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
-                                <Form.Label column sm="2">
-                                    Password
-                                </Form.Label>
-                                <Col sm="10">
-                                    <Form.Control type="password" placeholder="Password" />
-                                </Col>
-                                <Form.Text id="passwordHelpBlock" muted>
-                                    Passwords are at least 8 characters long, contain at least one uppercase letter, one or more numbers, does not contain spaces, and contains at least one special character.
-                                </Form.Text>
+                        <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                            <Form.Label column sm="2">Password</Form.Label>
+                            <Col sm="10">
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Password"
+                                    onChange={(e) => setUserPassword(e.target.value)}
+                                />
+                            </Col>
+                            <Form.Text id="passwordHelpBlock" muted>
+                                Passwords are at least 8 characters long, contain at least one uppercase letter, one or more numbers, does not contain spaces, and contains at least one special character.
+                            </Form.Text>
+                        </Form.Group>
 
-                            </Form.Group>
-                            <Button variant="info">Login</Button>
-                        </Col>
+                        <Button variant="info" type="submit">Login</Button>
                     </Form>
+                </Col>
             </Row>
             <Row>
                 <Col>

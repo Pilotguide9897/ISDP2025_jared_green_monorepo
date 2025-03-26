@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             try {
-                const decoded = jwt_decode(token);
+                const decoded = jwtDecode(token);
                 setUser(decoded);
             } catch (err) {
                 console.error(err);
