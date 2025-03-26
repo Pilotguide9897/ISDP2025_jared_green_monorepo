@@ -3,8 +3,14 @@ import Button from 'react-bootstrap/Button';
 
 function DataTable({ data, onRowDoubleClick, handleAddItem }) {
     const showAddButton = typeof handleAddItem === 'function';
+    console.log(data)
+
+    if (!data || data.length === 0) {
+        return null;
+    }
 
     return (
+
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -40,6 +46,7 @@ function DataTable({ data, onRowDoubleClick, handleAddItem }) {
             </tbody>
         </Table>
     );
+
 }
 
 export default DataTable;

@@ -20,8 +20,8 @@ function App() {
         <AuthProvider>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/PlaceOrder" element={<PlaceOrder /> } /> 
-                <Route path="" element={<ViewOrder />} />
+                <Route path="/placeorder" element={<PlaceOrder /> } /> 
+                <Route path="vieworder" element={<ViewOrder />} />
                 <Route element={<AuthGatekeeper />}>
                     <Route path="/driverdashboard" element={<Dashboard />} />
                 </Route>

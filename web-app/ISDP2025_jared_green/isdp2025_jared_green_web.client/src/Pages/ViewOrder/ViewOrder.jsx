@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
 import SearchBar from '../../Components/SearchBar/SearchBar';
@@ -7,19 +7,19 @@ import Button from 'react-bootstrap/Button';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import Footer from "../../Components/Footer/Footer";
 import ErrorImage from '../../Components/ErrorImage/file';
+import BasicModal from '../../Components/Modal/BasicModal';
 
 function ViewOrder() {
-    const [order, setOrder] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);
+    const [order, setOrder] = useState({});
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [modalShow, setModalShow] = useState(false);
     const [image, setImage] = useState("");
+    const [subtotal, setsubtotal] = useState(0);
+    const [hst, setHst] = useState(0);
+    const [total, setTotal] = useState(0);
     //const [readyTime, setReadyTime] = useState((new Date(Date.now() + 2 * 60 * 60 * 1000)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
     let imagePath = "/images/";
-
-    const subtotal = order.txnitems.reduce((sum, item) => sum + item.quantity * item.item.retailPrice, 0) || 0;
-    const hst = subtotal * 0.15;
-    const total = subtotal + hst;
 
     const handleSearchBarSubmission = async (searchParameter) => {
 
@@ -35,6 +35,14 @@ function ViewOrder() {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (!order || !Array.isArray(order.txnitems)) return;
+
+        setsubtotal(order.txnitems.reduce((sum, item) => sum + item.quantity * item.item.retailPrice, 0) || 0);
+        setHst(subtotal * 0.15);
+        setTotal(subtotal + hst);
+    }, [subtotal, hst, order])
 
     const showItemImage = async (row) => {
         let imageSrc = imagePath + row.productName; 
@@ -70,7 +78,7 @@ function ViewOrder() {
                             <h5>HST (15%): ${ hst.toFixed(2) }</h5>
                             <h5>Total: ${ total.toFixed(2) }</h5>
                         </div>
-                        <Button variant="info">Exit</Button>
+                        {/*<Button variant="info">Exit</Button>*/}
                     </section>
                 ) : error ? ( <ErrorImage /> ) : null
             }
