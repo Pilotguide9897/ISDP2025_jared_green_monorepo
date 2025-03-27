@@ -40,7 +40,7 @@ namespace ISDP2025_jared_green_web.Server.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator,Delivery")]
+        //[Authorize(Roles = "Administrator,Delivery")]
         [HttpGet("retail")]
         public async Task<IActionResult> GetRetailLocations()
         {

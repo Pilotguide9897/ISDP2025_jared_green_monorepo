@@ -18,9 +18,9 @@ namespace ISDP2025_jared_green_web.Server.Controllers
         }
 
 
-        [Authorize(Roles ="Administrator,Delivery")]
+        //[Authorize(Roles ="Administrator,Delivery")]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderBySite(int id)
+        public async Task<IActionResult> GetInventoryBySite(int id)
         {
             try
             {

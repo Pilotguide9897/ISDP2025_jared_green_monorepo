@@ -12,13 +12,14 @@ import CustomerDetailsForm from '../../Components/CustomerDetailsForm/CustomerDe
 import AddToCartToast from '../../Components/Toast/Toast';
 import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
 import AlreadyInCartToast from '../../Components/Toast/AlreadyInCartToast';
+import Button from 'react-bootstrap/Button';
 
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
     const [selectedStore, setSelectedStore] = useState(null);
     const [storeInventory, setStoreInventory] = useState(null);
     const [orderData, setOrderData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [modalShow, setModalShow] = useState(false);
     //const [selectedItem, setSelectedItem] = useState();
@@ -50,9 +51,10 @@ function PlaceOrder() {
         // Async Await Method
         const fetchLocations = async () => {
             try {
-                const response = await axios.get('api/locations');
+                const response = await axios.get('api/locations/retail');
                 console.log(response.data)
                 setLocations(response.data);
+
             } catch (error) {
                 setError(error);
             } finally {
@@ -61,7 +63,6 @@ function PlaceOrder() {
         }
 
         fetchLocations();
-
         // Cleanup function - Not actually needed in this case.
         return () => { };
     }, []);
@@ -69,6 +70,12 @@ function PlaceOrder() {
     useEffect(() => {
         const fetchInventoryData = async () => {
             try {
+                setLoading(true);
+
+                console.log("About to search siteID");
+
+                if (!selectedStore || !selectedStore.siteId) return;
+
                 const response = await axios.get(`api/inventory/${selectedStore.siteId}`)
 
                 const invData = response.data.map((item) => ({
@@ -84,6 +91,7 @@ function PlaceOrder() {
                 setStoreInventory(invData);
 
             } catch (error) {
+                console.log("Error with the fetching inventory data");
                 setError(error);
             } finally {
                 setLoading(false);
@@ -93,6 +101,13 @@ function PlaceOrder() {
         fetchInventoryData();
 
     }, [selectedStore])
+
+    useEffect(() => {
+        if (locations.length > 0 && !selectedStore) {
+            setSelectedStore(locations[0]);
+        }
+    }, [locations]);
+
 
     const submitOrder = async () => {
 
@@ -224,12 +239,12 @@ function PlaceOrder() {
         console.log("Selected option:", evt.target.value);
     }
 
-    if (loading) {
-        return <div><LoadingSpinner /></div>
-    }
+    //if (loading) {
+    //    return <div><LoadingSpinner /></div>
+    //}
 
     if (error) {
-        return <div>Error: { error }</div>
+        return <div>Error: { error.message }</div>
     }
 
 
@@ -243,54 +258,56 @@ function PlaceOrder() {
                     Changing store locations will reset your cart. Please proceed with caution.
                 </Alert>
             )}
-            <div className="tables-container">
-                <Container fluid className="mt-4">
-                    <Row>
-                        <Col md={6}>
-                            <Card>
-                                <Card.Header>Available Inventory</Card.Header>
-                                <Card.Body>
-                                    <DataTable
-                                        data={storeInventory}
-                                        onAddItem={handleAddToCart}
-                                    />
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col md={6}>
-                            <Card>
-                                <Card.Header>Your Cart</Card.Header>
-                                <Card.Body>
-                                    <DataTable
-                                        data={orderData}
-                                        inventory={storeInventory}
-                                        onQuantityChange={handleQuantityChange}
-                                        onRemoveItem={handleRemoveFromCart}
-                                        onRowDoubleClick={showItemImage}
-                                    />
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container>
-                    <Row >
-                        <Col className="d-flex justify-content-end">
-                            <h5>Subtotal: ${subtotal.toFixed(2)}</h5>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className="d-flex justify-content-end">
-                            <h5>HST (15%): ${hst.toFixed(2)}</h5>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className="d-flex justify-content-end">
-                            <h5>Total: ${total.toFixed(2)}</h5>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+            {loading ?  (<LoadingSpinner />) : (
+            
+                <div className="tables-container h-50 overflow-hidden mt-2 mb-5">
+                    <Container fluid className="mt-4">
+                        <Row>
+                            <Col md={7}>
+                                <Card>
+                                    <Card.Header>Available Inventory</Card.Header>
+                                    <Card.Body style={{maxHeight: '35vh'}} className="h-100 overflow-auto ">
+                                        <DataTable
+                                            data={storeInventory}
+                                            onAddItem={handleAddToCart}
+                                        />
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={5}>
+                                <Card>
+                                    <Card.Header>Your Cart</Card.Header>
+                                    <Card.Body>
+                                        <DataTable
+                                            data={orderData}
+                                            inventory={storeInventory}
+                                            onQuantityChange={handleQuantityChange}
+                                            onRemoveItem={handleRemoveFromCart}
+                                            onRowDoubleClick={showItemImage}
+                                        />
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                        <Row >
+                            <Col className="d-flex justify-content-end">
+                                <h5>Subtotal: ${subtotal.toFixed(2)}</h5>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="d-flex justify-content-end">
+                                <h5>HST (15%): ${hst.toFixed(2)}</h5>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="d-flex justify-content-end">
+                                <h5>Total: ${total.toFixed(2)}</h5>
+                            </Col>
+                        </Row>
+                    </Container>
+                </div>
+            )}
+            
             <BasicModal show={modalShow} onHide={() => setModalShow(false)} image={image} />
             <CustomerDetailsForm customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} />
             <Button variant="info" onClick={ submitOrder }>Submit Order</Button>
