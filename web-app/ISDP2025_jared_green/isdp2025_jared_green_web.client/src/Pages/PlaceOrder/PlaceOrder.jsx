@@ -5,6 +5,7 @@ import axios from '../../../node_modules/axios/index';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 import DataTable from '../../Components/DataTable/DataTable';
+import DataTableWithNud from '../../Components/DataTable/DataTableWithNud';
 import BasicModal from '../../Components/Modal/BasicModal';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import CustomerDetailsForm from '../../Components/CustomerDetailsForm/CustomerDetailsForm';
@@ -14,6 +15,7 @@ import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
 import AlreadyInCartToast from '../../Components/Toast/AlreadyInCartToast';
 import Button from 'react-bootstrap/Button';
 import Alert from '../../Components/Alert/Alert';
+
 
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
@@ -29,14 +31,15 @@ function PlaceOrder() {
     const [showAlreadyInCartToast, setAlreadyInCartToast] = useState(false);
     const [submittedOrderID, setSubmittedOrderID] = useState(null);
     const [image, setImage] = useState("");
+    const [subtotal, setSubtotal] = useState(0);
     let imagePath = "/images/";
 
-    const subtotal = orderData?.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    ) || 0;
-    let hst = subtotal * 0.15;
-    let total = subtotal + hst;
+    //const subtotal = orderData?.reduce(
+    //    (sum, item) => sum + item.price * item.quantity,
+    //    0
+    //) || 0;
+    //let hst = subtotal * 0.15;
+    //let total = subtotal + hst;
 
     const [customerDetails, setCustomerDetails] = useState({
         firstName: '',
@@ -85,7 +88,7 @@ function PlaceOrder() {
                     Quantity: item.quantity,
                     Name: item.item.name,
                     Sku: item.item.sku,
-                    Description: item.item.description,
+                    //Description: item.item.description,
                     Weight: item.item.weight,
                     Price: item.item.retailPrice
                 }));
@@ -111,7 +114,19 @@ function PlaceOrder() {
     }, [locations]);
 
 
+    useEffect(() => {
+        if (orderData.length < 1) {return};
+        console.log(JSON.stringify(orderData));
+        const amt = orderData.reduce((sum, current) => sum + (current.Quantity * current.Price), 0);
+        console.log("amt: " + amt)
+
+        setSubtotal(amt); 
+
+    }, [orderData])
+
+
     const submitOrder = async () => {
+        console.log("yes, it was clicked");
 
         if (orderData != null && orderData.length > 0) {
             try {
@@ -199,33 +214,41 @@ function PlaceOrder() {
 
     const handleQuantityChange = (rowIndex, newQuantity) => {
         const parsedQuantity = parseInt(newQuantity, 10);
+        console.log(parsedQuantity);
         if (isNaN(parsedQuantity) || parsedQuantity < 1) { return; }
-        const updatedOrderData = [...orderData];
-        updatedOrderData[rowIndex].quantity = parsedQuantity;
+        const updatedOrderData = orderData.map((item, index) =>
+            index === rowIndex
+                ? { ...item, Quantity: parsedQuantity }
+                : item
+        );
         setOrderData(updatedOrderData);
     };
 
     const handleAddToCart = (row) => {
         // Check if the item exists in the cart
         console.log(row);
-
+        console.log(orderData.length);
         if (orderData && orderData.length > 0) {
-            const existingItem = orderData.find(item => item.itemId == row.ItemId);
+            console.log(JSON.stringify(orderData));
+            const existingItem = orderData.find((item) => item.ItemId == row.ItemId);
+            console.log(existingItem);
             if (existingItem) {
                 setAlreadyInCartToast(true);
+                return;
             }
-        } else {
-            //const { } =
-            //const FilteredResult =  
-            setOrderData([...orderData, row])
-        }
+        } 
 
+        // Map the row data!
+        const { ItemId, Name, Weight, Price } = row; 
+
+        setOrderData([...orderData, { ItemId, Name, Weight, Price, Quantity: 1, Remove: 0 }]);
         setShowToast(true);
     };
 
     const handleRemoveFromCart = (row) => {
-        const cartAfterRemove = orderData.filter(item => item.itemId === row.itemId)
-
+        console.log(row);
+        const cartAfterRemove = orderData.filter(item => item.ItemId !== row.ItemId)
+        console.log(cartAfterRemove);
         setOrderData(cartAfterRemove);
     };
 
@@ -271,9 +294,7 @@ function PlaceOrder() {
             <h1>Bullseye Sporting Goods - Order Portal</h1>
             <ComboBox label="Select a Store" items={locations} onChange={handleStoreChange} aria-describedby="storeSelectHelp" />
             {orderData && orderData.length > 0 && (
-                <Alert variant="warning" className="mt-2">
-                    Changing store locations will reset your cart. Please proceed with caution.
-                </Alert>
+                <Alert variant="warning" className="mt-5 mb-5" message="Changing store locations will reset your cart. Please proceed with caution." />
             )}
             {loading ?  (<LoadingSpinner />) : (
             
@@ -294,8 +315,8 @@ function PlaceOrder() {
                             <Col md={5}>
                                 <Card>
                                     <Card.Header>Your Cart</Card.Header>
-                                    <Card.Body>
-                                        <DataTable
+                                    <Card.Body style={{ maxHeight: '35vh' }} className="h-100 overflow-auto ">
+                                        <DataTableWithNud
                                             data={orderData}
                                             inventory={storeInventory}
                                             onQuantityChange={handleQuantityChange}
@@ -314,12 +335,12 @@ function PlaceOrder() {
                         </Row>
                         <Row>
                             <Col className="d-flex justify-content-end">
-                                <h5>HST (15%): ${hst.toFixed(2)}</h5>
+                                <h5>HST (15%): ${(subtotal * 0.15).toFixed(2)}</h5>
                             </Col>
                         </Row>
                         <Row>
                             <Col className="d-flex justify-content-end">
-                                <h5>Total: ${total.toFixed(2)}</h5>
+                                <h5>Total: ${((subtotal * 0.15) + subtotal).toFixed(2)}</h5>
                             </Col>
                         </Row>
                     </Container>
@@ -327,11 +348,10 @@ function PlaceOrder() {
             )}
             
             <BasicModal show={modalShow} onHide={() => setModalShow(false)} image={image} />
-            <CustomerDetailsForm customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} />
-            <Button variant="info" onClick={ submitOrder }>Submit Order</Button>
-            <AddToCartToast show={showToast} onHide={() => setShowToast(false)} />
-            <OrderSubmitToast show={showOrderToast} onHide={() => setShowOrderToast(false)} orderID={submittedOrderID ?? "pending"} />
-            <AlreadyInCartToast show={showAlreadyInCartToast} onHide={() => { setAlreadyInCartToast(false) }} />
+            <CustomerDetailsForm customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} submitOrder={ submitOrder } />
+            <AddToCartToast show={showToast} onHide={setShowToast} />
+            <OrderSubmitToast show={showOrderToast} onHide={setShowOrderToast} orderID={submittedOrderID ?? "pending"} />
+            <AlreadyInCartToast show={showAlreadyInCartToast} onHide={setAlreadyInCartToast} />
             <Footer />
         </>
     )

@@ -3,13 +3,13 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
-function LoginErrorToast({ show, setShow }) {
+function LoginErrorToast({ show, onHide }) {
 
     return (
         <ToastContainer position="top-end" className="p-3">
                 <Row>
                     <Col xs={6}>
-                        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+                        <Toast onClose={() => onHide(false)} show={show} delay={3000} autohide>
                             <Toast.Header>
                                 <img
                                     src="holder.js/20x20?text=%20"

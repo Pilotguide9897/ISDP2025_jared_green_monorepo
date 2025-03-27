@@ -3,8 +3,9 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 
-function CustomerDetailsForm({ customerDetails, setCustomerDetails }) {
+function CustomerDetailsForm({ customerDetails, setCustomerDetails, submitOrder }) {
     const [validated, setValidated] = useState(false);
 
     const handleSubmit = (event) => {
@@ -15,6 +16,7 @@ function CustomerDetailsForm({ customerDetails, setCustomerDetails }) {
         }
 
         setValidated(true);
+        submitOrder();
     };
 
     const handleChange = (field, value) => {
@@ -29,7 +31,7 @@ function CustomerDetailsForm({ customerDetails, setCustomerDetails }) {
                 </Col>
                 
             </Row>
-            <Row className="mb-3">
+            <Row className="mb-3 text-start">
                 <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Label>First name</Form.Label>
                     <Form.Control
@@ -91,6 +93,7 @@ function CustomerDetailsForm({ customerDetails, setCustomerDetails }) {
                     </Form.Control.Feedback>
                 </Form.Group>
             </Row>
+            <Button variant="info" type="submit">Submit Order</Button>
         </Form>
     );
 }
