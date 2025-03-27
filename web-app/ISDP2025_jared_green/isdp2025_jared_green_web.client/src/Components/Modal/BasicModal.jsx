@@ -2,8 +2,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ImageCard from '../ImageCard/ImageCard';
 
-function BasicModal({ show, onHide, imagePath}) {
-
+function BasicModal({ show, onHide, image}) {
+    console.log(`image path in basic modal: ${image}`);
     return (
         <Modal
             // Control whether the modal is visible.
@@ -15,7 +15,7 @@ function BasicModal({ show, onHide, imagePath}) {
             centered
         >
             <Modal.Body>
-                <ImageCard data={ imagePath } />
+                <ImageCard data={ image } />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="info" onClick={onHide}>Close</Button>

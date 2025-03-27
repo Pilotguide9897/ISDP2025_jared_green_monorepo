@@ -69,11 +69,20 @@ function PlaceOrder() {
     useEffect(() => {
         const fetchInventoryData = async () => {
             try {
-                const response = await axios.get('')
+                const response = await axios.get(`api/inventory/${selectedStore.siteId}`)
 
-                const filtered = pickFields(response.data, ["itemId", "sitId", "name", "description", "category", "weight", "retailPrice", "quantity"]);
+                const invData = response.data.map((item) => ({
+                    ItemId: item.itemId,
+                    Quantity: item.quantity,
+                    Name: item.item.name,
+                    Sku: item.item.sku,
+                    Description: item.item.description,
+                    Weight: item.item.weight,
+                    Price: item.item.retailPrice
+                }));
 
-                setStoreInventory(filtered);
+                setStoreInventory(invData);
+
             } catch (error) {
                 setError(error);
             } finally {
@@ -200,19 +209,14 @@ function PlaceOrder() {
     };
 
     const showItemImage = async (row) => {
-        let imageSrc = imagePath + row.productName;
-        setImage(imageSrc);
+        console.log(row);
+        let imageSrc = imagePath + row.itemId + ".png";
+        let imageName = row.name;
+        imageSrc = imageSrc.replaceAll(" ", "");
+        setImage({ imageSrc, imageName });
+        console.log(image);
+        setModalShow(true);
     }
-
-    function pickFields(obj, fields) {
-        return fields.reduce((result, key) => {
-            if (key in obj) {
-                result[key] = obj[key];
-            }
-            return result;
-        }, {});
-    }
-
 
     const handleStoreChange = (evt) => {
         setOrderData([]);
@@ -268,12 +272,22 @@ function PlaceOrder() {
                             </Card>
                         </Col>
                     </Row>
+                </Container>
+                <Container>
+                    <Row >
+                        <Col className="d-flex justify-content-end">
+                            <h5>Subtotal: ${subtotal.toFixed(2)}</h5>
+                        </Col>
+                    </Row>
                     <Row>
-                        <div className="d-flex justify-content-end">
-                            <h5>Subtotal: ${ subtotal.toFixed(2) }</h5>
-                            <h5>HST (15%): ${ hst.toFixed(2) }</h5>
-                            <h5>Total: ${ total.toFixed(2) }</h5>
-                        </div>
+                        <Col className="d-flex justify-content-end">
+                            <h5>HST (15%): ${hst.toFixed(2)}</h5>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="d-flex justify-content-end">
+                            <h5>Total: ${total.toFixed(2)}</h5>
+                        </Col>
                     </Row>
                 </Container>
             </div>

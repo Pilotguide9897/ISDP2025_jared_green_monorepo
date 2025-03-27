@@ -1,10 +1,14 @@
 import Card from 'react-bootstrap/Card';
 
-function ImageCard({ imagePath } ) {
+function ImageCard({ data }) {
+    console.log(`image path in image card: ${data}`)
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={ imagePath } alt="Item Image" />
-        </Card>
+        <div className="d-flex justify-content-center">
+            <Card style={{ width: '18rem' }}>
+                <h3 className="text-center">{ data.imageName }</h3>
+                <Card.Img variant="top" src={`http://localhost:5175/${data.imageSrc}`} alt="Item Image" />
+            </Card>
+        </div>
     );
 }
 

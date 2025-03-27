@@ -8,9 +8,13 @@ import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import Footer from "../../Components/Footer/Footer";
 import ErrorImage from '../../Components/ErrorImage/file';
 import BasicModal from '../../Components/Modal/BasicModal';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 
 function ViewOrder() {
-    const [order, setOrder] = useState({});
+    const [order, setOrder] = useState(null);
+    const [orderDetails, setOrderDetails] = useState({});
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [modalShow, setModalShow] = useState(false);
@@ -27,8 +31,34 @@ function ViewOrder() {
             setLoading(true);
             setError(false);
             const response = await axios.get(`/api/orders/search?query=${searchParameter.toString().trim()}`);
-            console.log(response.data)
-            setOrder(response.data);
+            console.log(response.data.txnitems);
+
+            const orderItems = response.data.txnitems;
+
+            const { txnId, custFirstName, custLastName, custEmail, custPhone } = response.data;
+
+            setOrderDetails({
+                txnId,
+                custFirstName,
+                custLastName,
+                custEmail,
+                custPhone
+            });
+
+            const dataRows = orderItems.map(({ quantity, item }) => ({
+                itemId: item.itemId,
+                name: item.name,
+                description: item.description,
+                sku: item.sku,
+                category: item.category,
+                quantity: quantity,
+                weight: item.weight,
+                price: item.retailPrice
+            }));
+
+            setOrder(dataRows);
+            console.log(dataRows);
+
         } catch (error) {
             setError(error);
         } finally {
@@ -36,23 +66,41 @@ function ViewOrder() {
         }
     }
 
-    useEffect(() => {
-        if (!order || !Array.isArray(order.txnitems)) return;
+    //useEffect(() => {
+    //    if (!order || !Array.isArray(order.txnitems)) return;
 
-        setsubtotal(order.txnitems.reduce((sum, item) => sum + item.quantity * item.item.retailPrice, 0) || 0);
-        setHst(subtotal * 0.15);
-        setTotal(subtotal + hst);
-    }, [subtotal, hst, order])
+    //    setsubtotal(order.reduce((sum, item) => sum + (item.quantity * item.price), 0) || 0);
+    //    setHst(subtotal * 0.15);
+    //    setTotal(subtotal + hst);
+    //}, [subtotal, hst, order])
+
+    // Do not rely on react state values inside the same useEffect where I update them...
+    useEffect(() => {
+        if (!Array.isArray(order)) return;
+
+        const subtotalCalc = order.reduce((sum, item) => sum + item.quantity * item.price, 0);
+        const hstCalc = subtotalCalc * 0.15;
+        const totalCalc = subtotalCalc + hstCalc;
+
+        setsubtotal(subtotalCalc);
+        setHst(hstCalc);
+        setTotal(totalCalc);
+    }, [order]);
 
     const showItemImage = async (row) => {
-        let imageSrc = imagePath + row.productName; 
-        setImage(imageSrc);
+        console.log(row);
+        let imageSrc = imagePath + row.itemId + ".png";
+        let imageName = row.name;
+        imageSrc = imageSrc.replaceAll(" ", "");
+        setImage({ imageSrc, imageName });
+        console.log(image);
+        setModalShow(true);
     }
 
     return (
         <>
             <NavBar />
-            <h1>Bullseye Curbside Order System - Order View</h1>
+            <h1>Search Order</h1>
             <section>
                 <SearchBar placeholderText="Search by order ID or customer email address" buttonClickHandler={handleSearchBarSubmission} />
             </section>
@@ -60,10 +108,28 @@ function ViewOrder() {
                 loading === null ? null : loading ? (<LoadingSpinner />) : order ? (
                     <section>
                         <div className="d-flex justify-content-start">
-                            <h5>Order ID: { order.txnId }</h5>
-                            <h5>Name: {order.custFirstName} {order.custLastName}</h5>
-                            <h5>Email: { order.custEmail }</h5>
-                            <h5>Phone: { order.custPhone }</h5>
+                            <Container>
+                                <Row >
+                                    <Col className="d-flex justify-content-start">
+                                        <h5>Order ID: {orderDetails.txnId}</h5>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="d-flex justify-content-start">
+                                        <h5>Name: {orderDetails.custFirstName} {orderDetails.custLastName}</h5>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="d-flex justify-content-start">
+                                        <h5>Email: {orderDetails.custEmail}</h5>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="d-flex justify-content-start">
+                                        <h5>Phone: {orderDetails.custPhone}</h5>
+                                    </Col>
+                                </Row>
+                            </Container>
                         </div>
 
                         {/*<p>{*/}
@@ -71,12 +137,26 @@ function ViewOrder() {
                      
                         {/*`}</p>*/}
                         {/*<DataTable data={orderData} handlDoubleClick={showItemImage} />*/}
-                        <DataTable data={order.txnitems} onRowDoubleClick={showItemImage} />
+                        <DataTable data={order} onRowDoubleClick={showItemImage} />
                         <BasicModal show={modalShow} onHide={() => setModalShow(false)} image={image} />
                         <div className="d-flex justify-content-end">
-                            <h5>Subtotal: ${ subtotal.toFixed(2) }</h5>
-                            <h5>HST (15%): ${ hst.toFixed(2) }</h5>
-                            <h5>Total: ${ total.toFixed(2) }</h5>
+                            <Container>
+                                <Row >
+                                    <Col className="d-flex justify-content-end">
+                                        <h5>Subtotal: ${subtotal.toFixed(2)}</h5>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="d-flex justify-content-end">
+                                        <h5>HST (15%): ${hst.toFixed(2)}</h5>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="d-flex justify-content-end">
+                                        <h5>Total: ${total.toFixed(2)}</h5>
+                                    </Col>
+                                </Row>
+                            </Container>
                         </div>
                         {/*<Button variant="info">Exit</Button>*/}
                     </section>
