@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import ImageCard from '../ImageCard/ImageCard';
 
 function BasicModal({ show, onHide, image}) {
-    console.log(`image path in basic modal: ${image}`);
+    // console.log(`image path in basic modal: ${image}`);
     return (
         <Modal
             // Control whether the modal is visible.

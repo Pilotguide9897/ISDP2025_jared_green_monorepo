@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 function DataTable({ data, onRowDoubleClick, handleAddItem }) {
     const showAddButton = typeof handleAddItem === 'function';
-    console.log(data)
+    // console.log(data)
 
     if (!data || data.length === 0) {
         return null;

@@ -13,12 +13,13 @@ import AddToCartToast from '../../Components/Toast/Toast';
 import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
 import AlreadyInCartToast from '../../Components/Toast/AlreadyInCartToast';
 import Button from 'react-bootstrap/Button';
+import Alert from '../../Components/Alert/Alert';
 
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
     const [selectedStore, setSelectedStore] = useState(null);
     const [storeInventory, setStoreInventory] = useState(null);
-    const [orderData, setOrderData] = useState(null);
+    const [orderData, setOrderData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [modalShow, setModalShow] = useState(false);
@@ -52,7 +53,7 @@ function PlaceOrder() {
         const fetchLocations = async () => {
             try {
                 const response = await axios.get('api/locations/retail');
-                console.log(response.data)
+                // console.log(response.data)
                 setLocations(response.data);
 
             } catch (error) {
@@ -68,11 +69,12 @@ function PlaceOrder() {
     }, []);
 
     useEffect(() => {
+        console.log("Effect triggered!");
         const fetchInventoryData = async () => {
             try {
                 setLoading(true);
 
-                console.log("About to search siteID");
+                // console.log("About to search siteID");
 
                 if (!selectedStore || !selectedStore.siteId) return;
 
@@ -205,9 +207,13 @@ function PlaceOrder() {
 
     const handleAddToCart = (row) => {
         // Check if the item exists in the cart
-        const existingItem = orderData.find(item => item.itemId == row.itemId);
-        if (existingItem) {
-            setAlreadyInCartToast(true);
+        console.log(row);
+
+        if (orderData && orderData.length > 0) {
+            const existingItem = orderData.find(item => item.itemId == row.ItemId);
+            if (existingItem) {
+                setAlreadyInCartToast(true);
+            }
         } else {
             //const { } =
             //const FilteredResult =  
@@ -234,9 +240,20 @@ function PlaceOrder() {
     }
 
     const handleStoreChange = (evt) => {
+        console.log("Triggered");
+        console.log(locations);
         setOrderData([]);
-        setSelectedStore(evt.target.value);
-        console.log("Selected option:", evt.target.value);
+        console.log(Object.keys(evt.target.value));
+        const selectedSiteId = parseInt(evt.target.value, 10);
+        console.log(selectedSiteId);
+        const selected = locations.find((location) => location.siteId === selectedSiteId);
+
+        if (selected) {
+            setSelectedStore(selected);
+            setOrderData([]);
+            console.log("Switching stores");
+            console.log("Selected option:", selected);
+        }
     }
 
     //if (loading) {
@@ -252,7 +269,7 @@ function PlaceOrder() {
         <>
             <NavBar />
             <h1>Bullseye Sporting Goods - Order Portal</h1>
-            <ComboBox label="Select a Store" items={locations} onChange={() => handleStoreChange()} aria-describedby="storeSelectHelp" />
+            <ComboBox label="Select a Store" items={locations} onChange={handleStoreChange} aria-describedby="storeSelectHelp" />
             {orderData && orderData.length > 0 && (
                 <Alert variant="warning" className="mt-2">
                     Changing store locations will reset your cart. Please proceed with caution.
@@ -269,7 +286,7 @@ function PlaceOrder() {
                                     <Card.Body style={{maxHeight: '35vh'}} className="h-100 overflow-auto ">
                                         <DataTable
                                             data={storeInventory}
-                                            onAddItem={handleAddToCart}
+                                            handleAddItem={ handleAddToCart }
                                         />
                                     </Card.Body>
                                 </Card>
@@ -282,6 +299,7 @@ function PlaceOrder() {
                                             data={orderData}
                                             inventory={storeInventory}
                                             onQuantityChange={handleQuantityChange}
+                                            onAddItem={handleAddToCart}
                                             onRemoveItem={handleRemoveFromCart}
                                             onRowDoubleClick={showItemImage}
                                         />
