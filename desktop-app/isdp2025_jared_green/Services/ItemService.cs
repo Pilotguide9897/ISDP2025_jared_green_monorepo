@@ -118,19 +118,19 @@ namespace idsp2025_jared_green.Services
             }
             catch (MySqlException msqlEx)
             {
-                MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ItemLogger.Error(msqlEx, "");
                 return new BindingList<Item>();
             }
             catch (TimeoutException toEx)
             {
-                MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ItemLogger.Error(toEx, "");
                 return new BindingList<Item>();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An unexpected error occurred fetching the item data", "A problem occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("An unexpected error occurred fetching the item data", "A problem occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ItemLogger.Error(ex, "");
                 return new BindingList<Item>();
             }

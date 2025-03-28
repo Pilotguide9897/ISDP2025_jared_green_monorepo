@@ -1,6 +1,6 @@
-﻿using idsp2025_jared_green.Controllers;
+﻿using idsp2025_jared_green.Entities.dto;
 using idsp2025_jared_green.Entities;
-using idsp2025_jared_green.Entities.dto;
+using idsp2025_jared_green.Forms;
 using idsp2025_jared_green.Interfaces.Controllers;
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,9 @@ using System.Windows.Forms;
 
 namespace idsp2025_jared_green.Forms
 {
-    public partial class frmAcceptStoreOrder : Form
+    public partial class frmPickupStoreOrder : Form
     {
+
         private bool _isDrawing = false;
         private Point _lastPoint;
         private Bitmap _signatureBitmap;
@@ -25,8 +26,7 @@ namespace idsp2025_jared_green.Forms
         private readonly ILocationController _locationController;
         private readonly Employee _employee;
 
-
-        public frmAcceptStoreOrder(ITransactionController transactionController, IInventoryController inventoryController, ILocationController locationController, Employee employee)
+        public frmPickupStoreOrder(ITransactionController transactionController, IInventoryController inventoryController, ILocationController locationController, Employee employee)
         {
             _transactionController = transactionController;
             _inventoryController = inventoryController;
@@ -34,49 +34,12 @@ namespace idsp2025_jared_green.Forms
             _employee = employee;
             InitializeComponent();
 
-
             // Initialize Bitmap for drawing
-            _signatureBitmap = new Bitmap(pnlManagerSignature.Width, pnlManagerSignature.Height);
-            pnlManagerSignature.BackgroundImage = _signatureBitmap;
+            _signatureBitmap = new Bitmap(pnlDriverSignature.Width, pnlDriverSignature.Height);
+            pnlDriverSignature.BackgroundImage = _signatureBitmap;
         }
 
-        private void pnlManagerSignature_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isDrawing = false;
-        }
-
-        private void pnlManagerSignature_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isDrawing = true;
-            _lastPoint = e.Location;
-        }
-
-        private void pnlManagerSignature_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_isDrawing && e.Button == MouseButtons.Left)
-            {
-                using (Graphics g = Graphics.FromImage(_signatureBitmap))
-                {
-                    g.DrawLine(Pens.Black, _lastPoint, e.Location);
-                }
-
-                _lastPoint = e.Location;
-                pnlManagerSignature.Invalidate();
-            }
-        }
-
-        private void btnResetSignature_Click(object sender, EventArgs e)
-        {
-            using (Graphics graphics = Graphics.FromImage(_signatureBitmap)) 
-            { 
-                graphics.Clear(Color.White);
-                _isDrawing = false;
-                _lastPoint = Point.Empty;
-                pnlManagerSignature.Invalidate();
-            }
-        }
-
-        private async void btnAcceptDelivery_Click(object sender, EventArgs e)
+        private async void btnAcceptOrderPickup_Click(object sender, EventArgs e)
         {
             bool allItemsPresent = true;
 
@@ -103,10 +66,11 @@ namespace idsp2025_jared_green.Forms
 
                     foreach (dtoOrderItem item in items)
                     {
-                        await _inventoryController.MoveInventory(9999, site.SiteId, item.quantityRequested, item.itemID, "0", "Storeroom");
+
+                        await _inventoryController.MoveInventory(site.SiteId, 9999, item.quantityRequested, item.itemID, "0", "On Truck");
                     }
-                    // Replace the hard-coded employeeID with the id of the logged in employee.
-                    await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "DELIVERED");
+
+                    await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "IN TRANSIT");
                     this.Close();
                 }
                 catch (Exception ex)
@@ -120,10 +84,47 @@ namespace idsp2025_jared_green.Forms
             }
         }
 
-        private void btnExitAcceptDelivery_Click(object sender, EventArgs e)
+        private void btnExitStoreOrderPickup_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void btnResetDriverSignature_Click(object sender, EventArgs e)
+        {
+            using (Graphics graphics = Graphics.FromImage(_signatureBitmap))
+            {
+                graphics.Clear(Color.White);
+                _isDrawing = false;
+                _lastPoint = Point.Empty;
+                pnlDriverSignature.Invalidate();
+            }
+        }
+
+        private void pnlDriverSignature_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDrawing && e.Button == MouseButtons.Left)
+            {
+                using (Graphics g = Graphics.FromImage(_signatureBitmap))
+                {
+                    g.DrawLine(Pens.Black, _lastPoint, e.Location);
+                }
+
+                _lastPoint = e.Location;
+                pnlDriverSignature.Invalidate();
+            }
+        }
+
+        private void pnlDriverSignature_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isDrawing = true;
+            _lastPoint = e.Location;
+        }
+
+        private void pnlDriverSignature_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isDrawing = false;
+        }
+
 
         private void RefreshDataGridView(DataGridView dgv, BindingSource bs, BindingList<dtoOrderItem> txnitems)
         {
@@ -144,14 +145,14 @@ namespace idsp2025_jared_green.Forms
 
         }
 
-        private async void frmAcceptStoreOrder_Load(object sender, EventArgs e)
+        private async void frmPickupStoreOrder_Load(object sender, EventArgs e)
         {
             _orderDetails = this.Tag as dtoOrders;
             if (_orderDetails != null)
             {
-                lblOrderID.Text = _orderDetails.txnID.ToString();
+                lblStoreOrderId.Text = _orderDetails.txnID.ToString();
                 BindingList<dtoOrderItem> txnItems = await _transactionController.GetTxnItems(_orderDetails.txnID);
-                RefreshDataGridView(dgvOrderItems, bsOrderArrival, txnItems);
+                RefreshDataGridView(dgvOrderItems, bsPickupOrder, txnItems);
 
                 // Add the tracking column:
                 DataGridViewCheckBoxColumn dgvCbc = new DataGridViewCheckBoxColumn();

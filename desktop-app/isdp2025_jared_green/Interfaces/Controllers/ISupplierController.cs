@@ -14,6 +14,8 @@ namespace idsp2025_jared_green.Interfaces.Controllers
 
         public Task<Supplier> GetSupplier(int supplierId);
 
+        public Task<Supplier> GetSupplier(int supplierId, string supplierName);
+
         public Task<Supplier> AddSupplier(Supplier supplier);
 
         public Task<Supplier> EditSupplier(Supplier supplier);

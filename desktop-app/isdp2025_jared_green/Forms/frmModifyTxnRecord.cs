@@ -19,6 +19,7 @@ namespace idsp2025_jared_green.Forms
         private readonly ILocationController _locationController;
         private readonly int _employeeID;
         private BindingList<Site> _sites;
+        private List<Txnaudit> _txnAuditList;
 
         public frmModifyTxnRecord(ITransactionController transactionController, ILocationController locationController, int employeeID)
         {
@@ -31,6 +32,7 @@ namespace idsp2025_jared_green.Forms
         private async void frmModifyTxnRecord_Load(object sender, EventArgs e)
         {
             _sites = await _locationController.GetBullseyeLocations();
+            
 
             // Set the data
             if (this.Tag != null)
@@ -47,6 +49,13 @@ namespace idsp2025_jared_green.Forms
                     string siteTo = (from site in _sites where site.SiteId == txn.SiteIdto select site).FirstOrDefault().ToString();
                     cboUpdateSiteFrom.SelectedValue = siteFrom != null ? siteFrom : txn.SiteIdfrom.ToString();
                     cboUpdateSiteFrom.SelectedValue = siteTo != null ? siteTo : txn.SiteIdto.ToString();
+                    _txnAuditList = await _transactionController.GetTransactionAudit(txn.TxnId);
+
+
+                    foreach(var txnAudit in _txnAuditList)
+                    {
+                        lstTxnRecord.Items.Add(txnAudit);
+                    }
                 }
                 else
                 {
@@ -63,8 +72,6 @@ namespace idsp2025_jared_green.Forms
 
         private async void btnUpdateTransaction_Click(object sender, EventArgs e)
         {
-
-
 
             if (dtpUpdateTxnDate.Value == null)
             {
@@ -129,12 +136,12 @@ namespace idsp2025_jared_green.Forms
                 BarCode = txtUpdateBarcode.Text,
                 CreatedDate = tBefore.CreatedDate,
                 DeliveryId = def == -1 ? tBefore.DeliveryId : def,
-                EmergencyDelivery = (sbyte) (chkSetEmergency.Checked ? 1 : 0),
+                EmergencyDelivery = (sbyte)(chkSetEmergency.Checked ? 1 : 0),
                 Notes = tBefore.Notes
             };
 
             bool result = await _transactionController.UpdateTransactionDetails(updatedTransaction);
-            
+
             if (result)
             {
                 this.Close();
@@ -145,5 +152,6 @@ namespace idsp2025_jared_green.Forms
         {
             this.Close();
         }
+
     }
 }

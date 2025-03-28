@@ -34,12 +34,14 @@ namespace idsp2025_jared_green.Forms
             txtEditSupplierName.Text = supplierToEdit.Name;
             txtEditSupplierAddress.Text = supplierToEdit.Address1;
             txtEditSupplierCity.Text = supplierToEdit.City;
-            cboEditSupplierProvince.SelectedValue = supplierToEdit.Province;
-            cboEditSupplierCountry.SelectedValue = supplierToEdit.Country;
+            cboEditSupplierProvince.SelectedItem = supplierToEdit.Province;
+            cboEditSupplierCountry.SelectedItem = supplierToEdit.Country;
             txtEditSupplierPostalCode.Text = supplierToEdit.Postalcode;
             txtEditSupplierPhone.Text = supplierToEdit.Phone;
             txtEditSupplierContact.Text = supplierToEdit.Contact;
             txtEditSupplierNotes.Text = supplierToEdit.Notes;
+
+            txtEditSupplierName.Focus();
         }
 
         private async void btnUpdateSupplier_Click(object sender, EventArgs e)
@@ -72,11 +74,6 @@ namespace idsp2025_jared_green.Forms
             if (ValidateInput.IsTextFieldEmpty(txtEditSupplierContact))
             {
                 MessageBox.Show("The 'Contact' field cannot be left empty.", "Input field cannot be empty");
-                return;
-            }
-            if (ValidateInput.IsTextFieldEmpty(txtEditSupplierNotes))
-            {
-                MessageBox.Show("The 'Notes' field cannot be left empty.", "Input field cannot be empty");
                 return;
             }
 

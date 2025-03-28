@@ -32,4 +32,9 @@ public partial class Txnaudit
     public virtual Site Site { get; set; } = null!;
 
     public virtual Txntype TxnTypeNavigation { get; set; } = null!;
+
+    public override string ToString()
+    {
+        return Notes;
+    }
 }

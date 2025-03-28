@@ -234,5 +234,20 @@ namespace idsp2025_jared_green.Controllers
                 return true;
             }
         }
+
+        public async Task<List<Txnaudit>> GetTransactionAudit(int txnId)
+        {
+            var trn = await _transactionService.GetTransactionAudit(txnId);
+            if (trn is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<Txnaudit>();
+            }
+            else
+            {
+                List<Txnaudit>? audit = trn as List<Txnaudit>;
+                return audit;
+            }
+        }
     }
 }

@@ -107,6 +107,7 @@ namespace idsp2025_jared_green
                 services.AddTransient<frmUpdateEmployee>();
                 services.AddTransient<frmUpdateItem>();
                 services.AddTransient<frmAddSupplier>();
+                services.AddTransient<frmEditSupplier>();
                 services.AddTransient<frmEditLocation>();
                 services.AddTransient<frmAddLocation>();
                 services.AddTransient<frmConfirmUserDelete>();
@@ -116,6 +117,17 @@ namespace idsp2025_jared_green
                 {
                     return ActivatorUtilities.CreateInstance<frmFulfillOrder>(sp, employeeID);
                 });
+
+                services.AddTransient<Func<int, frmPrepareOnlineOrder>>(sp => (employeeID) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmPrepareOnlineOrder>(sp, employeeID);
+                });
+
+                services.AddTransient<Func<int, frmAcceptStoreOrder>>(sp => (employeeID) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmAcceptStoreOrder>(sp, employeeID);
+                });
+
                 services.AddTransient<Func<int, frmModifyTxnRecord>>(sp => (employeeID) =>
                 {
                     return ActivatorUtilities.CreateInstance<frmModifyTxnRecord>(sp, employeeID);

@@ -81,25 +81,25 @@
             txtEditSupplierName.Location = new Point(250, 239);
             txtEditSupplierName.Name = "txtEditSupplierName";
             txtEditSupplierName.Size = new Size(532, 31);
-            txtEditSupplierName.TabIndex = 3;
+            txtEditSupplierName.TabIndex = 1;
             // 
             // txtEditSupplierAddress
             // 
             txtEditSupplierAddress.Location = new Point(250, 327);
             txtEditSupplierAddress.Name = "txtEditSupplierAddress";
             txtEditSupplierAddress.Size = new Size(532, 31);
-            txtEditSupplierAddress.TabIndex = 4;
+            txtEditSupplierAddress.TabIndex = 2;
             // 
             // txtEditSupplierCity
             // 
             txtEditSupplierCity.Location = new Point(250, 417);
             txtEditSupplierCity.Name = "txtEditSupplierCity";
             txtEditSupplierCity.Size = new Size(532, 31);
-            txtEditSupplierCity.TabIndex = 5;
+            txtEditSupplierCity.TabIndex = 3;
             // 
             // txtEditSupplierPostalCode
             // 
-            txtEditSupplierPostalCode.Location = new Point(250, 567);
+            txtEditSupplierPostalCode.Location = new Point(288, 570);
             txtEditSupplierPostalCode.Name = "txtEditSupplierPostalCode";
             txtEditSupplierPostalCode.Size = new Size(184, 31);
             txtEditSupplierPostalCode.TabIndex = 6;
@@ -109,7 +109,7 @@
             txtEditSupplierContact.Location = new Point(250, 659);
             txtEditSupplierContact.Name = "txtEditSupplierContact";
             txtEditSupplierContact.Size = new Size(532, 31);
-            txtEditSupplierContact.TabIndex = 7;
+            txtEditSupplierContact.TabIndex = 8;
             // 
             // txtEditSupplierNotes
             // 
@@ -117,14 +117,14 @@
             txtEditSupplierNotes.Multiline = true;
             txtEditSupplierNotes.Name = "txtEditSupplierNotes";
             txtEditSupplierNotes.Size = new Size(610, 152);
-            txtEditSupplierNotes.TabIndex = 8;
+            txtEditSupplierNotes.TabIndex = 9;
             // 
             // btnUpdateSupplier
             // 
             btnUpdateSupplier.Location = new Point(670, 928);
             btnUpdateSupplier.Name = "btnUpdateSupplier";
             btnUpdateSupplier.Size = new Size(112, 34);
-            btnUpdateSupplier.TabIndex = 9;
+            btnUpdateSupplier.TabIndex = 10;
             btnUpdateSupplier.Text = "Update";
             btnUpdateSupplier.UseVisualStyleBackColor = true;
             btnUpdateSupplier.Click += btnUpdateSupplier_Click;
@@ -134,7 +134,7 @@
             btnCancelSupplierUpdate.Location = new Point(670, 987);
             btnCancelSupplierUpdate.Name = "btnCancelSupplierUpdate";
             btnCancelSupplierUpdate.Size = new Size(112, 34);
-            btnCancelSupplierUpdate.TabIndex = 10;
+            btnCancelSupplierUpdate.TabIndex = 11;
             btnCancelSupplierUpdate.Text = "Cancel";
             btnCancelSupplierUpdate.UseVisualStyleBackColor = true;
             btnCancelSupplierUpdate.Click += btnCancelSupplierUpdate_Click;
@@ -144,16 +144,16 @@
             txtEditSupplierPhone.Location = new Point(607, 567);
             txtEditSupplierPhone.Name = "txtEditSupplierPhone";
             txtEditSupplierPhone.Size = new Size(193, 31);
-            txtEditSupplierPhone.TabIndex = 11;
+            txtEditSupplierPhone.TabIndex = 7;
             // 
             // cboEditSupplierProvince
             // 
             cboEditSupplierProvince.FormattingEnabled = true;
             cboEditSupplierProvince.Items.AddRange(new object[] { "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT" });
-            cboEditSupplierProvince.Location = new Point(250, 497);
+            cboEditSupplierProvince.Location = new Point(288, 500);
             cboEditSupplierProvince.Name = "cboEditSupplierProvince";
             cboEditSupplierProvince.Size = new Size(184, 33);
-            cboEditSupplierProvince.TabIndex = 12;
+            cboEditSupplierProvince.TabIndex = 4;
             // 
             // cboEditSupplierCountry
             // 
@@ -162,7 +162,7 @@
             cboEditSupplierCountry.Location = new Point(607, 500);
             cboEditSupplierCountry.Name = "cboEditSupplierCountry";
             cboEditSupplierCountry.Size = new Size(193, 33);
-            cboEditSupplierCountry.TabIndex = 13;
+            cboEditSupplierCountry.TabIndex = 5;
             // 
             // label2
             // 
@@ -251,7 +251,7 @@
             chkSupplierActive.Location = new Point(696, 168);
             chkSupplierActive.Name = "chkSupplierActive";
             chkSupplierActive.Size = new Size(86, 29);
-            chkSupplierActive.TabIndex = 24;
+            chkSupplierActive.TabIndex = 0;
             chkSupplierActive.Text = "Active";
             chkSupplierActive.UseVisualStyleBackColor = true;
             // 

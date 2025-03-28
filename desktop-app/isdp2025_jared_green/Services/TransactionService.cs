@@ -798,22 +798,61 @@ namespace idsp2025_jared_green.Services
             }
             catch (ArgumentException argEx)
             {
-                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to update a supplier.");
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to update transaction.");
                 return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
             }
             catch (MySqlException msqlEx)
             {
-                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to update a supplier.");
+                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to update transaction.");
                 return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
             }
             catch (TimeoutException toEx)
             {
-                _transactionLogger.Error(toEx, "Operation timed out when when attempting to update a supplier.");
+                _transactionLogger.Error(toEx, "Operation timed out when when attempting to update transaction.");
                 return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
             }
             catch (Exception ex)
             {
                 _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting to update transaction {transaction.TxnId}");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
+
+        public async Task<object> GetTransactionAudit(int txnId)
+        {
+            try
+            {
+
+                object txnAudit = await(from txnAud in _bullseyeContext.Txnaudits where txnAud.TxnId == txnId select txnAud).ToListAsync();
+
+                if (txnAudit != null)
+                {
+                    return txnAudit;
+                }
+                else
+                {
+                    _transactionLogger.Error("Unable to get transaction log", $"An unexpected error occurred when when attempting to get transaction log for transaction {txnId}");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to to get transaction log.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to get transaction log.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _transactionLogger.Error(toEx, "Operation timed out when when attempting to get transaction log.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get transaction log");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }

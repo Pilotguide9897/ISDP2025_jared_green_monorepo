@@ -60,47 +60,6 @@ namespace idsp2025_jared_green.Services
         }
 
 
-        //public async Task<BindingList<InventoryDTO>> GetAllInventory()
-        //{
-        //    try
-        //    {
-        //        var inventory = await (from inv in _bullseyeContext.Inventories
-        //                               select new InventoryDTO
-        //                               {
-        //                                   Id = inv.ItemId,
-        //                                   Name = inv.Item.Name,
-        //                                   ItemName = inv.Item.Name
-        //                               }).ToListAsync();
-
-        //        if (inventory.Count == 0)
-        //        {
-        //            MessageBox.Show("No inventory found.", "No Inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-
-        //        var bindingList = new BindingList<InventoryDTO>(inventory);
-
-        //        return bindingList;
-
-        //    }
-        //    catch (MySqlException msqlEx)
-        //    {
-        //        MessageBox.Show("A database error occurred while retrieving the inventory. Please check your connection and try again.", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return new BindingList<InventoryDTO>();
-        //    }
-        //    catch (TimeoutException toEx)
-        //    {
-        //        MessageBox.Show("The request to retrieve the inventory timed out. Please check your network and try again.", "Timeout Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return new BindingList<InventoryDTO>();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("An unexpected error occurred while fetching the inventory. Please try again later.", "Unexpected Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return new BindingList<InventoryDTO>();
-        //    }
-        //}
-
-
-
         public async Task<BindingList<Inventory>> GetInventoryByLocation(Site site)
         {
             try

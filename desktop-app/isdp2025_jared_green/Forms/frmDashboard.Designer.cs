@@ -90,7 +90,6 @@
             label8 = new Label();
             dgvOrders = new DataGridView();
             tabSuppliers = new TabPage();
-            btnRemoveSupplier = new Button();
             btnEditSupplier = new Button();
             btnAddSupplier = new Button();
             dgvSuppliers = new DataGridView();
@@ -151,15 +150,18 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(271, 80);
+            label1.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(271, 65);
             label1.Name = "label1";
-            label1.Size = new Size(56, 25);
+            label1.Size = new Size(87, 38);
             label1.TabIndex = 1;
             label1.Text = "User: ";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblUser
             // 
-            lblUser.Location = new Point(325, 74);
+            lblUser.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUser.Location = new Point(350, 66);
             lblUser.Name = "lblUser";
             lblUser.Size = new Size(224, 38);
             lblUser.TabIndex = 2;
@@ -168,15 +170,18 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(1373, 81);
+            label3.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(1331, 74);
             label3.Name = "label3";
-            label3.Size = new Size(88, 25);
+            label3.Size = new Size(135, 38);
             label3.TabIndex = 3;
             label3.Text = "Location: ";
+            label3.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblLocation
             // 
-            lblLocation.Location = new Point(1457, 80);
+            lblLocation.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLocation.Location = new Point(1457, 73);
             lblLocation.Name = "lblLocation";
             lblLocation.Size = new Size(267, 38);
             lblLocation.TabIndex = 4;
@@ -811,7 +816,6 @@
             // tabSuppliers
             // 
             tabSuppliers.BackColor = Color.Gainsboro;
-            tabSuppliers.Controls.Add(btnRemoveSupplier);
             tabSuppliers.Controls.Add(btnEditSupplier);
             tabSuppliers.Controls.Add(btnAddSupplier);
             tabSuppliers.Controls.Add(dgvSuppliers);
@@ -822,17 +826,6 @@
             tabSuppliers.Size = new Size(1779, 682);
             tabSuppliers.TabIndex = 6;
             tabSuppliers.Text = "Suppliers";
-            // 
-            // btnRemoveSupplier
-            // 
-            btnRemoveSupplier.Location = new Point(1375, 635);
-            btnRemoveSupplier.Name = "btnRemoveSupplier";
-            btnRemoveSupplier.Size = new Size(112, 34);
-            btnRemoveSupplier.TabIndex = 11;
-            btnRemoveSupplier.Text = "&Remove";
-            btnRemoveSupplier.UseVisualStyleBackColor = true;
-            btnRemoveSupplier.Visible = false;
-            btnRemoveSupplier.Click += btnRemoveSupplier_Click;
             // 
             // btnEditSupplier
             // 
@@ -1090,7 +1083,6 @@
         private BindingSource bsSuppliers;
         private Button btnEditSupplier;
         private Button btnAddSupplier;
-        private Button btnRemoveSupplier;
         private TabPage tabTransactions;
         private Label label14;
         private Button btnEditTxn;

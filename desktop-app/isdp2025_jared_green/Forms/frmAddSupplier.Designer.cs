@@ -80,35 +80,35 @@
             txtAddSupplierName.Location = new Point(240, 241);
             txtAddSupplierName.Name = "txtAddSupplierName";
             txtAddSupplierName.Size = new Size(492, 31);
-            txtAddSupplierName.TabIndex = 4;
+            txtAddSupplierName.TabIndex = 0;
             // 
             // txtAddSupplierAddress
             // 
             txtAddSupplierAddress.Location = new Point(240, 320);
             txtAddSupplierAddress.Name = "txtAddSupplierAddress";
             txtAddSupplierAddress.Size = new Size(492, 31);
-            txtAddSupplierAddress.TabIndex = 5;
+            txtAddSupplierAddress.TabIndex = 1;
             // 
             // txtAddSupplierCity
             // 
             txtAddSupplierCity.Location = new Point(240, 399);
             txtAddSupplierCity.Name = "txtAddSupplierCity";
             txtAddSupplierCity.Size = new Size(492, 31);
-            txtAddSupplierCity.TabIndex = 6;
+            txtAddSupplierCity.TabIndex = 2;
             // 
             // txtAddSupplierPostalCode
             // 
-            txtAddSupplierPostalCode.Location = new Point(240, 552);
+            txtAddSupplierPostalCode.Location = new Point(249, 552);
             txtAddSupplierPostalCode.Name = "txtAddSupplierPostalCode";
             txtAddSupplierPostalCode.Size = new Size(182, 31);
-            txtAddSupplierPostalCode.TabIndex = 7;
+            txtAddSupplierPostalCode.TabIndex = 5;
             // 
             // txtAddSupplierContact
             // 
             txtAddSupplierContact.Location = new Point(240, 631);
             txtAddSupplierContact.Name = "txtAddSupplierContact";
             txtAddSupplierContact.Size = new Size(492, 31);
-            txtAddSupplierContact.TabIndex = 8;
+            txtAddSupplierContact.TabIndex = 7;
             // 
             // txtAddSupplierNotes
             // 
@@ -116,14 +116,14 @@
             txtAddSupplierNotes.Multiline = true;
             txtAddSupplierNotes.Name = "txtAddSupplierNotes";
             txtAddSupplierNotes.Size = new Size(595, 195);
-            txtAddSupplierNotes.TabIndex = 9;
+            txtAddSupplierNotes.TabIndex = 8;
             // 
             // btnAddSupplier
             // 
             btnAddSupplier.Location = new Point(620, 946);
             btnAddSupplier.Name = "btnAddSupplier";
             btnAddSupplier.Size = new Size(112, 34);
-            btnAddSupplier.TabIndex = 10;
+            btnAddSupplier.TabIndex = 9;
             btnAddSupplier.Text = "&Save";
             btnAddSupplier.UseVisualStyleBackColor = true;
             btnAddSupplier.Click += btnAddSupplier_Click;
@@ -133,7 +133,7 @@
             btnCancelAddSupplier.Location = new Point(620, 1003);
             btnCancelAddSupplier.Name = "btnCancelAddSupplier";
             btnCancelAddSupplier.Size = new Size(112, 34);
-            btnCancelAddSupplier.TabIndex = 11;
+            btnCancelAddSupplier.TabIndex = 10;
             btnCancelAddSupplier.Text = "&Cancel";
             btnCancelAddSupplier.UseVisualStyleBackColor = true;
             btnCancelAddSupplier.Click += btnCancelAddSupplier_Click;
@@ -214,10 +214,10 @@
             // 
             cboAddSupplierProvince.FormattingEnabled = true;
             cboAddSupplierProvince.Items.AddRange(new object[] { "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT" });
-            cboAddSupplierProvince.Location = new Point(240, 481);
+            cboAddSupplierProvince.Location = new Point(248, 481);
             cboAddSupplierProvince.Name = "cboAddSupplierProvince";
             cboAddSupplierProvince.Size = new Size(182, 33);
-            cboAddSupplierProvince.TabIndex = 21;
+            cboAddSupplierProvince.TabIndex = 3;
             // 
             // cboAddSupplierCountry
             // 
@@ -226,19 +226,19 @@
             cboAddSupplierCountry.Location = new Point(550, 481);
             cboAddSupplierCountry.Name = "cboAddSupplierCountry";
             cboAddSupplierCountry.Size = new Size(182, 33);
-            cboAddSupplierCountry.TabIndex = 22;
+            cboAddSupplierCountry.TabIndex = 4;
             // 
             // txtAddSupplierPhone
             // 
             txtAddSupplierPhone.Location = new Point(550, 552);
             txtAddSupplierPhone.Name = "txtAddSupplierPhone";
             txtAddSupplierPhone.Size = new Size(182, 31);
-            txtAddSupplierPhone.TabIndex = 23;
+            txtAddSupplierPhone.TabIndex = 6;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(137, 558);
+            label2.Location = new Point(137, 555);
             label2.Name = "label2";
             label2.Size = new Size(110, 25);
             label2.TabIndex = 24;

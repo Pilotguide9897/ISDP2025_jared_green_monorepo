@@ -26,12 +26,12 @@ namespace idsp2025_jared_green.Controllers
         {
             try
             {
-                if (supplier != null && await _supplierService.GetSupplier(supplier.SupplierId) == null)
+                if (supplier != null && (await _supplierService.GetSupplier(supplier.SupplierId, supplier.Name) as ErrorResult) != null)
                 {
                     return await _supplierService.AddSupplier(supplier) as Supplier;
-                }
-                MessageBox.Show("Unable to add supplier because they already exist", "Supplier already exists");
+                } 
 
+                MessageBox.Show("Unable to add supplier because they already exist", "Supplier already exists");
                 _supplierControllerLogger.Info("The supplier that there was an attempt to add already exists");
                 return null;
             }
@@ -75,6 +75,21 @@ namespace idsp2025_jared_green.Controllers
         public async Task<Supplier> GetSupplier(int supplierId)
         {
             var supplier = await _supplierService.GetSupplier(supplierId);
+            if (supplier is ErrorResult er)
+            {
+                MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Supplier();
+            }
+            else
+            {
+                return supplier as Supplier;
+            }
+
+        }
+
+        public async Task<Supplier> GetSupplier(int supplierId, string supplierName)
+        {
+            var supplier = await _supplierService.GetSupplier(supplierId, supplierName);
             if (supplier is ErrorResult er)
             {
                 MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

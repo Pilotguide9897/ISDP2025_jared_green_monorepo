@@ -30,6 +30,7 @@ namespace idsp2025_jared_green.Services
             try
             {
                 await _bullseyeContext.AddAsync(supplier);
+                await _bullseyeContext.SaveChangesAsync();
                 return supplier;
             }
             catch (ArgumentException argEx)
@@ -60,6 +61,42 @@ namespace idsp2025_jared_green.Services
             try
             {
                 Supplier? supplier = await (from sup in _bullseyeContext.Suppliers where sup.SupplierId == supplierID select sup).FirstOrDefaultAsync();
+                if (supplier == null)
+                {
+                    _supplierLogger.Error($"No suppliers with an id matching {supplierID} exist in our records");
+                    return new ErrorResult("NO_MATCHES", "No match for supplier id found in the database.");
+                }
+                return supplier!;
+
+            }
+            catch (ArgumentException argEx)
+            {
+                _supplierLogger.Error(argEx, "Invalid argument provided when requesting a supplier.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _supplierLogger.Error(msqlEx, "Database error occurred when requesting a supplier.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _supplierLogger.Error(toEx, "Operation timed out when requesting a supplier.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _supplierLogger.Error(ex, "An unexpected error occurred when requesting a supplier.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
+
+
+        public async Task<object> GetSupplier(int supplierID, string supplierName)
+        {
+            try
+            {
+                Supplier? supplier = await (from sup in _bullseyeContext.Suppliers where sup.SupplierId == supplierID || sup.Name == supplierName select sup).FirstOrDefaultAsync();
                 if (supplier == null)
                 {
                     _supplierLogger.Error($"No suppliers with an id matching {supplierID} exist in our records");
@@ -127,6 +164,11 @@ namespace idsp2025_jared_green.Services
         {
             try
             {
+                var tracked = _bullseyeContext.Suppliers.Local.FirstOrDefault(e => e.SupplierId == supplier.SupplierId);
+                if (tracked != null)
+                {
+                    _bullseyeContext.Entry(tracked).State = EntityState.Detached;
+                }
                 _bullseyeContext.Update(supplier);
                 await _bullseyeContext.SaveChangesAsync();
                 return supplier;

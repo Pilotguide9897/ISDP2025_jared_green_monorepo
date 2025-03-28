@@ -75,7 +75,7 @@
             btnSignin.Location = new Point(622, 315);
             btnSignin.Name = "btnSignin";
             btnSignin.Size = new Size(112, 34);
-            btnSignin.TabIndex = 4;
+            btnSignin.TabIndex = 2;
             btnSignin.Text = "&Sign In";
             btnSignin.UseVisualStyleBackColor = true;
             btnSignin.Click += btnSignin_Click;
@@ -96,7 +96,7 @@
             lnkLblForgotPassword.Location = new Point(61, 315);
             lnkLblForgotPassword.Name = "lnkLblForgotPassword";
             lnkLblForgotPassword.Size = new Size(154, 25);
-            lnkLblForgotPassword.TabIndex = 2;
+            lnkLblForgotPassword.TabIndex = 4;
             lnkLblForgotPassword.TabStop = true;
             lnkLblForgotPassword.Text = "Forgot Password?";
             lnkLblForgotPassword.LinkClicked += lnkLblForgotPassword_LinkClicked;
@@ -162,6 +162,7 @@
             Name = "frmLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bullseye Inventory Management System - Sign In";
+            Load += frmLogin_Load;
             ((System.ComponentModel.ISupportInitialize)picSignInFormLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();

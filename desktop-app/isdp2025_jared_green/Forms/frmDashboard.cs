@@ -1069,6 +1069,8 @@ namespace idsp2025_jared_green
                         btnAllocateInventory.Visible = true;
                         btnReceiveOrder.Visible = true;
                         btnCheckOrderSubmissions.Visible = true;
+                        btnAddSupplier.Visible = true;
+                        btnEditSupplier.Visible = true;
                         break;
 
                     case "Store Manager":
@@ -1121,6 +1123,8 @@ namespace idsp2025_jared_green
                         btnCheckOrderSubmissions.Visible = true;
                         btnDeliverStoreOrder.Visible = true;
                         btnOnlineOrderPrepared.Visible = true;
+                        btnAddSupplier.Visible = true;
+                        btnEditSupplier.Visible = true;
                         break;
 
                     case "Online Customer":
@@ -1682,24 +1686,46 @@ namespace idsp2025_jared_green
         private async void btnEditSupplier_Click(object sender, EventArgs e)
         {
             // Check that a row is selected
-            if (dgvSuppliers.SelectedRows.Count > -0)
+            if (dgvSuppliers.SelectedRows.Count == 1)
             {
                 // Get the selected row
                 if (dgvSuppliers.SelectedRows[0].DataBoundItem != null)
                 {
-                    Supplier? selectedSupplier = dgvSuppliers.SelectedRows[0].DataBoundItem as Supplier;
-                    if (selectedSupplier != null)
-                    {
-                        frmEditSupplier editSupplier = _serviceProvider.GetRequiredService<frmEditSupplier>();
-                        editSupplier.Tag = selectedSupplier;
-                        editSupplier.ShowDialog();
+                    DataRowView drv = dgvSuppliers.SelectedRows[0].DataBoundItem as DataRowView;
 
-                        await RefreshSuppliersTab(tabSuppliers);
+                    if (drv != null)
+                    {
+
+                        Supplier selectedSupplier = new Supplier
+                        {
+                            SupplierId = Convert.ToInt32(drv["SupplierId"]),
+                            Name = drv["Name"].ToString(),
+                            Address1 = drv["Address1"].ToString(),
+                            Address2 = drv["Address2"].ToString(),
+                            City = drv["City"].ToString(),
+                            Country = drv["Country"].ToString(),
+                            Province = drv["Province"].ToString(),
+                            Postalcode = drv["Postalcode"].ToString(),
+                            Phone = drv["Phone"].ToString(),
+                            Contact = drv["Contact"].ToString(),
+                            Notes = drv["Notes"].ToString(),
+                            Active = Convert.ToSByte(drv["Active"]),
+                        };
+
+
+                        if (selectedSupplier != null)
+                        {
+                            frmEditSupplier editSupplier = _serviceProvider.GetRequiredService<frmEditSupplier>();
+                            editSupplier.Tag = selectedSupplier;
+                            editSupplier.ShowDialog();
+
+                            await RefreshSuppliersTab(tabSuppliers);
+                        }
                     }
                 }
             }
         }
-
+     
         private void btnRemoveSupplier_Click(object sender, EventArgs e)
         {
             // Not implemented yet
@@ -1710,8 +1736,8 @@ namespace idsp2025_jared_green
         {
             if (dgvTransactions.DataSource != null && dgvTransactions.SelectedRows.Count == 1)
             {
-                Transaction? selectedTransaction = dgvTransactions.SelectedRows[0].DataBoundItem as Transaction;
-                if (selectedTransaction != null)
+                Txn? selectedTransaction = dgvTransactions.SelectedRows[0].DataBoundItem as Txn;
+                if (selectedTransaction != null && (selectedTransaction.TxnStatus != "CANCELLED" || selectedTransaction.TxnStatus != "COMPLETED" || selectedTransaction.TxnStatus != "REJECTED" || selectedTransaction.TxnStatus != "IN TRANSIT"))
                 {
                     BindingList<Employee> employees = await _dashboardController.GetEmployees();
                     Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
@@ -1747,7 +1773,7 @@ namespace idsp2025_jared_green
                         return;
                     }
 
-                    // At this point, we do not need to worry about where it is moving because we can assume that the inventory remains whereever it was when it was cancelled.
+                    // At this point, we do not need to worry about where it is moving because we can assume that the inventory remains wherever it was when it was cancelled.
 
                     BindingList<Employee> employees = await _dashboardController.GetEmployees();
                     Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
@@ -1769,7 +1795,6 @@ namespace idsp2025_jared_green
                         {
                             MessageBox.Show("An unexpected error occurred while attempting to cancel the transaction. Transaction update failed.", "Unable to cancel transaction");
                         }
-
                     }
                     else
                     {
@@ -1790,40 +1815,104 @@ namespace idsp2025_jared_green
             }
         }
 
-        private void btnOnlineOrderPrepared_Click(object sender, EventArgs e)
+        private async void btnOnlineOrderPrepared_Click(object sender, EventArgs e)
         {
+            if (dgvOrders.SelectedRows.Count == 1)
+            {
 
+                DataRowView drv = dgvOrders.SelectedRows[0].DataBoundItem as DataRowView;
+                if (drv != null)
+                {
+
+                    dtoOrders preparedOrder = new dtoOrders
+                    {
+                        txnID = Convert.ToInt32(drv["txnID"]),
+                        siteName = drv["siteName"].ToString(),
+                        txnType = drv["txnType"].ToString(),
+                        txnStatus = drv["txnStatus"].ToString(),
+                        itemCount = Convert.ToInt32(drv["itemCount"]),
+                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
+                        deliveryDate = null
+                    };
+
+                    if (preparedOrder != null && preparedOrder.txnStatus == "NEW" && preparedOrder.txnType == "Online")
+                    {
+
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+                        if (employee != null && roles.Contains("Administrator") || preparedOrder.siteName == employee.Site.SiteName)
+                        {
+                            BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
+                            frmPrepareOnlineOrder preparationForm = _serviceProvider.GetRequiredService<frmPrepareOnlineOrder>();
+
+
+                            var formFactory = _serviceProvider.GetRequiredService<Func<int, frmPrepareOnlineOrder>>();
+                            frmPrepareOnlineOrder form = formFactory(employee.EmployeeId);
+                            form.Tag = preparedOrder;
+                            form.ShowDialog();
+
+                            await RefreshOrdersTab(tabOrders);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can only prepare store orders that have a status of 'NEW' and a type of 'Online'.", "Unable to prepare order");
+                    }
+                }
+            }
         }
+
 
         private async void btnDeliverStoreOrder_Click(object sender, EventArgs e)
         {
             if (dgvOrders.SelectedRows.Count == 1)
             {
-                Txn transaction = dgvOrders.SelectedRows[0].DataBoundItem as Txn;
-
-                if (transaction != null && transaction.TxnStatus == "IN TRANSIT")
+                DataRowView drv = dgvOrders.SelectedRows[0].DataBoundItem as DataRowView;
+                if (drv != null)
                 {
-                    // Get the txn id, 
-                    BindingList<Employee> employees = await _dashboardController.GetEmployees();
-                    Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
-                    List<string> roles = _sessionManager.GetPermissionsFromToken();
 
-
-                    if (employee != null && roles.Contains("Administrator") || transaction.SiteIdto == employee.SiteId)
+                    dtoOrders deliveredOrder = new dtoOrders
                     {
-                        // Move the quantities of all the items in the order.
-                        BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(transaction.TxnId);
+                        txnID = Convert.ToInt32(drv["txnID"]),
+                        siteName = drv["siteName"].ToString(),
+                        txnType = drv["txnType"].ToString(),
+                        txnStatus = drv["txnStatus"].ToString(),
+                        itemCount = Convert.ToInt32(drv["itemCount"]),
+                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
+                        deliveryDate = null
+                    };
 
-                        frmAcceptStoreOrder frmAcceptStoreOrder = _serviceProvider.GetRequiredService<frmAcceptStoreOrder>();
-
-                        
-                    }else
+                    if (deliveredOrder != null && deliveredOrder.txnStatus == "IN TRANSIT")
                     {
-                        MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                        // Get the txn id, 
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+
+                        if (employee != null && roles.Contains("Administrator") || deliveredOrder.siteName == employee.Site.SiteName)
+                        {
+                            // Move the quantities of all the items in the order.
+                            BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(deliveredOrder.txnID);
+
+                            frmAcceptStoreOrder frmAcceptStoreOrder = _serviceProvider.GetRequiredService<frmAcceptStoreOrder>();
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                        }
                     }
-                } else
-                {
-                    MessageBox.Show("Can only receive store orders that have a status of 'IN TRANSIT'.", "Unable to receive delivery");
+                    else
+                    {
+                        MessageBox.Show("Can only receive store orders that have a status of 'IN TRANSIT'.", "Unable to receive delivery");
+                    }
                 }
             }
         }

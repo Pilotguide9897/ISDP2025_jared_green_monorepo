@@ -38,7 +38,6 @@ namespace idsp2025_jared_green.Interfaces.Controllers
 
         public Task<bool> CheckForOrderSubmission(int timeframe);
 
-
         public Task<bool> UpdateTransactionStatus(int txnID, int employeeID, string updatedStatus);
 
         public Task SaveChanges();
@@ -50,6 +49,8 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         public Task<BindingList<Delivery>> GetDeliveriesForDeliveryDate(List<int> txnIDs);
 
         public Task<bool> UpdateTransactionDetails(Txn transaction);
+
+        public Task<List<Txnaudit>> GetTransactionAudit(int txnId);
 
     }
 }

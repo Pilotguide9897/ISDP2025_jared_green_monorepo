@@ -50,6 +50,8 @@
             label9 = new Label();
             label10 = new Label();
             dtpUpdateTxnDate = new DateTimePicker();
+            label7 = new Label();
+            lstTxnRecord = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -239,11 +241,31 @@
             dtpUpdateTxnDate.Size = new Size(204, 31);
             dtpUpdateTxnDate.TabIndex = 22;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(721, 237);
+            label7.Name = "label7";
+            label7.Size = new Size(166, 25);
+            label7.TabIndex = 24;
+            label7.Text = "Transaction History:";
+            // 
+            // lstTxnRecord
+            // 
+            lstTxnRecord.FormattingEnabled = true;
+            lstTxnRecord.ItemHeight = 25;
+            lstTxnRecord.Location = new Point(721, 307);
+            lstTxnRecord.Name = "lstTxnRecord";
+            lstTxnRecord.Size = new Size(432, 429);
+            lstTxnRecord.TabIndex = 25;
+            // 
             // frmModifyTxnRecord
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(772, 999);
+            ClientSize = new Size(1242, 999);
+            Controls.Add(lstTxnRecord);
+            Controls.Add(label7);
             Controls.Add(dtpUpdateTxnDate);
             Controls.Add(label10);
             Controls.Add(label9);
@@ -298,5 +320,7 @@
         private Label label9;
         private Label label10;
         private DateTimePicker dtpUpdateTxnDate;
+        private Label label7;
+        private ListBox lstTxnRecord;
     }
 }

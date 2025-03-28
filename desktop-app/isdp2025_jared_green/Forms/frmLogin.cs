@@ -51,14 +51,15 @@ namespace idsp2025_jared_green
                         MessageBox.Show("Please be patient as we verify your credentials", "Logging In");
                         employee = await _employeeController.GetEmployeeByUsername(txtUsername.Text);
                         Employeeloginattempt ela = await _loginAttemptService.GetUserLoginAttempt(employee.EmployeeId);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show("There was a problem verifying your identity", "Identity Error");
                     }
 
                     //MessageBox.Show("This is outside: " + employee.Locked.ToString());
                     //MessageBox.Show("This is outside -  Employee Login Attempts: " + ela.SubsequentFailedAttempt.ToString());
-                    if (employee == null) 
+                    if (employee == null)
                     {
                         MessageBox.Show("Unable to log in.", "Login failed");
                         return;
@@ -70,7 +71,7 @@ namespace idsp2025_jared_green
                         return;
                     }
 
-                    if (employee.Active == 0) 
+                    if (employee.Active == 0)
                     {
                         MessageBox.Show("Invalid username and/or password. Please contact your administrator at 'admin@bullseye.ca' for assistance.", "Account Inactive");
                         return;
@@ -136,7 +137,7 @@ namespace idsp2025_jared_green
 
             // Create an instance of frmDashboard with the resolved dependencies
             // var dashboardForm = new frmDashboard(dashboardController, _sessionManager, permissionController, authenticationService);
-            var dashboardForm = new frmDashboard(dashboardController, _serviceProvider, _sessionManager, permissionController, locationController,  transactionController, inventoryController, supplierController);
+            var dashboardForm = new frmDashboard(dashboardController, _serviceProvider, _sessionManager, permissionController, locationController, transactionController, inventoryController, supplierController);
 
             // Show the dashboard
             dashboardForm.Show();
@@ -153,7 +154,7 @@ namespace idsp2025_jared_green
             }
             else
             {
-                Employee employee = await _employeeController.GetEmployeeByUsername(txtUsername.Text);
+                Employee? employee = await _employeeController.GetEmployeeByUsername(txtUsername.Text);
 
                 if (employee == null)
                 {
@@ -197,6 +198,11 @@ namespace idsp2025_jared_green
         {
             string helpText = "Enter your company-issued username and password and click the 'sign-in' button to proceed. Hover your mouse over the password field to reveal it as plain text. If you have forgotten your password, type your username in the 'username' field and click the 'Forgot Password?' link.";
             MessageBox.Show(helpText, "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+            txtUsername.Focus();
         }
     }
 }

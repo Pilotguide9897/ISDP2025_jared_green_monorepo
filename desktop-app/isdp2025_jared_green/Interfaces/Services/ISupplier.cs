@@ -14,6 +14,8 @@ namespace idsp2025_jared_green.Interfaces.Services
 
         public Task<object> GetSupplier(int supplierID);
 
+        public Task<object> GetSupplier(int supplierID, string supplierName);
+
         public Task<object> AddSupplier(Supplier supplier);
 
         public Task<object> UpdateSupplier(Supplier supplier);

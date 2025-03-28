@@ -50,5 +50,7 @@ namespace idsp2025_jared_green.Interfaces.Services
         public Task<BindingList<Delivery>> GetDeliveries(List<int> txnIDs);
 
         public Task<object> SaveChangesToTransaction(Txn transaction);
+
+        public Task<object>GetTransactionAudit(int txnId);
     }
 }

@@ -70,6 +70,7 @@ namespace idsp2025_jared_green.Forms
             // Create the new supplier with the data
             Supplier ns = new Supplier()
             {
+                SupplierId = 0,
                 Name = txtAddSupplierName.Text,
                 Address1 = txtAddSupplierAddress.Text,
                 Address2 = "",
@@ -91,7 +92,7 @@ namespace idsp2025_jared_green.Forms
             }
             else
             {
-                MessageBox.Show($"Unable to create supplier {txtAddSupplierName}.", "Supplier addition failed");
+                MessageBox.Show($"Unable to create supplier {txtAddSupplierName.Text}.", "Supplier addition failed");
             }
         }
 

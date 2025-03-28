@@ -125,6 +125,7 @@
             // 
             // pnlManagerSignature
             // 
+            pnlManagerSignature.BackColor = SystemColors.Window;
             pnlManagerSignature.Location = new Point(303, 872);
             pnlManagerSignature.Name = "pnlManagerSignature";
             pnlManagerSignature.Size = new Size(1366, 175);
