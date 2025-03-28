@@ -43,7 +43,7 @@ namespace idsp2025_jared_green.Forms
             this.Close();
         }
 
-        private void btnConfirmSigning_Click(object sender, EventArgs e)
+        private async void btnConfirmSigning_Click(object sender, EventArgs e)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace idsp2025_jared_green.Forms
                 foreach (dtoOrderItem item in items)
                 {
 
-                    await _inventoryController.MoveInventory(3, 9999, item.quantityRequested, item.itemID, "0", "On Truck");
+                    await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", "Received by Customer");
                 }
 
                 await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "CLOSED");

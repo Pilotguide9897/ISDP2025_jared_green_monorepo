@@ -155,6 +155,7 @@
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmPrepareOnlineOrder";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Bullseye Inventory Management System - Prepare Online Order";
             Load += frmPrepareOnlineOrder_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

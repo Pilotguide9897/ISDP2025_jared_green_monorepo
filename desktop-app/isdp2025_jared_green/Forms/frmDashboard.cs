@@ -599,7 +599,7 @@ namespace idsp2025_jared_green
             List<string> desiredColumns = new List<string>([]);
             List<string> columnOrder = new List<string>([]);
 
-            // SanitizeDGV(dgvTransactions, columnsToHide, columnNames, desiredColumns, columnOrder);
+            SanitizeDGV(dgvCustomerOrders, columnsToHide, columnNames, desiredColumns, columnOrder);
             dgvTransactions.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         }
 
@@ -1127,6 +1127,7 @@ namespace idsp2025_jared_green
                         btnCreateEmergencyOrder.Visible = true;
                         btnDeliverStoreOrder.Visible = true;
                         btnPrepareOrder.Visible = true;
+                        btnMarkCustPickup.Visible = true;
                         break;
 
                     case "Warehouse Worker":
@@ -1172,6 +1173,7 @@ namespace idsp2025_jared_green
                         btnAddSupplier.Visible = true;
                         btnEditSupplier.Visible = true;
                         btnPickUpOrder.Visible = true;
+                        btnMarkCustPickup.Visible = true;
                         // cboOnlineOrderStore.Visible = true;
                         break;
 
@@ -2068,13 +2070,17 @@ namespace idsp2025_jared_green
                     dtoOrders preparedOrder = new dtoOrders
                     {
                         txnID = Convert.ToInt32(drv["txnID"]),
-                        siteName = drv["siteName"].ToString(),
+                        siteName = drv["SiteIdto"].ToString(),
                         txnType = drv["txnType"].ToString(),
                         txnStatus = drv["txnStatus"].ToString(),
-                        itemCount = Convert.ToInt32(drv["itemCount"]),
-                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
+                        itemCount = 0,
+                        totalWeight = 0,
                         deliveryDate = null
                     };
+
+                    BindingList<Site> location = await _locationController.GetBullseyeLocations();
+                    Site loc = (from l in location where l.SiteId.ToString() == preparedOrder.siteName select l).FirstOrDefault();
+                    preparedOrder.siteName = loc.SiteName;
 
                     if (preparedOrder != null && preparedOrder.txnStatus == "NEW" && preparedOrder.txnType == "Online")
                     {
@@ -2086,15 +2092,13 @@ namespace idsp2025_jared_green
                         if (employee != null && roles.Contains("Administrator") || preparedOrder.siteName == employee.Site.SiteName)
                         {
                             BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
-                            frmPrepareOnlineOrder preparationForm = _serviceProvider.GetRequiredService<frmPrepareOnlineOrder>();
-
 
                             var formFactory = _serviceProvider.GetRequiredService<Func<int, frmPrepareOnlineOrder>>();
                             frmPrepareOnlineOrder form = formFactory(employee.EmployeeId);
                             form.Tag = preparedOrder;
                             form.ShowDialog();
 
-                            await RefreshOrdersTab(tabOrders);
+                            await RefreshOnlineOrdersTab(tabCustomerOrders);
                         }
                         else
                         {
@@ -2111,7 +2115,58 @@ namespace idsp2025_jared_green
 
         private async void cboOnlineOrderStore_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await RefreshOnlineOrdersTab(tabCustomerOrders);
+            // await RefreshOnlineOrdersTab(tabCustomerOrders);
+        }
+
+        private async void btnMarkCustPickup_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomerOrders.SelectedRows.Count == 1)
+            {
+
+                DataRowView drv = dgvCustomerOrders.SelectedRows[0].DataBoundItem as DataRowView;
+                if (drv != null)
+                {
+
+                    dtoOrders preparedOrder = new dtoOrders
+                    {
+                        txnID = Convert.ToInt32(drv["txnID"]),
+                        siteName = drv["SiteIdto"].ToString(),
+                        txnType = drv["txnType"].ToString(),
+                        txnStatus = drv["txnStatus"].ToString(),
+                        itemCount = 0,
+                        totalWeight = 0,
+                        deliveryDate = null
+                    };
+
+                    if (preparedOrder != null && preparedOrder.txnStatus == "PREPARED" && preparedOrder.txnType == "Online")
+                    {
+
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+                        if (employee != null && roles.Contains("Administrator") || preparedOrder.siteName == employee.Site.SiteName)
+                        {
+                            BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
+
+                            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmPrepareOnlineOrder>>();
+                            frmPrepareOnlineOrder form = formFactory(employee);
+                            form.Tag = preparedOrder;
+                            form.ShowDialog();
+
+                            await RefreshOnlineOrdersTab(tabCustomerOrders);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can only prepare store orders that have a status of 'NEW' and a type of 'Online'.", "Unable to prepare order");
+                    }
+                }
+            }
         }
     }
 }

@@ -58,6 +58,7 @@
             // 
             // pnlCustomerSignature
             // 
+            pnlCustomerSignature.BackColor = SystemColors.Window;
             pnlCustomerSignature.Location = new Point(159, 23);
             pnlCustomerSignature.Name = "pnlCustomerSignature";
             pnlCustomerSignature.Size = new Size(840, 340);

@@ -133,6 +133,10 @@ namespace idsp2025_jared_green
                     return ActivatorUtilities.CreateInstance<frmPickupStoreOrder>(sp, Employee);
                 });
 
+                services.AddTransient<Func<Employee, frmSignForOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmSignForOrder>(sp, Employee);
+                });
 
                 services.AddTransient<Func<int, frmModifyTxnRecord>>(sp => (employeeID) =>
                 {

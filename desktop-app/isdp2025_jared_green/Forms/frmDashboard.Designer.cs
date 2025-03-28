@@ -30,10 +30,10 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
             picBullseyeLogo = new PictureBox();
             label1 = new Label();
             lblUser = new Label();
@@ -115,6 +115,7 @@
             btnUpdateItem = new Button();
             dgvItems = new DataGridView();
             bsCustomerOrders = new BindingSource(components);
+            btnMarkCustPickup = new Button();
             ((System.ComponentModel.ISupportInitialize)picBullseyeLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployeesForPermissions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsItems).BeginInit();
@@ -235,6 +236,7 @@
             // tabCustomerOrders
             // 
             tabCustomerOrders.BackColor = Color.Gainsboro;
+            tabCustomerOrders.Controls.Add(btnMarkCustPickup);
             tabCustomerOrders.Controls.Add(cboOnlineOrderStore);
             tabCustomerOrders.Controls.Add(btnPrepareOrder);
             tabCustomerOrders.Controls.Add(dgvCustomerOrders);
@@ -269,6 +271,7 @@
             // 
             dgvCustomerOrders.AllowUserToAddRows = false;
             dgvCustomerOrders.AllowUserToDeleteRows = false;
+            dgvCustomerOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCustomerOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCustomerOrders.Location = new Point(33, 51);
             dgvCustomerOrders.MultiSelect = false;
@@ -283,7 +286,7 @@
             // 
             label15.AutoSize = true;
             label15.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label15.Location = new Point(22, 0);
+            label15.Location = new Point(22, 2);
             label15.Name = "label15";
             label15.Size = new Size(299, 48);
             label15.TabIndex = 0;
@@ -847,8 +850,8 @@
             // 
             dgvPermissions.AllowUserToAddRows = false;
             dgvPermissions.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
-            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.BackColor = Color.FromArgb(224, 224, 224);
+            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
             dgvPermissions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvPermissions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvPermissions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -923,8 +926,8 @@
             // 
             dgvEmployees.AllowUserToAddRows = false;
             dgvEmployees.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
-            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.BackColor = Color.FromArgb(224, 224, 224);
+            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle14;
             dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEmployees.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -996,18 +999,18 @@
             // 
             dgvItems.AllowUserToAddRows = false;
             dgvItems.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = Color.Silver;
-            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.BackColor = Color.Silver;
+            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle15;
             dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Control;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = SystemColors.Control;
+            dataGridViewCellStyle16.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle16.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle16.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
+            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
             dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvItems.Location = new Point(21, 57);
             dgvItems.MultiSelect = false;
@@ -1020,6 +1023,16 @@
             dgvItems.TabIndex = 0;
             dgvItems.TabStop = false;
             dgvItems.SelectionChanged += dgvItems_SelectionChanged;
+            // 
+            // btnMarkCustPickup
+            // 
+            btnMarkCustPickup.Location = new Point(33, 629);
+            btnMarkCustPickup.Name = "btnMarkCustPickup";
+            btnMarkCustPickup.Size = new Size(213, 34);
+            btnMarkCustPickup.TabIndex = 4;
+            btnMarkCustPickup.Text = "Picked Up By Customer";
+            btnMarkCustPickup.UseVisualStyleBackColor = true;
+            btnMarkCustPickup.Click += btnMarkCustPickup_Click;
             // 
             // frmDashboard
             // 
@@ -1170,5 +1183,6 @@
         private BindingSource bsCustomerOrders;
         private Button btnPrepareOrder;
         private ComboBox cboOnlineOrderStore;
+        private Button btnMarkCustPickup;
     }
 }
