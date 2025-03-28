@@ -785,6 +785,12 @@ namespace idsp2025_jared_green.Services
         public async  Task<object> SaveChangesToTransaction(Txn transaction)
         {
             try {
+
+                var tracked = _bullseyeContext.Txns.Local.FirstOrDefault(e => e.TxnId == transaction.TxnId);
+                if (tracked != null)
+                {
+                    _bullseyeContext.Entry(tracked).State = EntityState.Detached;
+                }
                 _bullseyeContext.Update(transaction);
                 int result = await _bullseyeContext.SaveChangesAsync();
                 if (result > 0)

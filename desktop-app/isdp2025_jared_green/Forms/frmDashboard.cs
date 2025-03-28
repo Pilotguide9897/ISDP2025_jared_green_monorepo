@@ -1725,7 +1725,7 @@ namespace idsp2025_jared_green
                 }
             }
         }
-     
+
         private void btnRemoveSupplier_Click(object sender, EventArgs e)
         {
             // Not implemented yet
@@ -1736,19 +1736,44 @@ namespace idsp2025_jared_green
         {
             if (dgvTransactions.DataSource != null && dgvTransactions.SelectedRows.Count == 1)
             {
-                Txn? selectedTransaction = dgvTransactions.SelectedRows[0].DataBoundItem as Txn;
-                if (selectedTransaction != null && (selectedTransaction.TxnStatus != "CANCELLED" || selectedTransaction.TxnStatus != "COMPLETED" || selectedTransaction.TxnStatus != "REJECTED" || selectedTransaction.TxnStatus != "IN TRANSIT"))
-                {
-                    BindingList<Employee> employees = await _dashboardController.GetEmployees();
-                    Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
-                    if (employee != null)
-                    {
-                        var formFactory = _serviceProvider.GetRequiredService<Func<int, frmModifyTxnRecord>>();
-                        var form = formFactory(employee.EmployeeId);
-                        form.Tag = selectedTransaction;
-                        form.ShowDialog();
+                DataRowView? drv = dgvTransactions.SelectedRows[0].DataBoundItem as DataRowView;
 
-                        await RefreshTransactionsTab(tabTransactions);
+                if (drv != null)
+                {
+
+                    Txn selectedTransaction = new Txn
+                    {
+                        TxnId = Convert.ToInt32(drv["TxnId"]),
+                        EmployeeId = Convert.ToInt32(drv["EmployeeId"]),
+                        SiteIdto = Convert.ToInt32(drv["SiteIdto"]),
+                        SiteIdfrom = Convert.ToInt32(drv["SiteIdfrom"]),
+                        TxnStatus = drv["TxnStatus"].ToString(),
+                        ShipDate = Convert.ToDateTime(drv["ShipDate"]),
+                        TxnType = drv["TxnType"].ToString(),
+                        BarCode = drv["BarCode"].ToString(),
+                        CreatedDate = Convert.ToDateTime(drv["CreatedDate"]),
+                        DeliveryId = drv["DeliveryId"] == DBNull.Value ? (int?)null : Convert.ToInt32(drv["DeliveryId"]),
+                        EmergencyDelivery = drv["EmergencyDelivery"] == DBNull.Value ? (sbyte?)null : Convert.ToSByte(drv["EmergencyDelivery"]),
+                        Notes = drv["Notes"] == DBNull.Value ? null : drv["Notes"].ToString(),
+                    };
+
+                    if (selectedTransaction != null && ((selectedTransaction.TxnStatus).ToUpper() != "CANCELLED" && (selectedTransaction.TxnStatus).ToUpper() != "COMPLETE" && (selectedTransaction.TxnStatus).ToUpper() != "REJECTED" && (selectedTransaction.TxnStatus).ToUpper() != "IN TRANSIT" && (selectedTransaction.TxnStatus).ToUpper() != "DELIVERED"))
+                    {
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        if (employee != null)
+                        {
+                            var formFactory = _serviceProvider.GetRequiredService<Func<int, frmModifyTxnRecord>>();
+                            var form = formFactory(employee.EmployeeId);
+                            form.Tag = selectedTransaction;
+                            form.ShowDialog();
+
+                            await RefreshTransactionsTab(tabTransactions);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unable to modify closed, completed, or rejected transactions.", "Modification of Transaction Forbidden");
                     }
                 }
             }
@@ -1758,47 +1783,98 @@ namespace idsp2025_jared_green
         {
             if (dgvTransactions.DataSource != null && dgvTransactions.SelectedRows.Count == 1)
             {
-                Txn? selectedTransaction = dgvTransactions.SelectedRows[0].DataBoundItem as Txn;
-                if (selectedTransaction != null)
+                DataRowView? drv = dgvTransactions.SelectedRows[0].DataBoundItem as DataRowView;
+
+                if (drv != null)
                 {
-                    if (selectedTransaction.TxnStatus == "CANCELLED")
+
+                    Txn selectedTransaction = new Txn
                     {
-                        MessageBox.Show("Unable to cancel because this transaction has already been cancelled.", "Unable to cancel transaction");
-                        return;
-                    }
+                        TxnId = Convert.ToInt32(drv["TxnId"]),
+                        EmployeeId = Convert.ToInt32(drv["EmployeeId"]),
+                        SiteIdto = Convert.ToInt32(drv["SiteIdto"]),
+                        SiteIdfrom = Convert.ToInt32(drv["SiteIdfrom"]),
+                        TxnStatus = drv["TxnStatus"].ToString(),
+                        ShipDate = Convert.ToDateTime(drv["ShipDate"]),
+                        TxnType = drv["TxnType"].ToString(),
+                        BarCode = drv["BarCode"].ToString(),
+                        CreatedDate = Convert.ToDateTime(drv["CreatedDate"]),
+                        DeliveryId = drv["DeliveryId"] == DBNull.Value ? (int?)null : Convert.ToInt32(drv["DeliveryId"]),
+                        EmergencyDelivery = drv["EmergencyDelivery"] == DBNull.Value ? (sbyte?)null : Convert.ToSByte(drv["EmergencyDelivery"]),
+                        Notes = drv["Notes"] == DBNull.Value ? null : drv["Notes"].ToString(),
+                    };
 
-                    if (selectedTransaction.TxnStatus == "COMPLETE" || selectedTransaction.TxnStatus == "REJECTED")
+                    if (selectedTransaction != null)
                     {
-                        MessageBox.Show("Unable to cancel because this transaction has already been closed.", "Unable to cancel transaction");
-                        return;
-                    }
-
-                    // At this point, we do not need to worry about where it is moving because we can assume that the inventory remains wherever it was when it was cancelled.
-
-                    BindingList<Employee> employees = await _dashboardController.GetEmployees();
-                    Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
-                    if (employee != null)
-                    {
-                        //    // Move the inventory back to where it was
-                        //    foreach (Txnitem txnItem in selectedTransaction.Txnitems)
-                        //    {
-                        //        _inventoryController.MoveInventory(selectedTransaction.SiteIdto, selectedTransaction.SiteIdfrom, selectedTransaction.);
-                        //    }
-
-
-                        bool result = await _transactionController.UpdateTransactionStatus(selectedTransaction.TxnId, employee.EmployeeId, "CANCELLED");
-                        if (result)
+                        if (selectedTransaction.TxnStatus == "CANCELLED")
                         {
-                            MessageBox.Show($"Transaction {selectedTransaction.TxnId} has been cancelled.", "Transaction Cancelled");
+                            MessageBox.Show("Unable to cancel because this transaction has already been cancelled.", "Unable to cancel transaction");
+                            return;
+                        }
+
+                        if (selectedTransaction.TxnStatus == "COMPLETE" || selectedTransaction.TxnStatus == "REJECTED")
+                        {
+                            MessageBox.Show("Unable to cancel because this transaction has already been closed.", "Unable to cancel transaction");
+                            return;
+                        }
+
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        if (employee != null)
+                        {
+                            //    // Move the inventory back to where it was
+                            //    foreach (Txnitem txnItem in selectedTransaction.Txnitems)
+                            //    {
+                            //        _inventoryController.MoveInventory(selectedTransaction.SiteIdto, selectedTransaction.SiteIdfrom, selectedTransaction.);
+                            //    }
+                            if (selectedTransaction.SiteIdfrom == 3)
+                            {
+                                // Set txn Items back to the warehouse.
+                                BindingList<Site> site = await _locationController.GetBullseyeLocations();
+                                Site? selectedSite = (from st in site where st.SiteId == 3 select st).FirstOrDefault();
+                                BindingList<Inventory> inv = await _inventoryController.GetInventoryByLocation(selectedSite);
+                                List<Inventory> inventoryForOrder = [];
+                                
+                                foreach (Inventory inventory in inv)
+                                {
+                                    if (inventory.ItemLocation == selectedTransaction.TxnId.ToString())
+                                    {
+                                        await _inventoryController.MoveInventory(3,3, inventory.Quantity, inventory.ItemId, inventory.ItemLocation, "0");
+                                    }
+                                }
+                            }
+
+                            if (selectedTransaction.TxnStatus == "PREPARED")
+                            {
+                                // Set txn Items back to the warehouse.
+                                BindingList<Site> site = await _locationController.GetBullseyeLocations();
+                                Site? selectedSite = (from st in site where st.SiteId == selectedTransaction.SiteIdfrom select st).FirstOrDefault();
+                                BindingList<Inventory> inv = await _inventoryController.GetInventoryByLocation(selectedSite);
+                                List<Inventory> inventoryForOrder = [];
+
+                                foreach (Inventory inventory in inv)
+                                {
+                                    if (inventory.ItemLocation == selectedTransaction.TxnId.ToString())
+                                    {
+                                        await _inventoryController.MoveInventory(selectedSite.SiteId, selectedSite.SiteId, inventory.Quantity, inventory.ItemId, inventory.ItemLocation, "0");
+                                    }
+                                }
+                            }
+
+                            bool result = await _transactionController.UpdateTransactionStatus(selectedTransaction.TxnId, employee.EmployeeId, "CANCELLED");
+                            if (result)
+                            {
+                                MessageBox.Show($"Transaction {selectedTransaction.TxnId} has been cancelled.", "Transaction Cancelled");
+                            }
+                            else
+                            {
+                                MessageBox.Show("An unexpected error occurred while attempting to cancel the transaction. Transaction update failed.", "Unable to cancel transaction");
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("An unexpected error occurred while attempting to cancel the transaction. Transaction update failed.", "Unable to cancel transaction");
+                            MessageBox.Show("Unable to cancel because the logged in employee's ID could not be accessed.", "Unable to cancel transaction");
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Unable to cancel because the logged in employee's ID could not be accessed.", "Unable to cancel transaction");
                     }
                 }
             }

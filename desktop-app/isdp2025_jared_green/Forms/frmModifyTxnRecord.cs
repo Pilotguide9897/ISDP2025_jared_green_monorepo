@@ -32,7 +32,24 @@ namespace idsp2025_jared_green.Forms
         private async void frmModifyTxnRecord_Load(object sender, EventArgs e)
         {
             _sites = await _locationController.GetBullseyeLocations();
-            
+            List<string> txnStatuses = new List<string>
+            {
+                "ASSEMBLED",
+                "ASSEMBLING",
+                "CANCELLED",
+                "COMPLETE",
+                "DELIVERED",
+                "IN TRANSIT",
+                "NEW",
+                "PREPARED",
+                "PREPARING",
+                "RECEIVED",
+                "REJECTED",
+                "SUBMITTED"
+            };
+
+            cboUpdateTxnStatus.DataSource = txnStatuses;
+
 
             // Set the data
             if (this.Tag != null)
@@ -43,14 +60,21 @@ namespace idsp2025_jared_green.Forms
                 {
                     lblEditTxnID.Text = txn.TxnId.ToString();
                     dtpUpdateTxnDate.Value = txn.CreatedDate;
-                    cboUpdateTxnStatus.SelectedValue = txn.TxnStatus.ToString();
-                    cboUpdateTxnType.SelectedValue = txn.TxnType.ToString();
-                    string siteFrom = (from site in _sites where site.SiteId == txn.SiteIdfrom select site).FirstOrDefault().ToString();
-                    string siteTo = (from site in _sites where site.SiteId == txn.SiteIdto select site).FirstOrDefault().ToString();
-                    cboUpdateSiteFrom.SelectedValue = siteFrom != null ? siteFrom : txn.SiteIdfrom.ToString();
-                    cboUpdateSiteFrom.SelectedValue = siteTo != null ? siteTo : txn.SiteIdto.ToString();
-                    _txnAuditList = await _transactionController.GetTransactionAudit(txn.TxnId);
 
+                    cboUpdateTxnStatus.SelectedItem = txn.TxnStatus.ToString();
+
+                    foreach (Site site in _sites)
+                    {
+                        cboUpdateSiteFrom.Items.Add(site);
+                        cboUpdateSiteTo.Items.Add(site);
+                    }
+
+                    cboUpdateSiteFrom.SelectedItem = (from site in _sites where site.SiteId == txn.SiteIdfrom select site).FirstOrDefault();
+                    cboUpdateSiteTo.SelectedItem = (from site in _sites where site.SiteId == txn.SiteIdto select site).FirstOrDefault();
+                    txtUpdateBarcode.Text = txn.BarCode.ToString();
+                    txtUpdateDelivery.Text = txn.DeliveryId.ToString();
+                    _txnAuditList = await _transactionController.GetTransactionAudit(txn.TxnId);
+                    chkSetEmergency.Checked = txn.EmergencyDelivery == 1 ? true : false;
 
                     foreach(var txnAudit in _txnAuditList)
                     {
@@ -103,11 +127,6 @@ namespace idsp2025_jared_green.Forms
                 MessageBox.Show("The 'To' and 'From' sites cannot be the same.", "Invalid information entry");
                 return;
             }
-            if (cboUpdateTxnType.SelectedIndex < 0)
-            {
-                MessageBox.Show("A 'Transaction Type' must be selected.", "Input field cannot be empty");
-                return;
-            }
             if (ValidateInput.IsTextFieldEmpty(txtUpdateBarcode))
             {
                 MessageBox.Show("The 'Barcode' field cannot be left empty.", "Input field cannot be empty");
@@ -120,7 +139,7 @@ namespace idsp2025_jared_green.Forms
             }
 
             int def = -1;
-            if (Int32.TryParse(txtUpdateDelivery.Text, out def)) ;
+            if (Int32.TryParse(txtUpdateDelivery.Text, out def));
 
             Txn tBefore = this.Tag as Txn;
 
@@ -132,7 +151,7 @@ namespace idsp2025_jared_green.Forms
                 SiteIdfrom = (from sites in _sites where sites.SiteName == cboUpdateSiteFrom.Text select sites.SiteId).FirstOrDefault(),
                 TxnStatus = cboUpdateTxnStatus.Text,
                 ShipDate = dtpUpdateTxnDate.Value,
-                TxnType = cboUpdateTxnType.Text,
+                TxnType = tBefore.TxnType,
                 BarCode = txtUpdateBarcode.Text,
                 CreatedDate = tBefore.CreatedDate,
                 DeliveryId = def == -1 ? tBefore.DeliveryId : def,
