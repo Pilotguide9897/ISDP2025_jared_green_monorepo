@@ -8,16 +8,32 @@ import Button from 'react-bootstrap/Button';
 function CustomerDetailsForm({ customerDetails, setCustomerDetails, submitOrder }) {
     const [validated, setValidated] = useState(false);
 
+    //const handleSubmit = (event) => {
+    //    const form = event.currentTarget;
+    //    if (form.checkValidity() === false) {
+    //        event.preventDefault();
+    //        event.stopPropagation();
+    //    }
+
+    //    setValidated(true);
+    //    submitOrder();
+    //};
     const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
+
+        if (!form.checkValidity()) {
+            setValidated(true);
+            return;
         }
 
         setValidated(true);
         submitOrder();
     };
+
+
 
     const handleChange = (field, value) => {
         setCustomerDetails({ ...customerDetails, [field]: value });

@@ -13,7 +13,6 @@ import CustomerDetailsForm from '../../Components/CustomerDetailsForm/CustomerDe
 import AddToCartToast from '../../Components/Toast/Toast';
 import OrderSubmitToast from '../../Components/Toast/OrderSubmitToast';
 import AlreadyInCartToast from '../../Components/Toast/AlreadyInCartToast';
-import Button from 'react-bootstrap/Button';
 import Alert from '../../Components/Alert/Alert';
 
 
@@ -32,6 +31,7 @@ function PlaceOrder() {
     const [submittedOrderID, setSubmittedOrderID] = useState(null);
     const [image, setImage] = useState("");
     const [subtotal, setSubtotal] = useState(0);
+    const [quantityAvailable, setQuantityAvailable] = useState(0);
     let imagePath = "/images/";
 
     //const subtotal = orderData?.reduce(
@@ -126,8 +126,9 @@ function PlaceOrder() {
 
 
     const submitOrder = async () => {
-        console.log("yes, it was clicked");
-
+        console.log("Order Data: " + JSON.stringify(orderData));
+        console.log("Selected Store: " + JSON.stringify(selectedStore));
+        console.log("Customer Details: " + JSON.stringify(customerDetails));
         if (orderData != null && orderData.length > 0) {
             try {
 
@@ -147,51 +148,43 @@ function PlaceOrder() {
                     );
                 }
 
-                let response = await axios.post('api/orders', {
-                    //txnId: 0,
-                    //employeeId: 10000,
-                    //siteIdto: selectedStore.SiteId,
-                    //siteIdfrom: 10000,
-                    //txnStatus: "PREPARING",
-                    //shipDate: pickupTime().toISOString(),
-                    //txnType: "Online",
-                    //barCode: uuidV4(),
-                    //createdDate: new Date().toISOString(),
-                    //deliveryId: null,
-                    //emergencyDelivery: 0,
-                    //notes: "",
-                    //custFirstName: customerDetails.firstName,
-                    //custLastName: customerDetails.lastName,
-                    //custEmail: customerDetails.email,
-                    //custPhone: customerDetails.phone,
-                    //txnitems: orderData
+                //const { siteId, siteName, address, provinceId, postalCode, city } = selectedStore;
+                const { siteId } = selectedStore;
 
-                    // Need fields:
-                    // TxnId
-                    // OrderSite
-                    // CustFirstName
-                    // CustLastName
-                    // CustEmail
-                    // CustPhone
-                    // txnitems
+                //const storeDetails = {
+                //    SiteId: siteId, 
+                //    SiteName: siteName,
+                //    Address: address,
+                //    Province: provinceId,
+                //    PostalCode: postalCode,
+                //    City: city
+                //}
 
+                const cleanedTxnItems = orderData.map(item => ({
                     TxnId: 0,
-                    OrderSite: selectedStore.SiteId,
-                    ShipDate: pickupTime().toISOString(),
+                    ItemId: item.ItemId,
+                    Quantity: item.Quantity,
+                    Notes: ""
+                }));
+
+
+                const payload = {
+                    TxnId: 0,
+                    OrderSite: siteId,
+                    ShipDate: pickupTime.toISOString(),
                     CustFirstName: customerDetails.firstName,
                     CustLastName: customerDetails.lastName,
                     CustEmail: customerDetails.email,
                     CustPhone: customerDetails.phone,
-                    txnitems: orderData
-                    // Order data should have fields:
-                        // TxnId
-                        // ItemId
-                        // Quantity
-                        // Notes
-                })
+                    txnitems: cleanedTxnItems
+                }
+
+                console.log("Payload:", JSON.stringify(payload, null, 2));
+
+                let response = await axios.post('api/orders', payload);
 
                 setSubmittedOrderID(response.orderID)
-                setShowOrderToast(true); 
+                setShowOrderToast(true);
 
                 setCustomerDetails({
                     firstName: '',
@@ -201,14 +194,17 @@ function PlaceOrder() {
                     province: '',
                     phone: ''
                 });
-                setOrderData(null);
-                setSelectedStore(null);
-                setStoreInventory(null);
-                setSubmittedOrderID(null);
+                setOrderData([]);
+                setSelectedStore(locations[0]);
+                setStoreInventory([]);
+                setSubtotal(0);
+                //setSubmittedOrderID(null);
 
             } catch (error) {
                 setError(error);
             }
+        } else {
+            alert("No items to submit");
         }
     }
 
@@ -240,7 +236,8 @@ function PlaceOrder() {
 
         // Map the row data!
         const { ItemId, Name, Weight, Price } = row; 
-
+        //const { ItemId, Name, Weight, Quantity, Price } = row; 
+        //setQuantityAvailable(Quantity);
         setOrderData([...orderData, { ItemId, Name, Weight, Price, Quantity: 1, Remove: 0 }]);
         setShowToast(true);
     };
@@ -279,14 +276,9 @@ function PlaceOrder() {
         }
     }
 
-    //if (loading) {
-    //    return <div><LoadingSpinner /></div>
-    //}
-
     if (error) {
         return <div>Error: { error.message }</div>
     }
-
 
     return (
         <>

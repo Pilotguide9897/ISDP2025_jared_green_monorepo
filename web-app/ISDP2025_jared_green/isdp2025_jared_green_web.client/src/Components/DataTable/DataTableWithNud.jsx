@@ -22,8 +22,9 @@ function DataTableWithNud({ data, inventory, onQuantityChange, onRemoveItem, onR
             <tbody>
                 {data.map((row, i) => {
                     const matchingInventory = inventory?.find(item => item.ItemId === row.ItemId);
-                    const maxStock = matchingInventory ? matchingInventory.quantityInStock : 1;
-
+                    console.log(JSON.stringify(matchingInventory));
+                    const maxStock = matchingInventory ? matchingInventory.Quantity : 1;
+                    console.log(maxStock);
                     // Need return because using curly braces!
                     return (
                         <tr key={i} onDoubleClick={() => onRowDoubleClick?.(row)}  >
