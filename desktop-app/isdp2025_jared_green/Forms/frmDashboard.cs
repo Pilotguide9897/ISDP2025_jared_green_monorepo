@@ -68,7 +68,8 @@ namespace idsp2025_jared_green
                 {"tabLocations", async () => await GetLocations() },
                 {"tabOrders", async () => await GetOrders() },
                 {"tabSuppliers", async () => await GetSuppliers() },
-                {"tabTransactions", async () => await GetTransactions() }
+                {"tabTransactions", async () => await GetTransactions() },
+                {"tabCustomerOrders", async () => await GetOnlineOrders() }
             };
             //_sessionManager.SessionExpired += SessionManagerSessionExpired;
 
@@ -417,6 +418,10 @@ namespace idsp2025_jared_green
                 {
                     await RefreshTransactionsTab(selectedTp);
                 }
+                else if (selectedTp.Name == "tabCustomerOrders")
+                {
+                    await RefreshOnlineOrdersTab(selectedTp);
+                }
             }
         }
 
@@ -572,6 +577,29 @@ namespace idsp2025_jared_green
             List<string> columnOrder = new List<string>(["TxnID", "EmployeeID", "SiteIDFrom", "SiteIDTo", "TxnStatus", "shipDate", "txnType", "Barcode", "createdDate", "DeliveryID", "emergencyDelivery", "notes"]);
 
             SanitizeDGV(dgvTransactions, columnsToHide, columnNames, desiredColumns, columnOrder);
+            dgvTransactions.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+        }
+
+        private async Task RefreshOnlineOrdersTab(TabPage selectedTp)
+        {
+            var onlineOrders = await DetermineWhichDataFunctionToExecute<Txn>(selectedTp);
+            DataTable dt = DataTableConverter.ConvertToDataTable(onlineOrders);
+            DataView view = new DataView(dt);
+            //view.RowFilter = "TxnStatus = 'NEW' AND TxnType = 'Online'";
+            DataTable filtered = view.ToTable();
+
+            bsCustomerOrders.DataSource = filtered;
+            dgvCustomerOrders.DataSource = filtered;
+
+
+            //// Lists for Sanitizing the DataGridView
+
+            List<string> columnsToHide = new List<string>(["EmployeeId", "SiteIdfrom", "ShipDate", "EmergencyDelivery", "Notes", "Delivery", "Employee", "SiteIdFromNavigation", "SiteIdfromNavigation", "SiteIdtoNavigation", "TxnStatusNavigation", "TxnTypeNavigation", "TxnItems"]);
+            List<string> columnNames = new List<string>([]);
+            List<string> desiredColumns = new List<string>([]);
+            List<string> columnOrder = new List<string>([]);
+
+            // SanitizeDGV(dgvTransactions, columnsToHide, columnNames, desiredColumns, columnOrder);
             dgvTransactions.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         }
 
@@ -976,6 +1004,20 @@ namespace idsp2025_jared_green
             {
                 _semaphoreSlim.Release();
             }
+        }
+
+        private async Task<BindingList<Txn>> GetOnlineOrders()
+        {
+            await _semaphoreSlim.WaitAsync();
+            try
+            {
+                BindingList<Txn> transactions = await _transactionController.GetOnlineOrdersForStores() as BindingList<Txn>;
+                return transactions;
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
 
         }
 
@@ -1079,11 +1121,12 @@ namespace idsp2025_jared_green
                         AddTabIfNotExists(tabOrders);
                         AddTabIfNotExists(tabLocations);
                         AddTabIfNotExists(tabInventory);
+                        AddTabIfNotExists(tabCustomerOrders);
                         btnUpdateInventory.Visible = true;
                         btnCreateStandardOrder.Visible = true;
                         btnCreateEmergencyOrder.Visible = true;
                         btnDeliverStoreOrder.Visible = true;
-                        btnOnlineOrderPrepared.Visible = true;
+                        btnPrepareOrder.Visible = true;
                         break;
 
                     case "Warehouse Worker":
@@ -1097,6 +1140,8 @@ namespace idsp2025_jared_green
                     case "Delivery":
                         AddTabIfNotExists(tabEmployees);
                         AddTabIfNotExists(tabItems);
+                        AddTabIfNotExists(tabOrders);
+                        btnPickUpOrder.Visible = true;
                         break;
 
                     case "Administrator":
@@ -1108,6 +1153,7 @@ namespace idsp2025_jared_green
                         AddTabIfNotExists(tabLocations);
                         AddTabIfNotExists(tabSuppliers);
                         AddTabIfNotExists(tabTransactions);
+                        AddTabIfNotExists(tabCustomerOrders);
                         btnRemoveEmployee.Visible = true;
                         btnEditEmployee.Visible = true;
                         btnAddNewEmployee.Visible = true;
@@ -1122,9 +1168,11 @@ namespace idsp2025_jared_green
                         btnReceiveOrder.Visible = true;
                         btnCheckOrderSubmissions.Visible = true;
                         btnDeliverStoreOrder.Visible = true;
-                        btnOnlineOrderPrepared.Visible = true;
+                        btnPrepareOrder.Visible = true;
                         btnAddSupplier.Visible = true;
                         btnEditSupplier.Visible = true;
+                        btnPickUpOrder.Visible = true;
+                        // cboOnlineOrderStore.Visible = true;
                         break;
 
                     case "Online Customer":
@@ -1445,7 +1493,6 @@ namespace idsp2025_jared_green
                     {
                         MessageBox.Show("Non-admin can only edit inventory for their location.", "Invalid request");
                     }
-
                 }
             }
         }
@@ -1665,8 +1712,10 @@ namespace idsp2025_jared_green
             }
         }
 
-        private void tabDashboard_SelectedIndexChanged(object sender, EventArgs e)
+        private async void tabDashboard_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //await SetOnlineOrderCombobox();
+
             if (tabDashboard.TabPages.Contains(tabOrders))
             {
                 if (tabDashboard.SelectedTab == tabOrders && tabDashboard.TabPages["tabOrders"].ImageIndex == 0)
@@ -1675,6 +1724,30 @@ namespace idsp2025_jared_green
                 }
             }
         }
+
+        //private async Task SetOnlineOrderCombobox()
+        //{
+        //    if (tabDashboard.TabPages.Contains(tabCustomerOrders))
+        //    {
+        //        if (tabDashboard.SelectedTab == tabCustomerOrders)
+        //        {
+        //            BindingList<Site> sites = await _locationController.GetBullseyeLocations();
+        //            cboOnlineOrderStore.DataSource = sites;
+
+        //            //// Get the txn id, 
+        //            //BindingList<Employee> employees = await _dashboardController.GetEmployees();
+        //            //Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+        //            //cboOnlineOrderStore.SelectedItem = employee.Site;
+
+        //            //List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+        //            //if (roles.Contains("Administrator"))
+        //            //{
+        //            //    cboOnlineOrderStore.SelectedIndex = 3;
+        //            //}
+        //        }
+        //    }
+        //}
 
         private async void btnAddSupplier_Click(object sender, EventArgs e)
         {
@@ -1834,12 +1907,12 @@ namespace idsp2025_jared_green
                                 Site? selectedSite = (from st in site where st.SiteId == 3 select st).FirstOrDefault();
                                 BindingList<Inventory> inv = await _inventoryController.GetInventoryByLocation(selectedSite);
                                 List<Inventory> inventoryForOrder = [];
-                                
+
                                 foreach (Inventory inventory in inv)
                                 {
                                     if (inventory.ItemLocation == selectedTransaction.TxnId.ToString())
                                     {
-                                        await _inventoryController.MoveInventory(3,3, inventory.Quantity, inventory.ItemId, inventory.ItemLocation, "0");
+                                        await _inventoryController.MoveInventory(3, 3, inventory.Quantity, inventory.ItemId, inventory.ItemLocation, "0");
                                     }
                                 }
                             }
@@ -1891,12 +1964,104 @@ namespace idsp2025_jared_green
             }
         }
 
-        private async void btnOnlineOrderPrepared_Click(object sender, EventArgs e)
+
+        private async void btnDeliverStoreOrder_Click(object sender, EventArgs e)
         {
             if (dgvOrders.SelectedRows.Count == 1)
             {
-
                 DataRowView drv = dgvOrders.SelectedRows[0].DataBoundItem as DataRowView;
+                if (drv != null)
+                {
+
+                    dtoOrders deliveredOrder = new dtoOrders
+                    {
+                        txnID = Convert.ToInt32(drv["txnID"]),
+                        siteName = drv["siteName"].ToString(),
+                        txnType = drv["txnType"].ToString(),
+                        txnStatus = drv["txnStatus"].ToString(),
+                        itemCount = Convert.ToInt32(drv["itemCount"]),
+                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
+                        deliveryDate = null
+                    };
+
+                    if (deliveredOrder != null && deliveredOrder.txnStatus == "IN TRANSIT")
+                    {
+                        // Get the txn id, 
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+
+                        if (employee != null && roles.Contains("Administrator") || deliveredOrder.siteName == employee.Site.SiteName)
+                        {
+                            // Move the quantities of all the items in the order.
+                            BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(deliveredOrder.txnID);
+
+                            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmAcceptStoreOrder>>();
+                            frmAcceptStoreOrder form = formFactory(employee);
+                            form.Tag = deliveredOrder;
+                            form.ShowDialog();
+
+                            await RefreshOrdersTab(tabOrders);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can only receive store orders that have a status of 'IN TRANSIT'.", "Unable to receive delivery");
+                    }
+                }
+            }
+        }
+
+        private async void btnPickUpOrder_Click(object sender, EventArgs e)
+        {
+            if (dgvOrders.SelectedRows.Count == 1)
+            {
+                DataRowView drv = dgvOrders.SelectedRows[0].DataBoundItem as DataRowView;
+                if (drv != null)
+                {
+
+                    dtoOrders assembledOrder = new dtoOrders
+                    {
+                        txnID = Convert.ToInt32(drv["txnID"]),
+                        siteName = drv["siteName"].ToString(),
+                        txnType = drv["txnType"].ToString(),
+                        txnStatus = drv["txnStatus"].ToString(),
+                        itemCount = Convert.ToInt32(drv["itemCount"]),
+                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
+                        deliveryDate = null
+                    };
+
+                    if (assembledOrder != null && assembledOrder.txnStatus.ToUpper() == "ASSEMBLED")
+                    {
+                        // Get the txn id, 
+                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
+                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+                        List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+                        // Move the quantities of all the items in the order.
+                        BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(assembledOrder.txnID);
+                        var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmPickupStoreOrder>>();
+                        frmPickupStoreOrder form = formFactory(employee);
+                        form.Tag = assembledOrder;
+                        form.ShowDialog();
+
+                        await RefreshOrdersTab(tabOrders);
+                    }
+                }
+            }
+        }
+
+        private async void btnPrepareOrder_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomerOrders.SelectedRows.Count == 1)
+            {
+
+                DataRowView drv = dgvCustomerOrders.SelectedRows[0].DataBoundItem as DataRowView;
                 if (drv != null)
                 {
 
@@ -1944,53 +2109,9 @@ namespace idsp2025_jared_green
             }
         }
 
-
-        private async void btnDeliverStoreOrder_Click(object sender, EventArgs e)
+        private async void cboOnlineOrderStore_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (dgvOrders.SelectedRows.Count == 1)
-            {
-                DataRowView drv = dgvOrders.SelectedRows[0].DataBoundItem as DataRowView;
-                if (drv != null)
-                {
-
-                    dtoOrders deliveredOrder = new dtoOrders
-                    {
-                        txnID = Convert.ToInt32(drv["txnID"]),
-                        siteName = drv["siteName"].ToString(),
-                        txnType = drv["txnType"].ToString(),
-                        txnStatus = drv["txnStatus"].ToString(),
-                        itemCount = Convert.ToInt32(drv["itemCount"]),
-                        totalWeight = Convert.ToInt32(drv["totalWeight"]),
-                        deliveryDate = null
-                    };
-
-                    if (deliveredOrder != null && deliveredOrder.txnStatus == "IN TRANSIT")
-                    {
-                        // Get the txn id, 
-                        BindingList<Employee> employees = await _dashboardController.GetEmployees();
-                        Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
-                        List<string> roles = _sessionManager.GetPermissionsFromToken();
-
-
-                        if (employee != null && roles.Contains("Administrator") || deliveredOrder.siteName == employee.Site.SiteName)
-                        {
-                            // Move the quantities of all the items in the order.
-                            BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(deliveredOrder.txnID);
-
-                            frmAcceptStoreOrder frmAcceptStoreOrder = _serviceProvider.GetRequiredService<frmAcceptStoreOrder>();
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Can only receive store orders that have a status of 'IN TRANSIT'.", "Unable to receive delivery");
-                    }
-                }
-            }
+            await RefreshOnlineOrdersTab(tabCustomerOrders);
         }
     }
 }

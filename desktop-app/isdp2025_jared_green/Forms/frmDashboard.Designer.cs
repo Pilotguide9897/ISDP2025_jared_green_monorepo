@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
             picBullseyeLogo = new PictureBox();
             label1 = new Label();
             lblUser = new Label();
@@ -41,38 +41,33 @@
             lblLocation = new Label();
             btnSignOut = new Button();
             btnRefresh = new Button();
-            tabDashboard = new TabControl();
-            tabItems = new TabPage();
-            label4 = new Label();
-            btnUpdateItem = new Button();
-            dgvItems = new DataGridView();
-            tabEmployees = new TabPage();
-            btnRemoveEmployee = new Button();
-            btnEditEmployee = new Button();
-            btnAddNewEmployee = new Button();
-            label5 = new Label();
-            dgvEmployees = new DataGridView();
-            tabPermissions = new TabPage();
-            label2 = new Label();
-            lstRoles = new ListBox();
-            btnSetRoles = new Button();
-            dgvPermissions = new DataGridView();
-            tabInventory = new TabPage();
-            label12 = new Label();
-            comboBox1 = new ComboBox();
-            txtSearchInventory = new TextBox();
-            lblSearchBar = new Label();
-            btnUpdateInventory = new Button();
-            label6 = new Label();
-            dgvInventory = new DataGridView();
-            tabLocations = new TabPage();
-            btnRemoveLocation = new Button();
-            btnUpdateLocation = new Button();
-            btnAddLocation = new Button();
-            label7 = new Label();
-            dgvLocations = new DataGridView();
+            imgLstNotification = new ImageList(components);
+            bsEmployeesForPermissions = new BindingSource(components);
+            bsItems = new BindingSource(components);
+            bsEmployees = new BindingSource(components);
+            bsInventory = new BindingSource(components);
+            bsLocations = new BindingSource(components);
+            bsOrders = new BindingSource(components);
+            nfIconOrderSubmitted = new NotifyIcon(components);
+            bsSuppliers = new BindingSource(components);
+            bsTransactionHistory = new BindingSource(components);
+            tabCustomerOrders = new TabPage();
+            cboOnlineOrderStore = new ComboBox();
+            btnPrepareOrder = new Button();
+            dgvCustomerOrders = new DataGridView();
+            label15 = new Label();
+            tabTransactions = new TabPage();
+            btnEditTxn = new Button();
+            btnCancelTxn = new Button();
+            dgvTransactions = new DataGridView();
+            label14 = new Label();
+            tabSuppliers = new TabPage();
+            btnEditSupplier = new Button();
+            btnAddSupplier = new Button();
+            dgvSuppliers = new DataGridView();
+            label11 = new Label();
             tabOrders = new TabPage();
-            btnOnlineOrderPrepared = new Button();
+            btnPickUpOrder = new Button();
             btnDeliverStoreOrder = new Button();
             btnCheckOrderSubmissions = new Button();
             btnBackOrder = new Button();
@@ -89,44 +84,38 @@
             cboOrderType = new ComboBox();
             label8 = new Label();
             dgvOrders = new DataGridView();
-            tabSuppliers = new TabPage();
-            btnEditSupplier = new Button();
-            btnAddSupplier = new Button();
-            dgvSuppliers = new DataGridView();
-            label11 = new Label();
-            tabTransactions = new TabPage();
-            btnEditTxn = new Button();
-            btnCancelTxn = new Button();
-            dgvTransactions = new DataGridView();
-            label14 = new Label();
-            imgLstNotification = new ImageList(components);
-            bsEmployeesForPermissions = new BindingSource(components);
-            bsItems = new BindingSource(components);
-            bsEmployees = new BindingSource(components);
-            bsInventory = new BindingSource(components);
-            bsLocations = new BindingSource(components);
-            bsOrders = new BindingSource(components);
-            nfIconOrderSubmitted = new NotifyIcon(components);
-            bsSuppliers = new BindingSource(components);
-            bsTransactionHistory = new BindingSource(components);
+            tabLocations = new TabPage();
+            btnRemoveLocation = new Button();
+            btnUpdateLocation = new Button();
+            btnAddLocation = new Button();
+            label7 = new Label();
+            dgvLocations = new DataGridView();
+            tabInventory = new TabPage();
+            label12 = new Label();
+            comboBox1 = new ComboBox();
+            txtSearchInventory = new TextBox();
+            lblSearchBar = new Label();
+            btnUpdateInventory = new Button();
+            label6 = new Label();
+            dgvInventory = new DataGridView();
+            tabPermissions = new TabPage();
+            label2 = new Label();
+            lstRoles = new ListBox();
+            btnSetRoles = new Button();
+            dgvPermissions = new DataGridView();
+            tabEmployees = new TabPage();
+            btnRemoveEmployee = new Button();
+            btnEditEmployee = new Button();
+            btnAddNewEmployee = new Button();
+            label5 = new Label();
+            dgvEmployees = new DataGridView();
+            tabDashboard = new TabControl();
+            tabItems = new TabPage();
+            label4 = new Label();
+            btnUpdateItem = new Button();
+            dgvItems = new DataGridView();
+            bsCustomerOrders = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)picBullseyeLogo).BeginInit();
-            tabDashboard.SuspendLayout();
-            tabItems.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvItems).BeginInit();
-            tabEmployees.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEmployees).BeginInit();
-            tabPermissions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPermissions).BeginInit();
-            tabInventory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
-            tabLocations.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvLocations).BeginInit();
-            tabOrders.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
-            tabSuppliers.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvSuppliers).BeginInit();
-            tabTransactions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployeesForPermissions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsItems).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployees).BeginInit();
@@ -135,6 +124,26 @@
             ((System.ComponentModel.ISupportInitialize)bsOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsSuppliers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsTransactionHistory).BeginInit();
+            tabCustomerOrders.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerOrders).BeginInit();
+            tabTransactions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
+            tabSuppliers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSuppliers).BeginInit();
+            tabOrders.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
+            tabLocations.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvLocations).BeginInit();
+            tabInventory.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
+            tabPermissions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPermissions).BeginInit();
+            tabEmployees.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvEmployees).BeginInit();
+            tabDashboard.SuspendLayout();
+            tabItems.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvItems).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bsCustomerOrders).BeginInit();
             SuspendLayout();
             // 
             // picBullseyeLogo
@@ -207,406 +216,209 @@
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
-            // tabDashboard
+            // imgLstNotification
             // 
-            tabDashboard.Controls.Add(tabItems);
-            tabDashboard.Controls.Add(tabEmployees);
-            tabDashboard.Controls.Add(tabPermissions);
-            tabDashboard.Controls.Add(tabInventory);
-            tabDashboard.Controls.Add(tabLocations);
-            tabDashboard.Controls.Add(tabOrders);
-            tabDashboard.Controls.Add(tabSuppliers);
-            tabDashboard.Controls.Add(tabTransactions);
-            tabDashboard.ImageList = imgLstNotification;
-            tabDashboard.Location = new Point(55, 191);
-            tabDashboard.Name = "tabDashboard";
-            tabDashboard.SelectedIndex = 0;
-            tabDashboard.Size = new Size(1787, 720);
-            tabDashboard.TabIndex = 7;
-            tabDashboard.TabStop = false;
-            tabDashboard.DrawItem += tabDashboard_DrawItem;
-            tabDashboard.SelectedIndexChanged += tabDashboard_SelectedIndexChanged;
+            imgLstNotification.ColorDepth = ColorDepth.Depth32Bit;
+            imgLstNotification.ImageStream = (ImageListStreamer)resources.GetObject("imgLstNotification.ImageStream");
+            imgLstNotification.TransparentColor = Color.Transparent;
+            imgLstNotification.Images.SetKeyName(0, "notifications_active_16dp_FF0000_FILL0_wght400_GRAD0_opsz20.png");
             // 
-            // tabItems
+            // nfIconOrderSubmitted
             // 
-            tabItems.BackColor = Color.Gainsboro;
-            tabItems.Controls.Add(label4);
-            tabItems.Controls.Add(btnUpdateItem);
-            tabItems.Controls.Add(dgvItems);
-            tabItems.Location = new Point(4, 34);
-            tabItems.Name = "tabItems";
-            tabItems.Size = new Size(1779, 682);
-            tabItems.TabIndex = 2;
-            tabItems.Text = "Items";
+            nfIconOrderSubmitted.BalloonTipIcon = ToolTipIcon.Info;
+            nfIconOrderSubmitted.BalloonTipText = "\"An order requires your attention. Please visit the orders tab to receive the new order.";
+            nfIconOrderSubmitted.BalloonTipTitle = "\"Order Submitted\"";
+            nfIconOrderSubmitted.Icon = (Icon)resources.GetObject("nfIconOrderSubmitted.Icon");
+            nfIconOrderSubmitted.Text = "Order Submitted By Store\r\n";
+            nfIconOrderSubmitted.Visible = true;
             // 
-            // label4
+            // tabCustomerOrders
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(23, 4);
-            label4.Name = "label4";
-            label4.Size = new Size(251, 48);
-            label4.TabIndex = 9;
-            label4.Text = "Item Manager:";
+            tabCustomerOrders.BackColor = Color.Gainsboro;
+            tabCustomerOrders.Controls.Add(cboOnlineOrderStore);
+            tabCustomerOrders.Controls.Add(btnPrepareOrder);
+            tabCustomerOrders.Controls.Add(dgvCustomerOrders);
+            tabCustomerOrders.Controls.Add(label15);
+            tabCustomerOrders.Location = new Point(4, 34);
+            tabCustomerOrders.Name = "tabCustomerOrders";
+            tabCustomerOrders.Size = new Size(1779, 682);
+            tabCustomerOrders.TabIndex = 8;
+            tabCustomerOrders.Text = "Customer Orders";
             // 
-            // btnUpdateItem
+            // cboOnlineOrderStore
             // 
-            btnUpdateItem.Location = new Point(1621, 616);
-            btnUpdateItem.Name = "btnUpdateItem";
-            btnUpdateItem.Size = new Size(112, 34);
-            btnUpdateItem.TabIndex = 8;
-            btnUpdateItem.Text = "&Edit";
-            btnUpdateItem.UseVisualStyleBackColor = true;
-            btnUpdateItem.Click += btnUpdateItem_Click;
+            cboOnlineOrderStore.FormattingEnabled = true;
+            cboOnlineOrderStore.Location = new Point(1471, 10);
+            cboOnlineOrderStore.Name = "cboOnlineOrderStore";
+            cboOnlineOrderStore.Size = new Size(275, 33);
+            cboOnlineOrderStore.TabIndex = 3;
+            cboOnlineOrderStore.Visible = false;
+            cboOnlineOrderStore.SelectedIndexChanged += cboOnlineOrderStore_SelectedIndexChanged;
             // 
-            // dgvItems
+            // btnPrepareOrder
             // 
-            dgvItems.AllowUserToAddRows = false;
-            dgvItems.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.Silver;
-            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvItems.Location = new Point(21, 57);
-            dgvItems.MultiSelect = false;
-            dgvItems.Name = "dgvItems";
-            dgvItems.ReadOnly = true;
-            dgvItems.RowHeadersVisible = false;
-            dgvItems.RowHeadersWidth = 62;
-            dgvItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvItems.Size = new Size(1731, 531);
-            dgvItems.TabIndex = 0;
-            dgvItems.TabStop = false;
-            dgvItems.SelectionChanged += dgvItems_SelectionChanged;
+            btnPrepareOrder.Location = new Point(1553, 629);
+            btnPrepareOrder.Name = "btnPrepareOrder";
+            btnPrepareOrder.Size = new Size(192, 34);
+            btnPrepareOrder.TabIndex = 2;
+            btnPrepareOrder.Text = "Prepare Online Order";
+            btnPrepareOrder.UseVisualStyleBackColor = true;
+            btnPrepareOrder.Click += btnPrepareOrder_Click;
             // 
-            // tabEmployees
+            // dgvCustomerOrders
             // 
-            tabEmployees.BackColor = Color.Gainsboro;
-            tabEmployees.Controls.Add(btnRemoveEmployee);
-            tabEmployees.Controls.Add(btnEditEmployee);
-            tabEmployees.Controls.Add(btnAddNewEmployee);
-            tabEmployees.Controls.Add(label5);
-            tabEmployees.Controls.Add(dgvEmployees);
-            tabEmployees.Location = new Point(4, 34);
-            tabEmployees.Name = "tabEmployees";
-            tabEmployees.Padding = new Padding(3);
-            tabEmployees.Size = new Size(1779, 682);
-            tabEmployees.TabIndex = 0;
-            tabEmployees.Text = "Employees";
+            dgvCustomerOrders.AllowUserToAddRows = false;
+            dgvCustomerOrders.AllowUserToDeleteRows = false;
+            dgvCustomerOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCustomerOrders.Location = new Point(33, 51);
+            dgvCustomerOrders.MultiSelect = false;
+            dgvCustomerOrders.Name = "dgvCustomerOrders";
+            dgvCustomerOrders.RowHeadersVisible = false;
+            dgvCustomerOrders.RowHeadersWidth = 62;
+            dgvCustomerOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCustomerOrders.Size = new Size(1713, 556);
+            dgvCustomerOrders.TabIndex = 1;
             // 
-            // btnRemoveEmployee
+            // label15
             // 
-            btnRemoveEmployee.Location = new Point(1356, 618);
-            btnRemoveEmployee.Name = "btnRemoveEmployee";
-            btnRemoveEmployee.Size = new Size(112, 34);
-            btnRemoveEmployee.TabIndex = 4;
-            btnRemoveEmployee.Text = "&Remove";
-            btnRemoveEmployee.UseVisualStyleBackColor = true;
-            btnRemoveEmployee.Click += btnRemoveEmployee_Click;
+            label15.AutoSize = true;
+            label15.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label15.Location = new Point(22, 0);
+            label15.Name = "label15";
+            label15.Size = new Size(299, 48);
+            label15.TabIndex = 0;
+            label15.Text = "Customer Orders:";
             // 
-            // btnEditEmployee
+            // tabTransactions
             // 
-            btnEditEmployee.Location = new Point(1488, 618);
-            btnEditEmployee.Name = "btnEditEmployee";
-            btnEditEmployee.Size = new Size(112, 34);
-            btnEditEmployee.TabIndex = 3;
-            btnEditEmployee.Text = "&Edit";
-            btnEditEmployee.UseVisualStyleBackColor = true;
-            btnEditEmployee.Click += btnEditEmployee_Click;
+            tabTransactions.BackColor = Color.Gainsboro;
+            tabTransactions.Controls.Add(btnEditTxn);
+            tabTransactions.Controls.Add(btnCancelTxn);
+            tabTransactions.Controls.Add(dgvTransactions);
+            tabTransactions.Controls.Add(label14);
+            tabTransactions.Location = new Point(4, 34);
+            tabTransactions.Name = "tabTransactions";
+            tabTransactions.Padding = new Padding(3);
+            tabTransactions.Size = new Size(1779, 682);
+            tabTransactions.TabIndex = 7;
+            tabTransactions.Text = "Company Transactions";
             // 
-            // btnAddNewEmployee
+            // btnEditTxn
             // 
-            btnAddNewEmployee.Location = new Point(1621, 618);
-            btnAddNewEmployee.Name = "btnAddNewEmployee";
-            btnAddNewEmployee.Size = new Size(112, 34);
-            btnAddNewEmployee.TabIndex = 2;
-            btnAddNewEmployee.Text = "Add New";
-            btnAddNewEmployee.UseVisualStyleBackColor = true;
-            btnAddNewEmployee.Click += btnAddNewEmployee_Click;
+            btnEditTxn.Location = new Point(1633, 635);
+            btnEditTxn.Name = "btnEditTxn";
+            btnEditTxn.Size = new Size(112, 34);
+            btnEditTxn.TabIndex = 10;
+            btnEditTxn.Text = "&Edit";
+            btnEditTxn.UseVisualStyleBackColor = true;
+            btnEditTxn.Visible = false;
+            btnEditTxn.Click += btnEditTxn_Click;
             // 
-            // label5
+            // btnCancelTxn
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(22, 5);
-            label5.Name = "label5";
-            label5.Size = new Size(334, 48);
-            label5.TabIndex = 1;
-            label5.Text = "Employee Manager:";
+            btnCancelTxn.Location = new Point(1491, 635);
+            btnCancelTxn.Name = "btnCancelTxn";
+            btnCancelTxn.Size = new Size(112, 34);
+            btnCancelTxn.TabIndex = 9;
+            btnCancelTxn.Text = "&Cancel";
+            btnCancelTxn.UseVisualStyleBackColor = true;
+            btnCancelTxn.Visible = false;
+            btnCancelTxn.Click += btnCancelTxn_Click;
             // 
-            // dgvEmployees
+            // dgvTransactions
             // 
-            dgvEmployees.AllowUserToAddRows = false;
-            dgvEmployees.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(224, 224, 224);
-            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
-            dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvEmployees.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmployees.Location = new Point(21, 57);
-            dgvEmployees.MultiSelect = false;
-            dgvEmployees.Name = "dgvEmployees";
-            dgvEmployees.ReadOnly = true;
-            dgvEmployees.RowHeadersVisible = false;
-            dgvEmployees.RowHeadersWidth = 62;
-            dgvEmployees.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvEmployees.Size = new Size(1731, 531);
-            dgvEmployees.TabIndex = 0;
-            dgvEmployees.TabStop = false;
-            dgvEmployees.SelectionChanged += dgvEmployees_SelectionChanged;
+            dgvTransactions.AllowUserToAddRows = false;
+            dgvTransactions.AllowUserToDeleteRows = false;
+            dgvTransactions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTransactions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTransactions.Location = new Point(33, 54);
+            dgvTransactions.MultiSelect = false;
+            dgvTransactions.Name = "dgvTransactions";
+            dgvTransactions.ReadOnly = true;
+            dgvTransactions.RowHeadersVisible = false;
+            dgvTransactions.RowHeadersWidth = 62;
+            dgvTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTransactions.Size = new Size(1712, 566);
+            dgvTransactions.TabIndex = 8;
             // 
-            // tabPermissions
+            // label14
             // 
-            tabPermissions.BackColor = Color.Gainsboro;
-            tabPermissions.Controls.Add(label2);
-            tabPermissions.Controls.Add(lstRoles);
-            tabPermissions.Controls.Add(btnSetRoles);
-            tabPermissions.Controls.Add(dgvPermissions);
-            tabPermissions.Location = new Point(4, 34);
-            tabPermissions.Name = "tabPermissions";
-            tabPermissions.Padding = new Padding(3);
-            tabPermissions.Size = new Size(1779, 682);
-            tabPermissions.TabIndex = 1;
-            tabPermissions.Text = "Permissions";
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label14.Location = new Point(23, 3);
+            label14.Name = "label14";
+            label14.Size = new Size(469, 48);
+            label14.TabIndex = 0;
+            label14.Text = "Bullseye Transaction History:";
             // 
-            // label2
+            // tabSuppliers
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(22, 5);
-            label2.Name = "label2";
-            label2.Size = new Size(515, 48);
-            label2.TabIndex = 9;
-            label2.Text = "Employee Permission Manager:";
+            tabSuppliers.BackColor = Color.Gainsboro;
+            tabSuppliers.Controls.Add(btnEditSupplier);
+            tabSuppliers.Controls.Add(btnAddSupplier);
+            tabSuppliers.Controls.Add(dgvSuppliers);
+            tabSuppliers.Controls.Add(label11);
+            tabSuppliers.Location = new Point(4, 34);
+            tabSuppliers.Name = "tabSuppliers";
+            tabSuppliers.Padding = new Padding(3);
+            tabSuppliers.Size = new Size(1779, 682);
+            tabSuppliers.TabIndex = 6;
+            tabSuppliers.Text = "Suppliers";
             // 
-            // lstRoles
+            // btnEditSupplier
             // 
-            lstRoles.BackColor = SystemColors.ControlDark;
-            lstRoles.DrawMode = DrawMode.OwnerDrawFixed;
-            lstRoles.FormattingEnabled = true;
-            lstRoles.ItemHeight = 40;
-            lstRoles.Location = new Point(1564, 58);
-            lstRoles.Name = "lstRoles";
-            lstRoles.SelectionMode = SelectionMode.MultiSimple;
-            lstRoles.Size = new Size(192, 524);
-            lstRoles.TabIndex = 8;
-            lstRoles.TabStop = false;
-            lstRoles.DrawItem += lstRoles_DrawItem;
+            btnEditSupplier.Location = new Point(1505, 635);
+            btnEditSupplier.Name = "btnEditSupplier";
+            btnEditSupplier.Size = new Size(112, 34);
+            btnEditSupplier.TabIndex = 10;
+            btnEditSupplier.Text = "&Edit";
+            btnEditSupplier.UseVisualStyleBackColor = true;
+            btnEditSupplier.Visible = false;
+            btnEditSupplier.Click += btnEditSupplier_Click;
             // 
-            // btnSetRoles
+            // btnAddSupplier
             // 
-            btnSetRoles.Location = new Point(1610, 604);
-            btnSetRoles.Name = "btnSetRoles";
-            btnSetRoles.Size = new Size(110, 34);
-            btnSetRoles.TabIndex = 1;
-            btnSetRoles.Text = "&Set Roles";
-            btnSetRoles.TextAlign = ContentAlignment.TopCenter;
-            btnSetRoles.UseVisualStyleBackColor = true;
-            btnSetRoles.Click += btnSetRoles_Click;
+            btnAddSupplier.Location = new Point(1637, 635);
+            btnAddSupplier.Name = "btnAddSupplier";
+            btnAddSupplier.Size = new Size(112, 34);
+            btnAddSupplier.TabIndex = 9;
+            btnAddSupplier.Text = "&Add";
+            btnAddSupplier.UseVisualStyleBackColor = true;
+            btnAddSupplier.Visible = false;
+            btnAddSupplier.Click += btnAddSupplier_Click;
             // 
-            // dgvPermissions
+            // dgvSuppliers
             // 
-            dgvPermissions.AllowUserToAddRows = false;
-            dgvPermissions.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = Color.FromArgb(224, 224, 224);
-            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvPermissions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvPermissions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvPermissions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPermissions.Location = new Point(22, 56);
-            dgvPermissions.MultiSelect = false;
-            dgvPermissions.Name = "dgvPermissions";
-            dgvPermissions.ReadOnly = true;
-            dgvPermissions.RowHeadersVisible = false;
-            dgvPermissions.RowHeadersWidth = 62;
-            dgvPermissions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPermissions.Size = new Size(1517, 597);
-            dgvPermissions.TabIndex = 0;
-            dgvPermissions.TabStop = false;
-            dgvPermissions.SelectionChanged += dgvPermissions_SelectionChanged;
+            dgvSuppliers.AllowUserToAddRows = false;
+            dgvSuppliers.AllowUserToDeleteRows = false;
+            dgvSuppliers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvSuppliers.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvSuppliers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSuppliers.Location = new Point(19, 54);
+            dgvSuppliers.MultiSelect = false;
+            dgvSuppliers.Name = "dgvSuppliers";
+            dgvSuppliers.ReadOnly = true;
+            dgvSuppliers.RowHeadersVisible = false;
+            dgvSuppliers.RowHeadersWidth = 62;
+            dgvSuppliers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSuppliers.Size = new Size(1730, 570);
+            dgvSuppliers.TabIndex = 8;
             // 
-            // tabInventory
+            // label11
             // 
-            tabInventory.BackColor = Color.Gainsboro;
-            tabInventory.Controls.Add(label12);
-            tabInventory.Controls.Add(comboBox1);
-            tabInventory.Controls.Add(txtSearchInventory);
-            tabInventory.Controls.Add(lblSearchBar);
-            tabInventory.Controls.Add(btnUpdateInventory);
-            tabInventory.Controls.Add(label6);
-            tabInventory.Controls.Add(dgvInventory);
-            tabInventory.Location = new Point(4, 34);
-            tabInventory.Name = "tabInventory";
-            tabInventory.Padding = new Padding(3);
-            tabInventory.Size = new Size(1779, 682);
-            tabInventory.TabIndex = 3;
-            tabInventory.Text = "Inventory";
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(681, 15);
-            label12.Name = "label12";
-            label12.Size = new Size(83, 25);
-            label12.TabIndex = 15;
-            label12.Text = "Location:";
-            label12.Visible = false;
-            // 
-            // comboBox1
-            // 
-            comboBox1.Enabled = false;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(770, 11);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(182, 33);
-            comboBox1.TabIndex = 14;
-            comboBox1.Visible = false;
-            // 
-            // txtSearchInventory
-            // 
-            txtSearchInventory.Enabled = false;
-            txtSearchInventory.Location = new Point(1037, 13);
-            txtSearchInventory.Name = "txtSearchInventory";
-            txtSearchInventory.Size = new Size(716, 31);
-            txtSearchInventory.TabIndex = 13;
-            txtSearchInventory.Visible = false;
-            txtSearchInventory.TextChanged += txtSearchInventory_TextChanged;
-            // 
-            // lblSearchBar
-            // 
-            lblSearchBar.AutoSize = true;
-            lblSearchBar.Location = new Point(967, 14);
-            lblSearchBar.Name = "lblSearchBar";
-            lblSearchBar.Size = new Size(68, 25);
-            lblSearchBar.TabIndex = 12;
-            lblSearchBar.Text = "Search:";
-            lblSearchBar.Visible = false;
-            // 
-            // btnUpdateInventory
-            // 
-            btnUpdateInventory.Location = new Point(1641, 631);
-            btnUpdateInventory.Name = "btnUpdateInventory";
-            btnUpdateInventory.Size = new Size(112, 34);
-            btnUpdateInventory.TabIndex = 11;
-            btnUpdateInventory.Text = "&Edit";
-            btnUpdateInventory.UseVisualStyleBackColor = true;
-            btnUpdateInventory.Visible = false;
-            btnUpdateInventory.Click += btnUpdateInventory_Click;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(22, 3);
-            label6.Name = "label6";
-            label6.Size = new Size(328, 48);
-            label6.TabIndex = 10;
-            label6.Text = "Inventory Manager:";
-            // 
-            // dgvInventory
-            // 
-            dgvInventory.AllowUserToAddRows = false;
-            dgvInventory.AllowUserToDeleteRows = false;
-            dgvInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInventory.Location = new Point(22, 54);
-            dgvInventory.MultiSelect = false;
-            dgvInventory.Name = "dgvInventory";
-            dgvInventory.RowHeadersVisible = false;
-            dgvInventory.RowHeadersWidth = 62;
-            dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvInventory.Size = new Size(1731, 561);
-            dgvInventory.TabIndex = 0;
-            // 
-            // tabLocations
-            // 
-            tabLocations.BackColor = Color.Gainsboro;
-            tabLocations.Controls.Add(btnRemoveLocation);
-            tabLocations.Controls.Add(btnUpdateLocation);
-            tabLocations.Controls.Add(btnAddLocation);
-            tabLocations.Controls.Add(label7);
-            tabLocations.Controls.Add(dgvLocations);
-            tabLocations.Location = new Point(4, 34);
-            tabLocations.Name = "tabLocations";
-            tabLocations.Padding = new Padding(3);
-            tabLocations.Size = new Size(1779, 682);
-            tabLocations.TabIndex = 4;
-            tabLocations.Text = "Locations";
-            // 
-            // btnRemoveLocation
-            // 
-            btnRemoveLocation.Location = new Point(1365, 631);
-            btnRemoveLocation.Name = "btnRemoveLocation";
-            btnRemoveLocation.Size = new Size(112, 34);
-            btnRemoveLocation.TabIndex = 14;
-            btnRemoveLocation.Text = "&Remove";
-            btnRemoveLocation.UseVisualStyleBackColor = true;
-            btnRemoveLocation.Visible = false;
-            // 
-            // btnUpdateLocation
-            // 
-            btnUpdateLocation.Location = new Point(1500, 631);
-            btnUpdateLocation.Name = "btnUpdateLocation";
-            btnUpdateLocation.Size = new Size(112, 34);
-            btnUpdateLocation.TabIndex = 13;
-            btnUpdateLocation.Text = "&Edit";
-            btnUpdateLocation.UseVisualStyleBackColor = true;
-            btnUpdateLocation.Visible = false;
-            btnUpdateLocation.Click += btnUpdateLocation_Click;
-            // 
-            // btnAddLocation
-            // 
-            btnAddLocation.Location = new Point(1633, 631);
-            btnAddLocation.Name = "btnAddLocation";
-            btnAddLocation.Size = new Size(112, 34);
-            btnAddLocation.TabIndex = 12;
-            btnAddLocation.Text = "&Add";
-            btnAddLocation.UseVisualStyleBackColor = true;
-            btnAddLocation.Visible = false;
-            btnAddLocation.Click += btnAddLocation_Click;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(22, 3);
-            label7.Name = "label7";
-            label7.Size = new Size(314, 48);
-            label7.TabIndex = 11;
-            label7.Text = "Location Manager:";
-            // 
-            // dgvLocations
-            // 
-            dgvLocations.AllowUserToAddRows = false;
-            dgvLocations.AllowUserToDeleteRows = false;
-            dgvLocations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvLocations.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvLocations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvLocations.Location = new Point(22, 54);
-            dgvLocations.MultiSelect = false;
-            dgvLocations.Name = "dgvLocations";
-            dgvLocations.ReadOnly = true;
-            dgvLocations.RowHeadersVisible = false;
-            dgvLocations.RowHeadersWidth = 62;
-            dgvLocations.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvLocations.Size = new Size(1723, 558);
-            dgvLocations.TabIndex = 0;
-            dgvLocations.TabStop = false;
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label11.Location = new Point(19, 3);
+            label11.Name = "label11";
+            label11.Size = new Size(310, 48);
+            label11.TabIndex = 0;
+            label11.Text = "Supplier Manager:";
             // 
             // tabOrders
             // 
             tabOrders.BackColor = Color.Gainsboro;
-            tabOrders.Controls.Add(btnOnlineOrderPrepared);
+            tabOrders.Controls.Add(btnPickUpOrder);
             tabOrders.Controls.Add(btnDeliverStoreOrder);
             tabOrders.Controls.Add(btnCheckOrderSubmissions);
             tabOrders.Controls.Add(btnBackOrder);
@@ -630,16 +442,16 @@
             tabOrders.TabIndex = 5;
             tabOrders.Text = "Orders";
             // 
-            // btnOnlineOrderPrepared
+            // btnPickUpOrder
             // 
-            btnOnlineOrderPrepared.Location = new Point(1003, 629);
-            btnOnlineOrderPrepared.Name = "btnOnlineOrderPrepared";
-            btnOnlineOrderPrepared.Size = new Size(191, 34);
-            btnOnlineOrderPrepared.TabIndex = 18;
-            btnOnlineOrderPrepared.Text = "Prepare Online Order";
-            btnOnlineOrderPrepared.UseVisualStyleBackColor = true;
-            btnOnlineOrderPrepared.Visible = false;
-            btnOnlineOrderPrepared.Click += btnOnlineOrderPrepared_Click;
+            btnPickUpOrder.Location = new Point(1003, 629);
+            btnPickUpOrder.Name = "btnPickUpOrder";
+            btnPickUpOrder.Size = new Size(134, 34);
+            btnPickUpOrder.TabIndex = 19;
+            btnPickUpOrder.Text = "Driver Pickup";
+            btnPickUpOrder.UseVisualStyleBackColor = true;
+            btnPickUpOrder.Visible = false;
+            btnPickUpOrder.Click += btnPickUpOrder_Click;
             // 
             // btnDeliverStoreOrder
             // 
@@ -813,145 +625,401 @@
             dgvOrders.Size = new Size(1729, 561);
             dgvOrders.TabIndex = 0;
             // 
-            // tabSuppliers
+            // tabLocations
             // 
-            tabSuppliers.BackColor = Color.Gainsboro;
-            tabSuppliers.Controls.Add(btnEditSupplier);
-            tabSuppliers.Controls.Add(btnAddSupplier);
-            tabSuppliers.Controls.Add(dgvSuppliers);
-            tabSuppliers.Controls.Add(label11);
-            tabSuppliers.Location = new Point(4, 34);
-            tabSuppliers.Name = "tabSuppliers";
-            tabSuppliers.Padding = new Padding(3);
-            tabSuppliers.Size = new Size(1779, 682);
-            tabSuppliers.TabIndex = 6;
-            tabSuppliers.Text = "Suppliers";
+            tabLocations.BackColor = Color.Gainsboro;
+            tabLocations.Controls.Add(btnRemoveLocation);
+            tabLocations.Controls.Add(btnUpdateLocation);
+            tabLocations.Controls.Add(btnAddLocation);
+            tabLocations.Controls.Add(label7);
+            tabLocations.Controls.Add(dgvLocations);
+            tabLocations.Location = new Point(4, 34);
+            tabLocations.Name = "tabLocations";
+            tabLocations.Padding = new Padding(3);
+            tabLocations.Size = new Size(1779, 682);
+            tabLocations.TabIndex = 4;
+            tabLocations.Text = "Locations";
             // 
-            // btnEditSupplier
+            // btnRemoveLocation
             // 
-            btnEditSupplier.Location = new Point(1505, 635);
-            btnEditSupplier.Name = "btnEditSupplier";
-            btnEditSupplier.Size = new Size(112, 34);
-            btnEditSupplier.TabIndex = 10;
-            btnEditSupplier.Text = "&Edit";
-            btnEditSupplier.UseVisualStyleBackColor = true;
-            btnEditSupplier.Visible = false;
-            btnEditSupplier.Click += btnEditSupplier_Click;
+            btnRemoveLocation.Location = new Point(1365, 631);
+            btnRemoveLocation.Name = "btnRemoveLocation";
+            btnRemoveLocation.Size = new Size(112, 34);
+            btnRemoveLocation.TabIndex = 14;
+            btnRemoveLocation.Text = "&Remove";
+            btnRemoveLocation.UseVisualStyleBackColor = true;
+            btnRemoveLocation.Visible = false;
             // 
-            // btnAddSupplier
+            // btnUpdateLocation
             // 
-            btnAddSupplier.Location = new Point(1637, 635);
-            btnAddSupplier.Name = "btnAddSupplier";
-            btnAddSupplier.Size = new Size(112, 34);
-            btnAddSupplier.TabIndex = 9;
-            btnAddSupplier.Text = "&Add";
-            btnAddSupplier.UseVisualStyleBackColor = true;
-            btnAddSupplier.Visible = false;
-            btnAddSupplier.Click += btnAddSupplier_Click;
+            btnUpdateLocation.Location = new Point(1500, 631);
+            btnUpdateLocation.Name = "btnUpdateLocation";
+            btnUpdateLocation.Size = new Size(112, 34);
+            btnUpdateLocation.TabIndex = 13;
+            btnUpdateLocation.Text = "&Edit";
+            btnUpdateLocation.UseVisualStyleBackColor = true;
+            btnUpdateLocation.Visible = false;
+            btnUpdateLocation.Click += btnUpdateLocation_Click;
             // 
-            // dgvSuppliers
+            // btnAddLocation
             // 
-            dgvSuppliers.AllowUserToAddRows = false;
-            dgvSuppliers.AllowUserToDeleteRows = false;
-            dgvSuppliers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvSuppliers.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvSuppliers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSuppliers.Location = new Point(19, 54);
-            dgvSuppliers.MultiSelect = false;
-            dgvSuppliers.Name = "dgvSuppliers";
-            dgvSuppliers.ReadOnly = true;
-            dgvSuppliers.RowHeadersVisible = false;
-            dgvSuppliers.RowHeadersWidth = 62;
-            dgvSuppliers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSuppliers.Size = new Size(1730, 570);
-            dgvSuppliers.TabIndex = 8;
+            btnAddLocation.Location = new Point(1633, 631);
+            btnAddLocation.Name = "btnAddLocation";
+            btnAddLocation.Size = new Size(112, 34);
+            btnAddLocation.TabIndex = 12;
+            btnAddLocation.Text = "&Add";
+            btnAddLocation.UseVisualStyleBackColor = true;
+            btnAddLocation.Visible = false;
+            btnAddLocation.Click += btnAddLocation_Click;
             // 
-            // label11
+            // label7
             // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label11.Location = new Point(19, 3);
-            label11.Name = "label11";
-            label11.Size = new Size(310, 48);
-            label11.TabIndex = 0;
-            label11.Text = "Supplier Manager:";
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(22, 3);
+            label7.Name = "label7";
+            label7.Size = new Size(314, 48);
+            label7.TabIndex = 11;
+            label7.Text = "Location Manager:";
             // 
-            // tabTransactions
+            // dgvLocations
             // 
-            tabTransactions.BackColor = Color.Gainsboro;
-            tabTransactions.Controls.Add(btnEditTxn);
-            tabTransactions.Controls.Add(btnCancelTxn);
-            tabTransactions.Controls.Add(dgvTransactions);
-            tabTransactions.Controls.Add(label14);
-            tabTransactions.Location = new Point(4, 34);
-            tabTransactions.Name = "tabTransactions";
-            tabTransactions.Padding = new Padding(3);
-            tabTransactions.Size = new Size(1779, 682);
-            tabTransactions.TabIndex = 7;
-            tabTransactions.Text = "Company Transactions";
+            dgvLocations.AllowUserToAddRows = false;
+            dgvLocations.AllowUserToDeleteRows = false;
+            dgvLocations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvLocations.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvLocations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvLocations.Location = new Point(22, 54);
+            dgvLocations.MultiSelect = false;
+            dgvLocations.Name = "dgvLocations";
+            dgvLocations.ReadOnly = true;
+            dgvLocations.RowHeadersVisible = false;
+            dgvLocations.RowHeadersWidth = 62;
+            dgvLocations.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLocations.Size = new Size(1723, 558);
+            dgvLocations.TabIndex = 0;
+            dgvLocations.TabStop = false;
             // 
-            // btnEditTxn
+            // tabInventory
             // 
-            btnEditTxn.Location = new Point(1633, 635);
-            btnEditTxn.Name = "btnEditTxn";
-            btnEditTxn.Size = new Size(112, 34);
-            btnEditTxn.TabIndex = 10;
-            btnEditTxn.Text = "&Edit";
-            btnEditTxn.UseVisualStyleBackColor = true;
-            btnEditTxn.Click += btnEditTxn_Click;
+            tabInventory.BackColor = Color.Gainsboro;
+            tabInventory.Controls.Add(label12);
+            tabInventory.Controls.Add(comboBox1);
+            tabInventory.Controls.Add(txtSearchInventory);
+            tabInventory.Controls.Add(lblSearchBar);
+            tabInventory.Controls.Add(btnUpdateInventory);
+            tabInventory.Controls.Add(label6);
+            tabInventory.Controls.Add(dgvInventory);
+            tabInventory.Location = new Point(4, 34);
+            tabInventory.Name = "tabInventory";
+            tabInventory.Padding = new Padding(3);
+            tabInventory.Size = new Size(1779, 682);
+            tabInventory.TabIndex = 3;
+            tabInventory.Text = "Inventory";
             // 
-            // btnCancelTxn
+            // label12
             // 
-            btnCancelTxn.Location = new Point(1491, 635);
-            btnCancelTxn.Name = "btnCancelTxn";
-            btnCancelTxn.Size = new Size(112, 34);
-            btnCancelTxn.TabIndex = 9;
-            btnCancelTxn.Text = "&Cancel";
-            btnCancelTxn.UseVisualStyleBackColor = true;
-            btnCancelTxn.Click += btnCancelTxn_Click;
+            label12.AutoSize = true;
+            label12.Location = new Point(681, 15);
+            label12.Name = "label12";
+            label12.Size = new Size(83, 25);
+            label12.TabIndex = 15;
+            label12.Text = "Location:";
+            label12.Visible = false;
             // 
-            // dgvTransactions
+            // comboBox1
             // 
-            dgvTransactions.AllowUserToAddRows = false;
-            dgvTransactions.AllowUserToDeleteRows = false;
-            dgvTransactions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvTransactions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTransactions.Location = new Point(33, 54);
-            dgvTransactions.MultiSelect = false;
-            dgvTransactions.Name = "dgvTransactions";
-            dgvTransactions.ReadOnly = true;
-            dgvTransactions.RowHeadersVisible = false;
-            dgvTransactions.RowHeadersWidth = 62;
-            dgvTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTransactions.Size = new Size(1712, 566);
-            dgvTransactions.TabIndex = 8;
+            comboBox1.Enabled = false;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(770, 11);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(182, 33);
+            comboBox1.TabIndex = 14;
+            comboBox1.Visible = false;
             // 
-            // label14
+            // txtSearchInventory
             // 
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label14.Location = new Point(23, 3);
-            label14.Name = "label14";
-            label14.Size = new Size(469, 48);
-            label14.TabIndex = 0;
-            label14.Text = "Bullseye Transaction History:";
+            txtSearchInventory.Enabled = false;
+            txtSearchInventory.Location = new Point(1037, 13);
+            txtSearchInventory.Name = "txtSearchInventory";
+            txtSearchInventory.Size = new Size(716, 31);
+            txtSearchInventory.TabIndex = 13;
+            txtSearchInventory.Visible = false;
+            txtSearchInventory.TextChanged += txtSearchInventory_TextChanged;
             // 
-            // imgLstNotification
+            // lblSearchBar
             // 
-            imgLstNotification.ColorDepth = ColorDepth.Depth32Bit;
-            imgLstNotification.ImageStream = (ImageListStreamer)resources.GetObject("imgLstNotification.ImageStream");
-            imgLstNotification.TransparentColor = Color.Transparent;
-            imgLstNotification.Images.SetKeyName(0, "notifications_active_16dp_FF0000_FILL0_wght400_GRAD0_opsz20.png");
+            lblSearchBar.AutoSize = true;
+            lblSearchBar.Location = new Point(967, 14);
+            lblSearchBar.Name = "lblSearchBar";
+            lblSearchBar.Size = new Size(68, 25);
+            lblSearchBar.TabIndex = 12;
+            lblSearchBar.Text = "Search:";
+            lblSearchBar.Visible = false;
             // 
-            // nfIconOrderSubmitted
+            // btnUpdateInventory
             // 
-            nfIconOrderSubmitted.BalloonTipIcon = ToolTipIcon.Info;
-            nfIconOrderSubmitted.BalloonTipText = "\"An order requires your attention. Please visit the orders tab to receive the new order.";
-            nfIconOrderSubmitted.BalloonTipTitle = "\"Order Submitted\"";
-            nfIconOrderSubmitted.Icon = (Icon)resources.GetObject("nfIconOrderSubmitted.Icon");
-            nfIconOrderSubmitted.Text = "Order Submitted By Store\r\n";
-            nfIconOrderSubmitted.Visible = true;
+            btnUpdateInventory.Location = new Point(1641, 631);
+            btnUpdateInventory.Name = "btnUpdateInventory";
+            btnUpdateInventory.Size = new Size(112, 34);
+            btnUpdateInventory.TabIndex = 11;
+            btnUpdateInventory.Text = "&Edit";
+            btnUpdateInventory.UseVisualStyleBackColor = true;
+            btnUpdateInventory.Visible = false;
+            btnUpdateInventory.Click += btnUpdateInventory_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(22, 3);
+            label6.Name = "label6";
+            label6.Size = new Size(328, 48);
+            label6.TabIndex = 10;
+            label6.Text = "Inventory Manager:";
+            // 
+            // dgvInventory
+            // 
+            dgvInventory.AllowUserToAddRows = false;
+            dgvInventory.AllowUserToDeleteRows = false;
+            dgvInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvInventory.Location = new Point(22, 54);
+            dgvInventory.MultiSelect = false;
+            dgvInventory.Name = "dgvInventory";
+            dgvInventory.RowHeadersVisible = false;
+            dgvInventory.RowHeadersWidth = 62;
+            dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvInventory.Size = new Size(1731, 561);
+            dgvInventory.TabIndex = 0;
+            // 
+            // tabPermissions
+            // 
+            tabPermissions.BackColor = Color.Gainsboro;
+            tabPermissions.Controls.Add(label2);
+            tabPermissions.Controls.Add(lstRoles);
+            tabPermissions.Controls.Add(btnSetRoles);
+            tabPermissions.Controls.Add(dgvPermissions);
+            tabPermissions.Location = new Point(4, 34);
+            tabPermissions.Name = "tabPermissions";
+            tabPermissions.Padding = new Padding(3);
+            tabPermissions.Size = new Size(1779, 682);
+            tabPermissions.TabIndex = 1;
+            tabPermissions.Text = "Permissions";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(22, 5);
+            label2.Name = "label2";
+            label2.Size = new Size(515, 48);
+            label2.TabIndex = 9;
+            label2.Text = "Employee Permission Manager:";
+            // 
+            // lstRoles
+            // 
+            lstRoles.BackColor = SystemColors.ControlDark;
+            lstRoles.DrawMode = DrawMode.OwnerDrawFixed;
+            lstRoles.FormattingEnabled = true;
+            lstRoles.ItemHeight = 40;
+            lstRoles.Location = new Point(1564, 58);
+            lstRoles.Name = "lstRoles";
+            lstRoles.SelectionMode = SelectionMode.MultiSimple;
+            lstRoles.Size = new Size(192, 524);
+            lstRoles.TabIndex = 8;
+            lstRoles.TabStop = false;
+            lstRoles.DrawItem += lstRoles_DrawItem;
+            // 
+            // btnSetRoles
+            // 
+            btnSetRoles.Location = new Point(1610, 604);
+            btnSetRoles.Name = "btnSetRoles";
+            btnSetRoles.Size = new Size(110, 34);
+            btnSetRoles.TabIndex = 1;
+            btnSetRoles.Text = "&Set Roles";
+            btnSetRoles.TextAlign = ContentAlignment.TopCenter;
+            btnSetRoles.UseVisualStyleBackColor = true;
+            btnSetRoles.Click += btnSetRoles_Click;
+            // 
+            // dgvPermissions
+            // 
+            dgvPermissions.AllowUserToAddRows = false;
+            dgvPermissions.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvPermissions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPermissions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvPermissions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPermissions.Location = new Point(22, 56);
+            dgvPermissions.MultiSelect = false;
+            dgvPermissions.Name = "dgvPermissions";
+            dgvPermissions.ReadOnly = true;
+            dgvPermissions.RowHeadersVisible = false;
+            dgvPermissions.RowHeadersWidth = 62;
+            dgvPermissions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPermissions.Size = new Size(1517, 597);
+            dgvPermissions.TabIndex = 0;
+            dgvPermissions.TabStop = false;
+            dgvPermissions.SelectionChanged += dgvPermissions_SelectionChanged;
+            // 
+            // tabEmployees
+            // 
+            tabEmployees.BackColor = Color.Gainsboro;
+            tabEmployees.Controls.Add(btnRemoveEmployee);
+            tabEmployees.Controls.Add(btnEditEmployee);
+            tabEmployees.Controls.Add(btnAddNewEmployee);
+            tabEmployees.Controls.Add(label5);
+            tabEmployees.Controls.Add(dgvEmployees);
+            tabEmployees.Location = new Point(4, 34);
+            tabEmployees.Name = "tabEmployees";
+            tabEmployees.Padding = new Padding(3);
+            tabEmployees.Size = new Size(1779, 682);
+            tabEmployees.TabIndex = 0;
+            tabEmployees.Text = "Employees";
+            // 
+            // btnRemoveEmployee
+            // 
+            btnRemoveEmployee.Location = new Point(1356, 618);
+            btnRemoveEmployee.Name = "btnRemoveEmployee";
+            btnRemoveEmployee.Size = new Size(112, 34);
+            btnRemoveEmployee.TabIndex = 4;
+            btnRemoveEmployee.Text = "&Remove";
+            btnRemoveEmployee.UseVisualStyleBackColor = true;
+            btnRemoveEmployee.Click += btnRemoveEmployee_Click;
+            // 
+            // btnEditEmployee
+            // 
+            btnEditEmployee.Location = new Point(1488, 618);
+            btnEditEmployee.Name = "btnEditEmployee";
+            btnEditEmployee.Size = new Size(112, 34);
+            btnEditEmployee.TabIndex = 3;
+            btnEditEmployee.Text = "&Edit";
+            btnEditEmployee.UseVisualStyleBackColor = true;
+            btnEditEmployee.Click += btnEditEmployee_Click;
+            // 
+            // btnAddNewEmployee
+            // 
+            btnAddNewEmployee.Location = new Point(1621, 618);
+            btnAddNewEmployee.Name = "btnAddNewEmployee";
+            btnAddNewEmployee.Size = new Size(112, 34);
+            btnAddNewEmployee.TabIndex = 2;
+            btnAddNewEmployee.Text = "Add New";
+            btnAddNewEmployee.UseVisualStyleBackColor = true;
+            btnAddNewEmployee.Click += btnAddNewEmployee_Click;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(22, 5);
+            label5.Name = "label5";
+            label5.Size = new Size(334, 48);
+            label5.TabIndex = 1;
+            label5.Text = "Employee Manager:";
+            // 
+            // dgvEmployees
+            // 
+            dgvEmployees.AllowUserToAddRows = false;
+            dgvEmployees.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
+            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEmployees.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvEmployees.Location = new Point(21, 57);
+            dgvEmployees.MultiSelect = false;
+            dgvEmployees.Name = "dgvEmployees";
+            dgvEmployees.ReadOnly = true;
+            dgvEmployees.RowHeadersVisible = false;
+            dgvEmployees.RowHeadersWidth = 62;
+            dgvEmployees.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvEmployees.Size = new Size(1731, 531);
+            dgvEmployees.TabIndex = 0;
+            dgvEmployees.TabStop = false;
+            dgvEmployees.SelectionChanged += dgvEmployees_SelectionChanged;
+            // 
+            // tabDashboard
+            // 
+            tabDashboard.Controls.Add(tabItems);
+            tabDashboard.Controls.Add(tabEmployees);
+            tabDashboard.Controls.Add(tabPermissions);
+            tabDashboard.Controls.Add(tabInventory);
+            tabDashboard.Controls.Add(tabLocations);
+            tabDashboard.Controls.Add(tabOrders);
+            tabDashboard.Controls.Add(tabSuppliers);
+            tabDashboard.Controls.Add(tabTransactions);
+            tabDashboard.Controls.Add(tabCustomerOrders);
+            tabDashboard.ImageList = imgLstNotification;
+            tabDashboard.Location = new Point(55, 191);
+            tabDashboard.Name = "tabDashboard";
+            tabDashboard.SelectedIndex = 0;
+            tabDashboard.Size = new Size(1787, 720);
+            tabDashboard.TabIndex = 7;
+            tabDashboard.TabStop = false;
+            tabDashboard.DrawItem += tabDashboard_DrawItem;
+            tabDashboard.SelectedIndexChanged += tabDashboard_SelectedIndexChanged;
+            // 
+            // tabItems
+            // 
+            tabItems.BackColor = Color.Gainsboro;
+            tabItems.Controls.Add(label4);
+            tabItems.Controls.Add(btnUpdateItem);
+            tabItems.Controls.Add(dgvItems);
+            tabItems.Location = new Point(4, 34);
+            tabItems.Name = "tabItems";
+            tabItems.Size = new Size(1779, 682);
+            tabItems.TabIndex = 2;
+            tabItems.Text = "Items";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(23, 4);
+            label4.Name = "label4";
+            label4.Size = new Size(0, 48);
+            label4.TabIndex = 9;
+            // 
+            // btnUpdateItem
+            // 
+            btnUpdateItem.Location = new Point(1621, 616);
+            btnUpdateItem.Name = "btnUpdateItem";
+            btnUpdateItem.Size = new Size(112, 34);
+            btnUpdateItem.TabIndex = 8;
+            btnUpdateItem.Text = "&Edit";
+            btnUpdateItem.UseVisualStyleBackColor = true;
+            btnUpdateItem.Click += btnUpdateItem_Click;
+            // 
+            // dgvItems
+            // 
+            dgvItems.AllowUserToAddRows = false;
+            dgvItems.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle3.BackColor = Color.Silver;
+            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvItems.Location = new Point(21, 57);
+            dgvItems.MultiSelect = false;
+            dgvItems.Name = "dgvItems";
+            dgvItems.ReadOnly = true;
+            dgvItems.RowHeadersVisible = false;
+            dgvItems.RowHeadersWidth = 62;
+            dgvItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvItems.Size = new Size(1731, 531);
+            dgvItems.TabIndex = 0;
+            dgvItems.TabStop = false;
+            dgvItems.SelectionChanged += dgvItems_SelectionChanged;
             // 
             // frmDashboard
             // 
@@ -978,31 +1046,6 @@
             Load += FrmDashboard_Load;
             HelpRequested += frmDashboard_HelpRequested;
             ((System.ComponentModel.ISupportInitialize)picBullseyeLogo).EndInit();
-            tabDashboard.ResumeLayout(false);
-            tabItems.ResumeLayout(false);
-            tabItems.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvItems).EndInit();
-            tabEmployees.ResumeLayout(false);
-            tabEmployees.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEmployees).EndInit();
-            tabPermissions.ResumeLayout(false);
-            tabPermissions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPermissions).EndInit();
-            tabInventory.ResumeLayout(false);
-            tabInventory.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
-            tabLocations.ResumeLayout(false);
-            tabLocations.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvLocations).EndInit();
-            tabOrders.ResumeLayout(false);
-            tabOrders.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
-            tabSuppliers.ResumeLayout(false);
-            tabSuppliers.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvSuppliers).EndInit();
-            tabTransactions.ResumeLayout(false);
-            tabTransactions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvTransactions).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployeesForPermissions).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsItems).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployees).EndInit();
@@ -1011,6 +1054,35 @@
             ((System.ComponentModel.ISupportInitialize)bsOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsSuppliers).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsTransactionHistory).EndInit();
+            tabCustomerOrders.ResumeLayout(false);
+            tabCustomerOrders.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerOrders).EndInit();
+            tabTransactions.ResumeLayout(false);
+            tabTransactions.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTransactions).EndInit();
+            tabSuppliers.ResumeLayout(false);
+            tabSuppliers.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSuppliers).EndInit();
+            tabOrders.ResumeLayout(false);
+            tabOrders.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
+            tabLocations.ResumeLayout(false);
+            tabLocations.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvLocations).EndInit();
+            tabInventory.ResumeLayout(false);
+            tabInventory.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
+            tabPermissions.ResumeLayout(false);
+            tabPermissions.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPermissions).EndInit();
+            tabEmployees.ResumeLayout(false);
+            tabEmployees.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvEmployees).EndInit();
+            tabDashboard.ResumeLayout(false);
+            tabItems.ResumeLayout(false);
+            tabItems.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvItems).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bsCustomerOrders).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1024,73 +1096,79 @@
         private Label lblLocation;
         private Button btnSignOut;
         private Button btnRefresh;
-        private TabControl tabDashboard;
-        private TabPage tabEmployees;
-        private TabPage tabPermissions;
-        private Button btnSetRoles;
-        private DataGridView dgvPermissions;
-        private TabPage tabItems;
         private BindingSource bsEmployeesForPermissions;
-        private ListBox lstRoles;
-        private DataGridView dgvItems;
         private BindingSource bsItems;
-        private Button btnUpdateItem;
-        private Label label2;
-        private Label label4;
-        private Label label5;
-        private DataGridView dgvEmployees;
-        private Button btnRemoveEmployee;
-        private Button btnEditEmployee;
-        private Button btnAddNewEmployee;
         private BindingSource bsEmployees;
-        private TabPage tabInventory;
-        private Label label6;
-        private DataGridView dgvInventory;
         private BindingSource bsInventory;
-        private Button btnUpdateInventory;
-        private TextBox txtSearchInventory;
-        private Label lblSearchBar;
-        private TabPage tabLocations;
-        private Label label7;
-        private DataGridView dgvLocations;
-        private Button btnRemoveLocation;
-        private Button btnUpdateLocation;
-        private Button btnAddLocation;
         private BindingSource bsLocations;
+        private BindingSource bsOrders;
+        private NotifyIcon nfIconOrderSubmitted;
+        private ImageList imgLstNotification;
+        private BindingSource bsSuppliers;
+        private BindingSource bsTransactionHistory;
+        private TabPage tabCustomerOrders;
+        private DataGridView dgvCustomerOrders;
+        private Label label15;
+        private TabPage tabTransactions;
+        private Button btnEditTxn;
+        private Button btnCancelTxn;
+        private DataGridView dgvTransactions;
+        private Label label14;
+        private TabPage tabSuppliers;
+        private Button btnEditSupplier;
+        private Button btnAddSupplier;
+        private DataGridView dgvSuppliers;
+        private Label label11;
         private TabPage tabOrders;
+        private Button btnPickUpOrder;
+        private Button btnDeliverStoreOrder;
+        private Button btnCheckOrderSubmissions;
+        private Button btnBackOrder;
+        private Button btnCreateEmergencyOrder;
+        private Button btnCreateStandardOrder;
+        private Button btnAllocateInventory;
+        private Button btnFulfillOrder;
+        private ComboBox cboOrderLocation;
+        private Label label13;
+        private Button btnReceiveOrder;
         private Label label10;
         private Label label9;
         private ComboBox cboOrderStatus;
         private ComboBox cboOrderType;
         private Label label8;
         private DataGridView dgvOrders;
-        private Button btnReceiveOrder;
-        private BindingSource bsOrders;
-        private ComboBox comboBox1;
+        private TabPage tabLocations;
+        private Button btnRemoveLocation;
+        private Button btnUpdateLocation;
+        private Button btnAddLocation;
+        private Label label7;
+        private DataGridView dgvLocations;
+        private TabPage tabInventory;
         private Label label12;
-        private ComboBox cboOrderLocation;
-        private Label label13;
-        private Button btnFulfillOrder;
-        private NotifyIcon nfIconOrderSubmitted;
-        private ImageList imgLstNotification;
-        private Button btnAllocateInventory;
-        private Button btnCreateEmergencyOrder;
-        private Button btnCreateStandardOrder;
-        private Button btnBackOrder;
-        private TabPage tabSuppliers;
-        private Label label11;
-        private DataGridView dgvSuppliers;
-        private BindingSource bsSuppliers;
-        private Button btnEditSupplier;
-        private Button btnAddSupplier;
-        private TabPage tabTransactions;
-        private Label label14;
-        private Button btnEditTxn;
-        private Button btnCancelTxn;
-        private DataGridView dgvTransactions;
-        private BindingSource bsTransactionHistory;
-        private Button btnCheckOrderSubmissions;
-        private Button btnDeliverStoreOrder;
-        private Button btnOnlineOrderPrepared;
+        private ComboBox comboBox1;
+        private TextBox txtSearchInventory;
+        private Label lblSearchBar;
+        private Button btnUpdateInventory;
+        private Label label6;
+        private DataGridView dgvInventory;
+        private TabPage tabPermissions;
+        private Label label2;
+        private ListBox lstRoles;
+        private Button btnSetRoles;
+        private DataGridView dgvPermissions;
+        private TabPage tabEmployees;
+        private Button btnRemoveEmployee;
+        private Button btnEditEmployee;
+        private Button btnAddNewEmployee;
+        private Label label5;
+        private DataGridView dgvEmployees;
+        private TabControl tabDashboard;
+        private TabPage tabItems;
+        private Label label4;
+        private Button btnUpdateItem;
+        private DataGridView dgvItems;
+        private BindingSource bsCustomerOrders;
+        private Button btnPrepareOrder;
+        private ComboBox cboOnlineOrderStore;
     }
 }

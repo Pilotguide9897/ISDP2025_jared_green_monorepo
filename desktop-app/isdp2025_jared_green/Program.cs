@@ -123,10 +123,16 @@ namespace idsp2025_jared_green
                     return ActivatorUtilities.CreateInstance<frmPrepareOnlineOrder>(sp, employeeID);
                 });
 
-                services.AddTransient<Func<int, frmAcceptStoreOrder>>(sp => (employeeID) =>
+                services.AddTransient<Func<Employee, frmAcceptStoreOrder>>(sp => (Employee) =>
                 {
-                    return ActivatorUtilities.CreateInstance<frmAcceptStoreOrder>(sp, employeeID);
+                    return ActivatorUtilities.CreateInstance<frmAcceptStoreOrder>(sp, Employee);
                 });
+
+                services.AddTransient<Func<Employee, frmPickupStoreOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmPickupStoreOrder>(sp, Employee);
+                });
+
 
                 services.AddTransient<Func<int, frmModifyTxnRecord>>(sp => (employeeID) =>
                 {
@@ -141,10 +147,6 @@ namespace idsp2025_jared_green
                     return ActivatorUtilities.CreateInstance<frmAssignInventory>(sp, orderID, employeeID);
                 });
 
-                services.AddTransient<Func<int, int, frmAssignInventory>>(sp => (orderID, employeeID) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmAssignInventory>(sp, orderID, employeeID);
-                });
             });
         }
 

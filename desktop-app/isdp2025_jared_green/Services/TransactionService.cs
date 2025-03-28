@@ -782,7 +782,7 @@ namespace idsp2025_jared_green.Services
             }
         }
 
-        public async  Task<object> SaveChangesToTransaction(Txn transaction)
+        public async Task<object> SaveChangesToTransaction(Txn transaction)
         {
             try {
 
@@ -859,6 +859,46 @@ namespace idsp2025_jared_green.Services
             catch (Exception ex)
             {
                 _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get transaction log");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
+
+        public async Task<object> GetOnlineOrders()
+        {
+            try
+            {
+
+                List<Txn> onOrds = await (from onlineOrder in _bullseyeContext.Txns where onlineOrder.TxnType == "Online" select onlineOrder).ToListAsync();
+
+                if (onOrds != null)
+                {
+                    BindingList<Txn> result = new BindingList<Txn>(onOrds);
+                    return result;
+                }
+                else
+                {
+                    _transactionLogger.Error("Unable to get online orders", $"An unexpected error occurred when when attempting to a record of online orders");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to to get online orders.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to get online orders.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _transactionLogger.Error(toEx, "Operation timed out when when attempting to get online orders.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get online orders");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }

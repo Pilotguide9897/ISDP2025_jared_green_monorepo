@@ -103,7 +103,7 @@ namespace idsp2025_jared_green.Forms
 
                     foreach (dtoOrderItem item in items)
                     {
-                        await _inventoryController.MoveInventory(9999, site.SiteId, item.quantityRequested, item.itemID, "0", "Storeroom");
+                        await _inventoryController.MoveInventory(9999, site.SiteId, item.quantityRequested, item.itemID, "On Truck", "Storeroom");
                     }
                     // Replace the hard-coded employeeID with the id of the logged in employee.
                     await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "DELIVERED");

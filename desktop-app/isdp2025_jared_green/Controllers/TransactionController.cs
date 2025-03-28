@@ -249,5 +249,20 @@ namespace idsp2025_jared_green.Controllers
                 return audit;
             }
         }
+
+        public async Task<BindingList<Txn>> GetOnlineOrdersForStores()
+        {
+            var trn = await _transactionService.GetOnlineOrders();
+            if (trn is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new BindingList<Txn>();
+            }
+            else
+            {
+                BindingList<Txn>? orders = trn as BindingList<Txn>;
+                return orders;
+            }
+        }
     }
 }

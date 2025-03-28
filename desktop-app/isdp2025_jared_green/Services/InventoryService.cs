@@ -245,12 +245,15 @@ namespace idsp2025_jared_green.Services
                                              where inv.SiteId == siteA && inv.ItemId == itemID && inv.ItemLocation == itemLocationFrom
                                              select inv).FirstOrDefaultAsync();
 
+                Console.WriteLine($"Searching for ItemId={itemID} at SiteId={siteA} in Location='{itemLocationFrom}'");
+
+
                 Inventory? inventoryB = await (from inv in _bullseyeContext.Inventories
                                               where inv.SiteId == siteB && inv.ItemId == itemID && inv.ItemLocation == itemLocationTo
                                               select inv).FirstOrDefaultAsync();
 
                 if (inventoryB == null && quantity >= 0) {
-                    if (inventoryA != null && (inventoryA.Quantity - quantity > 0))
+                    if (inventoryA != null && (inventoryA.Quantity - quantity >= 0))
                     {
                         inventoryA!.Quantity -= quantity;
 
@@ -259,7 +262,7 @@ namespace idsp2025_jared_green.Services
                         newInventoryRecord.ItemId = itemID;
                         newInventoryRecord.ItemLocation = itemLocationTo;
 
-                        if (siteB == 3)
+                        if (siteB == 3 || siteB == 9999)
                         {
                             newInventoryRecord.ReorderThreshold = 0;
                             newInventoryRecord.OptimumThreshold = 0;
