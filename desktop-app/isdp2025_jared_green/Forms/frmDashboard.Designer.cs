@@ -30,10 +30,10 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             picBullseyeLogo = new PictureBox();
             label1 = new Label();
             lblUser = new Label();
@@ -52,6 +52,7 @@
             bsSuppliers = new BindingSource(components);
             bsTransactionHistory = new BindingSource(components);
             tabCustomerOrders = new TabPage();
+            btnMarkCustPickup = new Button();
             cboOnlineOrderStore = new ComboBox();
             btnPrepareOrder = new Button();
             dgvCustomerOrders = new DataGridView();
@@ -62,6 +63,7 @@
             dgvTransactions = new DataGridView();
             label14 = new Label();
             tabSuppliers = new TabPage();
+            btnPlaceSupplierOrder = new Button();
             btnEditSupplier = new Button();
             btnAddSupplier = new Button();
             dgvSuppliers = new DataGridView();
@@ -91,6 +93,8 @@
             label7 = new Label();
             dgvLocations = new DataGridView();
             tabInventory = new TabPage();
+            btnReturn = new Button();
+            btnLossOrDamage = new Button();
             label12 = new Label();
             comboBox1 = new ComboBox();
             txtSearchInventory = new TextBox();
@@ -111,11 +115,11 @@
             dgvEmployees = new DataGridView();
             tabDashboard = new TabControl();
             tabItems = new TabPage();
+            btnAddNewItem = new Button();
             label4 = new Label();
             btnUpdateItem = new Button();
             dgvItems = new DataGridView();
             bsCustomerOrders = new BindingSource(components);
-            btnMarkCustPickup = new Button();
             ((System.ComponentModel.ISupportInitialize)picBullseyeLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsEmployeesForPermissions).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsItems).BeginInit();
@@ -247,6 +251,16 @@
             tabCustomerOrders.TabIndex = 8;
             tabCustomerOrders.Text = "Customer Orders";
             // 
+            // btnMarkCustPickup
+            // 
+            btnMarkCustPickup.Location = new Point(33, 629);
+            btnMarkCustPickup.Name = "btnMarkCustPickup";
+            btnMarkCustPickup.Size = new Size(213, 34);
+            btnMarkCustPickup.TabIndex = 4;
+            btnMarkCustPickup.Text = "Picked Up By Customer";
+            btnMarkCustPickup.UseVisualStyleBackColor = true;
+            btnMarkCustPickup.Click += btnMarkCustPickup_Click;
+            // 
             // cboOnlineOrderStore
             // 
             cboOnlineOrderStore.FormattingEnabled = true;
@@ -358,6 +372,7 @@
             // tabSuppliers
             // 
             tabSuppliers.BackColor = Color.Gainsboro;
+            tabSuppliers.Controls.Add(btnPlaceSupplierOrder);
             tabSuppliers.Controls.Add(btnEditSupplier);
             tabSuppliers.Controls.Add(btnAddSupplier);
             tabSuppliers.Controls.Add(dgvSuppliers);
@@ -368,6 +383,16 @@
             tabSuppliers.Size = new Size(1779, 682);
             tabSuppliers.TabIndex = 6;
             tabSuppliers.Text = "Suppliers";
+            // 
+            // btnPlaceSupplierOrder
+            // 
+            btnPlaceSupplierOrder.Location = new Point(19, 635);
+            btnPlaceSupplierOrder.Name = "btnPlaceSupplierOrder";
+            btnPlaceSupplierOrder.Size = new Size(191, 34);
+            btnPlaceSupplierOrder.TabIndex = 11;
+            btnPlaceSupplierOrder.Text = "Place Supplier Order";
+            btnPlaceSupplierOrder.UseVisualStyleBackColor = true;
+            btnPlaceSupplierOrder.Click += btnPlaceSupplierOrder_Click;
             // 
             // btnEditSupplier
             // 
@@ -560,6 +585,7 @@
             btnReceiveOrder.TabIndex = 8;
             btnReceiveOrder.Text = "&Receive Order";
             btnReceiveOrder.UseVisualStyleBackColor = true;
+            btnReceiveOrder.Visible = false;
             btnReceiveOrder.Click += btnReceiveOrder_Click;
             // 
             // label10
@@ -706,6 +732,8 @@
             // tabInventory
             // 
             tabInventory.BackColor = Color.Gainsboro;
+            tabInventory.Controls.Add(btnReturn);
+            tabInventory.Controls.Add(btnLossOrDamage);
             tabInventory.Controls.Add(label12);
             tabInventory.Controls.Add(comboBox1);
             tabInventory.Controls.Add(txtSearchInventory);
@@ -719,6 +747,26 @@
             tabInventory.Size = new Size(1779, 682);
             tabInventory.TabIndex = 3;
             tabInventory.Text = "Inventory";
+            // 
+            // btnReturn
+            // 
+            btnReturn.Location = new Point(181, 631);
+            btnReturn.Name = "btnReturn";
+            btnReturn.Size = new Size(144, 34);
+            btnReturn.TabIndex = 17;
+            btnReturn.Text = "Process Return";
+            btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
+            // 
+            // btnLossOrDamage
+            // 
+            btnLossOrDamage.Location = new Point(22, 631);
+            btnLossOrDamage.Name = "btnLossOrDamage";
+            btnLossOrDamage.Size = new Size(140, 34);
+            btnLossOrDamage.TabIndex = 16;
+            btnLossOrDamage.Text = "Record Loss";
+            btnLossOrDamage.UseVisualStyleBackColor = true;
+            btnLossOrDamage.Click += btnLossOrDamage_Click;
             // 
             // label12
             // 
@@ -850,8 +898,8 @@
             // 
             dgvPermissions.AllowUserToAddRows = false;
             dgvPermissions.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle13.BackColor = Color.FromArgb(224, 224, 224);
-            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgvPermissions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvPermissions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvPermissions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvPermissions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -926,8 +974,8 @@
             // 
             dgvEmployees.AllowUserToAddRows = false;
             dgvEmployees.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle14.BackColor = Color.FromArgb(224, 224, 224);
-            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
+            dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEmployees.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -967,6 +1015,7 @@
             // tabItems
             // 
             tabItems.BackColor = Color.Gainsboro;
+            tabItems.Controls.Add(btnAddNewItem);
             tabItems.Controls.Add(label4);
             tabItems.Controls.Add(btnUpdateItem);
             tabItems.Controls.Add(dgvItems);
@@ -975,6 +1024,16 @@
             tabItems.Size = new Size(1779, 682);
             tabItems.TabIndex = 2;
             tabItems.Text = "Items";
+            // 
+            // btnAddNewItem
+            // 
+            btnAddNewItem.Location = new Point(23, 616);
+            btnAddNewItem.Name = "btnAddNewItem";
+            btnAddNewItem.Size = new Size(204, 34);
+            btnAddNewItem.TabIndex = 10;
+            btnAddNewItem.Text = "Add Item to Catalogue";
+            btnAddNewItem.UseVisualStyleBackColor = true;
+            btnAddNewItem.Click += btnAddNewItem_Click;
             // 
             // label4
             // 
@@ -999,18 +1058,18 @@
             // 
             dgvItems.AllowUserToAddRows = false;
             dgvItems.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle15.BackColor = Color.Silver;
-            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.BackColor = Color.Silver;
+            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = SystemColors.Control;
-            dataGridViewCellStyle16.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle16.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle16.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
-            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvItems.Location = new Point(21, 57);
             dgvItems.MultiSelect = false;
@@ -1023,16 +1082,6 @@
             dgvItems.TabIndex = 0;
             dgvItems.TabStop = false;
             dgvItems.SelectionChanged += dgvItems_SelectionChanged;
-            // 
-            // btnMarkCustPickup
-            // 
-            btnMarkCustPickup.Location = new Point(33, 629);
-            btnMarkCustPickup.Name = "btnMarkCustPickup";
-            btnMarkCustPickup.Size = new Size(213, 34);
-            btnMarkCustPickup.TabIndex = 4;
-            btnMarkCustPickup.Text = "Picked Up By Customer";
-            btnMarkCustPickup.UseVisualStyleBackColor = true;
-            btnMarkCustPickup.Click += btnMarkCustPickup_Click;
             // 
             // frmDashboard
             // 
@@ -1184,5 +1233,9 @@
         private Button btnPrepareOrder;
         private ComboBox cboOnlineOrderStore;
         private Button btnMarkCustPickup;
+        private Button btnLossOrDamage;
+        private Button btnReturn;
+        private Button btnAddNewItem;
+        private Button btnPlaceSupplierOrder;
     }
 }

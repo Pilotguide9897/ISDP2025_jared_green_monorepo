@@ -50,5 +50,10 @@ namespace idsp2025_jared_green.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> AddProduct()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,5 +15,7 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         public Task<bool> UpdateItem(Item item);
 
         public Task<BindingList<Item>> GetAllItems();
+
+        public Task<bool> AddProduct();
     }
 }

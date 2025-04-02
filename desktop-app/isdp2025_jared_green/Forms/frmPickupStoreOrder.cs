@@ -70,6 +70,11 @@ namespace idsp2025_jared_green.Forms
                         await _inventoryController.MoveInventory(3, 9999, item.quantityRequested, item.itemID, "0", "On Truck");
                     }
 
+                    // Save Blob
+                    Txn txn = await _transactionController.GetOrderByID(_orderDetails.txnID);
+                    byte[] sig = BitmapToByteArray(_signatureBitmap);
+                    txn.Delivery.Signature = sig;
+
                     await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "IN TRANSIT");
                     this.Close();
                 }
@@ -83,6 +88,16 @@ namespace idsp2025_jared_green.Forms
                 MessageBox.Show("Some items are still unreceived.", "Error: Items Unreceived");
             }
         }
+
+        private byte[] BitmapToByteArray(Bitmap bmp)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
+        }
+
 
         private void btnExitStoreOrderPickup_Click(object sender, EventArgs e)
         {

@@ -220,5 +220,10 @@ namespace idsp2025_jared_green.Services
                 return false;
             }
         }
+
+        public Task<bool> AddItem(Item item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

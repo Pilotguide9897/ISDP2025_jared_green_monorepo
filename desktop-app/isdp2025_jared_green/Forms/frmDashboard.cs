@@ -71,27 +71,14 @@ namespace idsp2025_jared_green
                 {"tabTransactions", async () => await GetTransactions() },
                 {"tabCustomerOrders", async () => await GetOnlineOrders() }
             };
-            //_sessionManager.SessionExpired += SessionManagerSessionExpired;
-
-            //this.MouseClick += new MouseEventHandler(TrackUserActivity);
-            //this.MouseMove += new MouseEventHandler(TrackUserActivity);
-            //this.KeyDown += new KeyEventHandler(TrackUserActivity);
-            //tabDashboard.DrawMode = TabDrawMode.OwnerDrawFixed;
-            //tabDashboard.DrawItem += tabDashboard_DrawItem;
             InitializeOrderNotificationTimer();
-
             InitializeComponent();
-
-            //pgbItemLoading.Style = ProgressBarStyle.Marquee;
-            //pgbItemLoading.Visible = false;
         }
 
         private void InitializeOrderNotificationTimer()
         {
-
             _orderSubmissionNotificationTimer = new System.Timers.Timer();
             _orderSubmissionNotificationTimer.Interval = 300000;
-            // _orderSubmissionNotificationTimer.Interval = 15000;
             _orderSubmissionNotificationTimer.Elapsed += SetOrderSubmissionNotification;
             _orderSubmissionNotificationTimer.AutoReset = true;
             _orderSubmissionNotificationTimer.Start();
@@ -669,7 +656,7 @@ namespace idsp2025_jared_green
                     // List<string> roles = new List<string>();
                     // roles.Add("Administrator");
                     // roles.Add("Warehouse Manager");
-                    if (roles.Contains("Administrator") || roles.Contains("Warehouse Manager"))
+                    if (roles.Contains("Administrator") || roles.Contains("Warehouse Manager") || roles.Contains("Warehouse Worker"))
                     {
                         cboOrderLocation.SelectedItem = "ALL";
                     }
@@ -1372,6 +1359,7 @@ namespace idsp2025_jared_green
                     {
                         var form = formFactory(Convert.ToInt32(dgvOrders.SelectedRows[0].Cells[0].Value.ToString()), employee.EmployeeId);
                         form.ShowDialog();
+                        
                     }
                 }
                 else
@@ -2052,7 +2040,14 @@ namespace idsp2025_jared_green
                         form.Tag = assembledOrder;
                         form.ShowDialog();
 
+                        string orderType = cboOrderType.Text;
+                        string orderStatus = cboOrderStatus.Text;
+                        string location = cboOrderLocation.Text;
+                        // Refresh the view and set the selectors back to what they were.
                         await RefreshOrdersTab(tabOrders);
+                        cboOrderType.SelectedItem = orderType;
+                        cboOrderStatus.SelectedItem = orderStatus;
+                        cboOrderLocation.SelectedItem = location;
                     }
                 }
             }
@@ -2149,7 +2144,9 @@ namespace idsp2025_jared_green
                         {
                             BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
 
+                            // Return the delegate
                             var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmPrepareOnlineOrder>>();
+                            // Create the form
                             frmPrepareOnlineOrder form = formFactory(employee);
                             form.Tag = preparedOrder;
                             form.ShowDialog();
@@ -2167,6 +2164,45 @@ namespace idsp2025_jared_green
                     }
                 }
             }
+        }
+
+        private async void btnLossOrDamage_Click(object sender, EventArgs e)
+        {
+            BindingList<Employee> employees = await _dashboardController.GetEmployees();
+            Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+            List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+            // Pass types to the delegate.
+            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, List<string>, frmLoss>>();
+            frmLoss lossForm = formFactory(employee, roles);
+            lossForm.Show();
+            await RefreshInventoryTab(tabInventory);
+        }
+
+        private async void btnReturn_Click(object sender, EventArgs e)
+        {
+            BindingList<Employee> employees = await _dashboardController.GetEmployees();
+            Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+            List<string> roles = _sessionManager.GetPermissionsFromToken();
+
+            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, List<string>, frmReturn>>();
+            frmReturn returnForm = formFactory(employee, roles);
+            returnForm.Show();
+            await RefreshInventoryTab(tabInventory);
+        }
+
+        private async void btnAddNewItem_Click(object sender, EventArgs e)
+        {
+            frmAddSupplierProduct addProductForm = _serviceProvider.GetRequiredService<frmAddSupplierProduct>();
+            addProductForm.Show();
+            await RefreshInventoryTab(tabInventory);
+        }
+
+        private void btnPlaceSupplierOrder_Click(object sender, EventArgs e)
+        {
+            frmSupplierOrder supplierOrderForm = _serviceProvider.GetRequiredService<frmSupplierOrder>();
+            supplierOrderForm.Show();
+
         }
     }
 }

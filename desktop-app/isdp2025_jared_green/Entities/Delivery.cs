@@ -15,6 +15,8 @@ public partial class Delivery
 
     public string? Notes { get; set; }
 
+    public byte[] Signature { get; set; }
+
     public virtual ICollection<Txnaudit> Txnaudits { get; set; } = new List<Txnaudit>();
 
     public virtual ICollection<Txn> Txns { get; set; } = new List<Txn>();

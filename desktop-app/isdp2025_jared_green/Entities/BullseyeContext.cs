@@ -105,6 +105,8 @@ public partial class BullseyeContext : DbContext
             entity.Property(e => e.VehicleType)
                 .HasMaxLength(20)
                 .HasColumnName("vehicleType");
+            entity.Property(e => e.Signature)
+                .HasColumnName("signature");
 
             entity.HasOne(d => d.VehicleTypeNavigation).WithMany(p => p.Deliveries)
                 .HasForeignKey(d => d.VehicleType)
@@ -272,7 +274,7 @@ public partial class BullseyeContext : DbContext
 
             entity.HasIndex(e => e.Category, "category");
 
-            entity.HasIndex(e => e.SupplierId, "supplierID");
+            entity.HasIndex(e => e.SupplierId, "supplierID").IsUnique();
 
             entity.Property(e => e.ItemId).HasColumnName("itemID");
             entity.Property(e => e.Active)

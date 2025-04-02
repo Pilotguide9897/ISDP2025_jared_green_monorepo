@@ -113,9 +113,39 @@ namespace idsp2025_jared_green.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Spinner_1x_1_0s_200px_200px {
+            get {
+                object obj = ResourceManager.GetObject("Spinner@1x-1.0s-200px-200px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Spinner_1x_1_0s_602px_602px {
+            get {
+                object obj = ResourceManager.GetObject("Spinner@1x-1.0s-602px-602px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap vector_left_arrow_icon {
             get {
                 object obj = ResourceManager.GetObject("vector-left-arrow-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap White_Background {
+            get {
+                object obj = ResourceManager.GetObject("White Background", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

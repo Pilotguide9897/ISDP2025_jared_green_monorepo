@@ -53,5 +53,10 @@ namespace idsp2025_jared_green.Controllers
         {
             return await _itemService.GetAllItems();
         }
+
+        public Task<bool> AddProduct()
+        {
+            throw new NotImplementedException();
+        }
     } 
 }

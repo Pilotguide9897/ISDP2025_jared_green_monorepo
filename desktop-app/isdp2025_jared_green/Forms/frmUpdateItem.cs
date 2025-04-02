@@ -150,5 +150,10 @@ namespace idsp2025_jared_green
             string helpText = "Update an item's information in our records. Modify the description and notes by typing in the respective text fields. Set whether the item is available for sale by checking the 'active' checkbox. If an item has one or more images saved to our system, the image currently set to the product will be displayed. If there are more photographs on file, a dropdown box will appear to allow you to select the image you would like. To add a new image, click the 'add image' button to open a file viewer where you can select a picture from your system. Once all the desired changes are made, click the update button to submit. Otherwise, click the cancel button to undo any changes.";
             MessageBox.Show(helpText, "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

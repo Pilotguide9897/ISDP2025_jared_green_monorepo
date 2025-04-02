@@ -100,6 +100,7 @@ namespace idsp2025_jared_green
                 // be used include .AddScoped() and .AddSingleton()
 
                 // Register Forms
+                // Add transient has multiple overloads.
                 services.AddTransient<frmLogin>();
                 services.AddTransient<frmResetPassword>();
                 services.AddTransient<frmDashboard>();
@@ -113,31 +114,10 @@ namespace idsp2025_jared_green
                 services.AddTransient<frmConfirmUserDelete>();
                 services.AddTransient<frmModifyOrder>();
                 services.AddTransient<frmEditLocation>();
-                services.AddTransient<Func<int,frmFulfillOrder>> (sp => (employeeID) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmFulfillOrder>(sp, employeeID);
-                });
+                services.AddTransient<frmAddSupplierProduct>();
 
-                services.AddTransient<Func<int, frmPrepareOnlineOrder>>(sp => (employeeID) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmPrepareOnlineOrder>(sp, employeeID);
-                });
-
-                services.AddTransient<Func<Employee, frmAcceptStoreOrder>>(sp => (Employee) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmAcceptStoreOrder>(sp, Employee);
-                });
-
-                services.AddTransient<Func<Employee, frmPickupStoreOrder>>(sp => (Employee) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmPickupStoreOrder>(sp, Employee);
-                });
-
-                services.AddTransient<Func<Employee, frmSignForOrder>>(sp => (Employee) =>
-                {
-                    return ActivatorUtilities.CreateInstance<frmSignForOrder>(sp, Employee);
-                });
-
+                // Forms with Runtime Parameters
+                    // Register functions to prepare the forms.
                 services.AddTransient<Func<int, frmModifyTxnRecord>>(sp => (employeeID) =>
                 {
                     return ActivatorUtilities.CreateInstance<frmModifyTxnRecord>(sp, employeeID);
@@ -150,7 +130,38 @@ namespace idsp2025_jared_green
                 {
                     return ActivatorUtilities.CreateInstance<frmAssignInventory>(sp, orderID, employeeID);
                 });
-
+                services.AddTransient<Func<int,frmFulfillOrder>> (sp => (employeeID) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmFulfillOrder>(sp, employeeID);
+                });
+                services.AddTransient<Func<int, frmPrepareOnlineOrder>>(sp => (employeeID) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmPrepareOnlineOrder>(sp, employeeID);
+                });
+                services.AddTransient<Func<int, frmSupplierOrder>>(sp => (employeeID) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmSupplierOrder>(sp, employeeID);
+                });
+                services.AddTransient<Func<Employee, frmAcceptStoreOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmAcceptStoreOrder>(sp, Employee);
+                });
+                services.AddTransient<Func<Employee, frmPickupStoreOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmPickupStoreOrder>(sp, Employee);
+                });
+                services.AddTransient<Func<Employee, frmSignForOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmSignForOrder>(sp, Employee);
+                });
+                services.AddTransient<Func<Employee, List<string>, frmReturn>>(sp => (Employee, Roles) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmReturn>(sp, Employee, Roles);
+                });
+                services.AddTransient<Func<Employee, List<string>, frmLoss>>(sp => (Employee, Roles) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmLoss>(sp, Employee, Roles);
+                });
             });
         }
 
@@ -172,11 +183,7 @@ namespace idsp2025_jared_green
             Console.WriteLine("Starting Quartz Scheduler...");
             await scheduler.Start();
             Console.WriteLine("Scheduler started successfully!");
-
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            // Application.Run(_serviceProvider.GetRequiredService<frmDashboard>());
             Application.Run(_serviceProvider.GetRequiredService<frmLogin>());
         }
     }

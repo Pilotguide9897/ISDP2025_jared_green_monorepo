@@ -20,13 +20,15 @@ namespace idsp2025_jared_green.Forms
 
         private readonly ITransactionController _transactionController;
         private readonly IInventoryController _inventoryController;
+        private readonly ILocationController _locationController;
         private int _orderID;
         private int _employeeID;
 
-        public frmAssignInventory(ITransactionController transactionController, IInventoryController inventoryController, int orderID, int employeeID)
+        public frmAssignInventory(ITransactionController transactionController, IInventoryController inventoryController, ILocationController locationController, int orderID, int employeeID)
         {
             _transactionController = transactionController;
             _inventoryController = inventoryController;
+            _locationController = locationController;
             _orderID = orderID;
             _employeeID = employeeID;
             InitializeComponent();
@@ -153,44 +155,79 @@ namespace idsp2025_jared_green.Forms
 
         private async Task UpdateOrderDeliveryDetails()
         {
-            BindingList<Txn> transactions = await _transactionController.GetAllTransactions();
-            Txn? currentTransaction = (from tx in transactions where tx.TxnId == _orderID select tx).FirstOrDefault();
-            if (currentTransaction != null) {
-                List<Txn> locationTransactions = (from trans in transactions where trans.SiteIdfrom == currentTransaction.SiteIdfrom && trans.ShipDate == currentTransaction.ShipDate select trans).ToList();
-                List<int> locationIds = new List<int>();
-                List<int> deliveryIds = new List<int>();
-                foreach (Txn locationTransaction in locationTransactions) 
+            try
+            {
+                BindingList<Txn> transactions = await _transactionController.GetAllTransactions();
+                Txn? currentTransaction = (from tx in transactions where tx.TxnId == _orderID select tx).FirstOrDefault();
+                if (currentTransaction != null)
                 {
-                    locationIds.Add(locationTransaction.TxnId);
-                    deliveryIds.Add((int)locationTransaction.DeliveryId);
-                }
-                BindingList<dtoOrders> orders = await _transactionController.GetAllStoreOrdersForDelivery(locationIds);
-                int orderWeight = (from ow in orders select ow).Sum(o => o.totalWeight);
-                string vehicleType = "";
+                    Delivery delivery = currentTransaction.Delivery;
+                    List<Txn> locationTransactions = (from trans in transactions where trans.SiteIdfrom == currentTransaction.SiteIdfrom && trans.ShipDate == currentTransaction.ShipDate select trans).ToList();
+                    //List<Txn> locationTransactions = (from trans in transactions where trans.Delivery.DeliveryId == delivery.DeliveryId select trans).ToList();
+                    List<int> transactionIds = new List<int>();
+                    List<int> deliveryIds = new List<int>();
+                    foreach (Txn locationTransaction in locationTransactions)
+                    {
+                        transactionIds.Add(locationTransaction.TxnId);
+                        deliveryIds.Add((int)locationTransaction.DeliveryId);
+                    }
+                    BindingList<dtoOrders> orders = await _transactionController.GetAllStoreOrdersForDelivery(transactionIds);
+                    int orderWeight = (from ow in orders select ow).Sum(o => o.totalWeight);
+                    // Calculate the distances
+                    List<int> siteIds = (from td in transactions where td.DeliveryId.HasValue && deliveryIds.Contains(td.DeliveryId.Value) select td.SiteIdto).ToList();
+                    BindingList<Site> sites = await _locationController.GetBullseyeLocations();
+                    List<Site> sitesForDelivery = (from site in sites where siteIds.Contains(site.SiteId) select site).ToList();
+                    List<int> deliveryDistances = (from site in sitesForDelivery select site.DistanceFromWh).OrderBy(s => s).ToList();
 
-                if (orderWeight <= 1000) 
-                {
-                    vehicleType = "Van";
-                } else if (orderWeight <= 5000)
-                {
-                    vehicleType = "Small";
-                } else if (orderWeight <= 10000)
-                {
-                    vehicleType = "Medium";
-                } else if (orderWeight <= 25000)
-                {
-                    vehicleType = "Heavy";
-                } else
-                {
-                    throw new Exception("Order is too large. Please contact your manager.");
-                }
-                BindingList<Delivery> deliveries = await _transactionController.GetDeliveriesForDeliveryDate(deliveryIds);
-                foreach (Delivery delivery in deliveries) 
-                { 
-                    delivery.VehicleType = vehicleType;
+                    // Final Delivery Distance
+                    int incrementalSum = 0;
+                    for (int i = 0; i < deliveryDistances.Count; i++)
+                    {
+                        if (i == 0)
+                            incrementalSum += deliveryDistances[i]; // First distance as-is
+                        else
+                            incrementalSum += (deliveryDistances[i] - deliveryDistances[i - 1]); // Only the increment
+                    }
+
+                    string vehicleType = "";
+                    decimal distanceCost = 0;
+                    if (orderWeight <= 1000)
+                    {
+                        vehicleType = "Van";
+                        distanceCost = (decimal)(0.75 * incrementalSum);
+
+                    }
+                    else if (orderWeight <= 5000)
+                    {
+                        vehicleType = "Small";
+                        distanceCost = (decimal)(1.25 * incrementalSum);
+                    }
+                    else if (orderWeight <= 10000)
+                    {
+                        vehicleType = "Medium";
+                        distanceCost = (decimal)(2.50 * incrementalSum);
+                    }
+                    else
+                    {
+                        vehicleType = "Heavy";
+                        distanceCost = (decimal)(3.50 * incrementalSum);
+                    }
+                    //} else
+                    //{
+                    //    throw new Exception("Order is too large. Please contact your manager.");
+                    //}
+                    BindingList<Delivery> deliveries = await _transactionController.GetDeliveriesForDeliveryDate(deliveryIds);
+                    foreach (Delivery del in deliveries)
+                    {
+                        del.VehicleType = vehicleType;
+                        del.DistanceCost = distanceCost;
+                    }
+                    await _transactionController.SaveChanges();
                 }
 
-                await _transactionController.SaveChanges();
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Unable to allocate inventory");
             }
         }
 

@@ -527,23 +527,31 @@ namespace idsp2025_jared_green.Services
 
             newTxn.CreatedDate = DateTime.Now;
 
-            Delivery newDelivery = new Delivery();
-            newDelivery.DeliveryDate = newTxn.ShipDate;
-            newDelivery.VehicleType = "Van";
+            Delivery scheduledDelivery = await (from del in _bullseyeContext.Deliveries where del.DeliveryDate == newTxn.ShipDate select del).FirstOrDefaultAsync();
+
+            if (scheduledDelivery == null) {
+                Delivery newDelivery = new Delivery();
+                newDelivery.DeliveryDate = newTxn.ShipDate;
+                newDelivery.VehicleType = "Van";
 
 
-            if (newTxn.TxnType == "Emergency Order")
-            {
-                newDelivery.DistanceCost = 0;
+                if (newTxn.TxnType == "Emergency Order")
+                {
+                    newDelivery.DistanceCost = 0;
+                }
+                else
+                {
+                    newDelivery.DistanceCost = 0.75m;
+                }
+                newDelivery.Notes = "Placeholder";
+
+                Delivery savedDelivery = await AddDelivery(newDelivery);
+
+                newTxn.DeliveryId = savedDelivery.DeliveryId;
             } else
             {
-                newDelivery.DistanceCost = 0.75m;
+                newTxn.DeliveryId = scheduledDelivery.DeliveryId;
             }
-            newDelivery.Notes = "Placeholder";
-
-            Delivery savedDelivery = await AddDelivery(newDelivery);   
-
-            newTxn.DeliveryId = savedDelivery.DeliveryId;
 
             if (standardOrEmergency == 1)
             {
@@ -560,7 +568,6 @@ namespace idsp2025_jared_green.Services
             await _bullseyeContext.AddAsync(newTxn);
             await _bullseyeContext.SaveChangesAsync();
             return newTxn;
-
         }
 
         public async Task<Delivery> AddDelivery(Delivery delivery)
@@ -630,7 +637,7 @@ namespace idsp2025_jared_green.Services
 
                 Txn? order = await (from txn in _bullseyeContext.Txns
                                     where txn.TxnId == orderID
-                                    select txn).Include(t => t.Txnitems).ThenInclude(ti => ti.Item).FirstOrDefaultAsync();
+                                    select txn).Include(d => d.Delivery).Include(t => t.Txnitems).ThenInclude(ti => ti.Item).FirstOrDefaultAsync();
 
                 return order;
             }
@@ -901,6 +908,21 @@ namespace idsp2025_jared_green.Services
                 _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get online orders");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
+        }
+
+        public Task<object> RecordLoss()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> ProcessReturn()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> CreateSupplierOrder(Txn transaction, List<Txnitem> txnitems)
+        {
+            throw new NotImplementedException();
         }
     }
 }

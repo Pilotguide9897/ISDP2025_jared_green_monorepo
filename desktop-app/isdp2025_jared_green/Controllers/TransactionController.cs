@@ -264,5 +264,20 @@ namespace idsp2025_jared_green.Controllers
                 return orders;
             }
         }
+
+        public Task<bool> RecordLoss()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ProcessReturn()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Txn> CreateSupplierOrder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

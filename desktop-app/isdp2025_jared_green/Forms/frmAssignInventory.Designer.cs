@@ -182,6 +182,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1898, 1024);
             Controls.Add(lblOrderID);
             Controls.Add(label4);
@@ -194,6 +195,7 @@
             Controls.Add(label2);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
+            DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmAssignInventory";
             StartPosition = FormStartPosition.CenterScreen;

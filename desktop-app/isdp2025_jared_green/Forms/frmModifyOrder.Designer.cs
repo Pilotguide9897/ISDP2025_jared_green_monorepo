@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModifyOrder));
             pictureBox1 = new PictureBox();
             btnExitModifyOrder = new Label();
             dgvOrderItems = new DataGridView();
-            dgvBullseyeInventory = new DataGridView();
             txtInventorySearch = new TextBox();
             btnSubmitOrder = new Button();
             btnExitWithoutSaving = new Button();
@@ -50,11 +49,12 @@
             label4 = new Label();
             lblOrderID = new Label();
             dtpBackorderDate = new DateTimePicker();
+            dgvBullseyeInventory = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvOrderItems).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvBullseyeInventory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsOrderItems).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsBullseyeInventory).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvBullseyeInventory).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -84,45 +84,26 @@
             dgvOrderItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvOrderItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvOrderItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvOrderItems.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvOrderItems.DefaultCellStyle = dataGridViewCellStyle1;
             dgvOrderItems.Location = new Point(79, 265);
             dgvOrderItems.MultiSelect = false;
             dgvOrderItems.Name = "dgvOrderItems";
             dgvOrderItems.RowHeadersVisible = false;
             dgvOrderItems.RowHeadersWidth = 62;
-            dgvOrderItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvOrderItems.Size = new Size(689, 666);
             dgvOrderItems.TabIndex = 2;
             dgvOrderItems.CellMouseEnter += dgvOrderItems_CellMouseEnter;
             // 
-            // dgvBullseyeInventory
-            // 
-            dgvBullseyeInventory.AllowUserToAddRows = false;
-            dgvBullseyeInventory.AllowUserToDeleteRows = false;
-            dgvBullseyeInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvBullseyeInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-            dgvBullseyeInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBullseyeInventory.Location = new Point(893, 224);
-            dgvBullseyeInventory.MultiSelect = false;
-            dgvBullseyeInventory.Name = "dgvBullseyeInventory";
-            dgvBullseyeInventory.ReadOnly = true;
-            dgvBullseyeInventory.RowHeadersVisible = false;
-            dgvBullseyeInventory.RowHeadersWidth = 62;
-            dgvBullseyeInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvBullseyeInventory.ShowEditingIcon = false;
-            dgvBullseyeInventory.Size = new Size(936, 705);
-            dgvBullseyeInventory.TabIndex = 3;
-            // 
             // txtInventorySearch
             // 
-            txtInventorySearch.Location = new Point(1008, 174);
+            txtInventorySearch.Location = new Point(1019, 214);
             txtInventorySearch.Name = "txtInventorySearch";
             txtInventorySearch.Size = new Size(699, 31);
             txtInventorySearch.TabIndex = 4;
@@ -169,7 +150,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(893, 180);
+            label3.Location = new Point(904, 220);
             label3.Name = "label3";
             label3.Size = new Size(109, 25);
             label3.TabIndex = 9;
@@ -198,7 +179,7 @@
             // 
             // btnClearSearchBar
             // 
-            btnClearSearchBar.Location = new Point(1717, 175);
+            btnClearSearchBar.Location = new Point(1728, 215);
             btnClearSearchBar.Name = "btnClearSearchBar";
             btnClearSearchBar.Size = new Size(112, 34);
             btnClearSearchBar.TabIndex = 12;
@@ -243,10 +224,29 @@
             dtpBackorderDate.TabIndex = 16;
             dtpBackorderDate.Visible = false;
             // 
+            // dgvBullseyeInventory
+            // 
+            dgvBullseyeInventory.AllowUserToAddRows = false;
+            dgvBullseyeInventory.AllowUserToDeleteRows = false;
+            dgvBullseyeInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBullseyeInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            dgvBullseyeInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvBullseyeInventory.Location = new Point(908, 251);
+            dgvBullseyeInventory.MultiSelect = false;
+            dgvBullseyeInventory.Name = "dgvBullseyeInventory";
+            dgvBullseyeInventory.ReadOnly = true;
+            dgvBullseyeInventory.RowHeadersVisible = false;
+            dgvBullseyeInventory.RowHeadersWidth = 62;
+            dgvBullseyeInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvBullseyeInventory.ShowEditingIcon = false;
+            dgvBullseyeInventory.Size = new Size(936, 705);
+            dgvBullseyeInventory.TabIndex = 3;
+            // 
             // frmModifyOrder
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.White_Background;
             ClientSize = new Size(1898, 1024);
             Controls.Add(dtpBackorderDate);
             Controls.Add(lblOrderID);
@@ -272,9 +272,9 @@
             Load += frmModifyOrder_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvOrderItems).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvBullseyeInventory).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsOrderItems).EndInit();
             ((System.ComponentModel.ISupportInitialize)bsBullseyeInventory).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvBullseyeInventory).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -284,7 +284,6 @@
         private PictureBox pictureBox1;
         private Label btnExitModifyOrder;
         private DataGridView dgvOrderItems;
-        private DataGridView dgvBullseyeInventory;
         private TextBox txtInventorySearch;
         private Button btnSubmitOrder;
         private Button btnExitWithoutSaving;
@@ -300,5 +299,6 @@
         private Label label4;
         private Label lblOrderID;
         private DateTimePicker dtpBackorderDate;
+        private DataGridView dgvBullseyeInventory;
     }
 }
