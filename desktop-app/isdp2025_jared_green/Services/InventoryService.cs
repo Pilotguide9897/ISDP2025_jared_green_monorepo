@@ -242,60 +242,46 @@ namespace idsp2025_jared_green.Services
             try
             {
                 Inventory? inventoryA = await (from inv in _bullseyeContext.Inventories
-                                             where inv.SiteId == siteA && inv.ItemId == itemID && inv.ItemLocation == itemLocationFrom
-                                             select inv).FirstOrDefaultAsync();
+                                               where inv.SiteId == siteA && inv.ItemId == itemID && inv.ItemLocation == itemLocationFrom
+                                               select inv).FirstOrDefaultAsync();
 
                 Console.WriteLine($"Searching for ItemId={itemID} at SiteId={siteA} in Location='{itemLocationFrom}'");
 
-
                 Inventory? inventoryB = await (from inv in _bullseyeContext.Inventories
-                                              where inv.SiteId == siteB && inv.ItemId == itemID && inv.ItemLocation == itemLocationTo
-                                              select inv).FirstOrDefaultAsync();
+                                               where inv.SiteId == siteB && inv.ItemId == itemID && inv.ItemLocation == itemLocationTo
+                                               select inv).FirstOrDefaultAsync();
 
-                if (inventoryB == null && quantity >= 0) {
-                    if (inventoryA != null && (inventoryA.Quantity - quantity >= 0))
-                    {
-                        inventoryA!.Quantity -= quantity;
-
-                        Inventory newInventoryRecord = new Inventory();
-                        newInventoryRecord.SiteId = siteB;
-                        newInventoryRecord.ItemId = itemID;
-                        newInventoryRecord.ItemLocation = itemLocationTo;
-
-                        if (siteB == 3 || siteB == 9999)
-                        {
-                            newInventoryRecord.ReorderThreshold = 0;
-                            newInventoryRecord.OptimumThreshold = 0;
-                        } else
-                        {
-                            newInventoryRecord.ReorderThreshold = quantity;
-                            newInventoryRecord.OptimumThreshold = quantity * 2;
-                        }
-
-
-                        newInventoryRecord.Quantity = quantity;
-                        await _bullseyeContext.AddAsync(newInventoryRecord);
-                    } else
-                    {
-                        MessageBox.Show("Unable to move the inventory due to an inventory processing error", "Insufficient Quantities");
-                        return;
-                    }
-                }
-                else
+                if (inventoryA != null && (inventoryA.Quantity - quantity >= 0))
                 {
-                    if (inventoryA != null && (inventoryA.Quantity - quantity > 0))
-                    {                    
-                        inventoryA!.Quantity -= quantity;
-                        inventoryB!.Quantity += quantity;
+                    inventoryA.Quantity -= quantity;
+
+                    if (inventoryB != null)
+                    {
+                        // Entity already exists — update its quantity
+                        inventoryB.Quantity += quantity;
                     }
                     else
                     {
-                        MessageBox.Show("Unable to move the inventory due to an inventory processing error", "Insufficient Quantities");
-                        return;
-                    }
-                }
+                        Inventory newInventoryRecord = new Inventory
+                        {
+                            SiteId = siteB,
+                            ItemId = itemID,
+                            ItemLocation = itemLocationTo,
+                            Quantity = quantity,
+                            ReorderThreshold = (siteB == 3 || siteB == 9999) ? 0 : quantity,
+                            OptimumThreshold = (siteB == 3 || siteB == 9999) ? 0 : quantity * 2
+                        };
 
-                await _bullseyeContext.SaveChangesAsync();
+                        await _bullseyeContext.AddAsync(newInventoryRecord);
+                    }
+
+                    await _bullseyeContext.SaveChangesAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Unable to move the inventory due to insufficient quantities.", "Inventory Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
             catch (MySqlException msqlEx)
             {
@@ -306,7 +292,6 @@ namespace idsp2025_jared_green.Services
             {
                 MessageBox.Show("The request to update the inventory timed out. Please check your network and try again.", "Timeout Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 //ItemLogger.Error(toEx, "");
-
             }
             catch (Exception ex)
             {
@@ -314,6 +299,7 @@ namespace idsp2025_jared_green.Services
                 //ItemLogger.Error(ex, "");
             }
         }
+
 
         public async Task TransferInventoryRecords()
         {
