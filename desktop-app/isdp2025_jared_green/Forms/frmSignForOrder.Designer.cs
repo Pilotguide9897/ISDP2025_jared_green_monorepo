@@ -100,6 +100,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmSignForOrder";
             Text = "Customer Signature";
+            Load += frmSignForOrder_Load;
             ResumeLayout(false);
             PerformLayout();
         }

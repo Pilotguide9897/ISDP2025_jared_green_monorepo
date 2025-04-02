@@ -55,8 +55,13 @@ namespace idsp2025_jared_green.Forms
                 foreach (dtoOrderItem item in items)
                 {
 
-                    await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", "Received by Customer");
+                    await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", "Cst Rtrvd");
                 }
+
+                // Save Blob
+                Txn txn = await _transactionController.GetOrderByID(_orderDetails.txnID);
+                byte[] sig = BitmapToByteArray(_signatureBitmap);
+                txn.Delivery.Signature = sig;
 
                 await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "CLOSED");
                 this.Close();
@@ -101,6 +106,24 @@ namespace idsp2025_jared_green.Forms
         private void pnlCustomerSignature_MouseUp(object sender, MouseEventArgs e)
         {
             _isDrawing = false;
+        }
+        private byte[] BitmapToByteArray(Bitmap bmp)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
+        }
+
+        private void frmSignForOrder_Load(object sender, EventArgs e)
+        {
+            _orderDetails = this.Tag as dtoOrders;
+            if (_orderDetails == null)
+            {
+                MessageBox.Show("There was an error accessing the order's items. Please contact a system administrator", "Please contact a system administrator");
+                this.Close();
+            }
         }
     }
 }

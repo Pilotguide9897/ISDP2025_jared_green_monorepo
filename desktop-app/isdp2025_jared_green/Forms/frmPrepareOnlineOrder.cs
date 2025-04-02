@@ -19,20 +19,20 @@ namespace idsp2025_jared_green.Forms
         private readonly ITransactionController _transactionController;
         private readonly IInventoryController _inventoryController;
         private readonly ILocationController _locationController;
-        private readonly int _employeeID;
+        private readonly Employee _employee;
 
-        public frmPrepareOnlineOrder(ITransactionController transactionController, IInventoryController inventoryController, ILocationController locationController, int employeeID)
+        public frmPrepareOnlineOrder(ITransactionController transactionController, IInventoryController inventoryController, ILocationController locationController, Employee employee)
         {
             _transactionController = transactionController;
             _inventoryController = inventoryController;
             _locationController = locationController;
-            _employeeID = employeeID;
+            _employee = employee;
             InitializeComponent();
         }
 
         private async void btnCancelPrepareOrder_Click(object sender, EventArgs e)
         {
-            await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employeeID, "RECEIVED");
+            await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "RECEIVED");
             this.Close();
         }
 
@@ -53,11 +53,14 @@ namespace idsp2025_jared_green.Forms
                             // Move the inventory 
                             await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", _orderDetails.txnID.ToString());
                         }
-                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employeeID, "PREPARED");
+                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "PREPARED");
+                        
                         this.Close();
                     }
                     else
                     {
+
+
                         MessageBox.Show("Unable to gather store data for preparing order.", "Site Data Error");
                     }
                 }
@@ -89,7 +92,7 @@ namespace idsp2025_jared_green.Forms
             _orderDetails = this.Tag as dtoOrders;
             if (_orderDetails != null)
             {
-                await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employeeID, "PREPARING");
+                await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "PREPARING");
                 lblOrderID.Text = _orderDetails.txnID.ToString();
                 BindingList<dtoOrderItem> txnItems = await _transactionController.GetTxnItems(_orderDetails.txnID);
                 RefreshDataGridView(dgvPrepareOnlineOrder, bsPrepareStoreOrder, txnItems);

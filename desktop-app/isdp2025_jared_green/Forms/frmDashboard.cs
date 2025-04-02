@@ -1130,6 +1130,7 @@ namespace idsp2025_jared_green
                         AddTabIfNotExists(tabItems);
                         AddTabIfNotExists(tabOrders);
                         btnPickUpOrder.Visible = true;
+                        btnDeliverStoreOrder.Visible= true;
                         break;
 
                     case "Administrator":
@@ -2088,8 +2089,8 @@ namespace idsp2025_jared_green
                         {
                             BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
 
-                            var formFactory = _serviceProvider.GetRequiredService<Func<int, frmPrepareOnlineOrder>>();
-                            frmPrepareOnlineOrder form = formFactory(employee.EmployeeId);
+                            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmPrepareOnlineOrder>>();
+                            frmPrepareOnlineOrder form = formFactory(employee);
                             form.Tag = preparedOrder;
                             form.ShowDialog();
 
@@ -2140,14 +2141,14 @@ namespace idsp2025_jared_green
                         Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
                         List<string> roles = _sessionManager.GetPermissionsFromToken();
 
-                        if (employee != null && roles.Contains("Administrator") || preparedOrder.siteName == employee.Site.SiteName)
+                        if (employee != null && roles.Contains("Administrator") || preparedOrder.siteName == employee.Site.SiteId.ToString())
                         {
                             BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(preparedOrder.txnID);
 
                             // Return the delegate
-                            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmPrepareOnlineOrder>>();
+                            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmSignForOrder>>();
                             // Create the form
-                            frmPrepareOnlineOrder form = formFactory(employee);
+                            frmSignForOrder form = formFactory(employee);
                             form.Tag = preparedOrder;
                             form.ShowDialog();
 
