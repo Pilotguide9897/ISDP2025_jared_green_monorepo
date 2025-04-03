@@ -140,9 +140,17 @@ namespace idsp2025_jared_green.Services
         {
             try
             {
-                await _bullseyeContext.SaveChangesAsync();
-                
+                _bullseyeContext.Attach(item);
+                _bullseyeContext.Entry(item).State = EntityState.Modified;
+                var result = await _bullseyeContext.SaveChangesAsync();
+                if (result != null)
+                {
                     return true;
+                } else
+                {
+                    return false;
+                }
+                    
             }
             catch (MySqlException msqlEx)
             {

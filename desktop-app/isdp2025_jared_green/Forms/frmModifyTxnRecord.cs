@@ -37,15 +37,17 @@ namespace idsp2025_jared_green.Forms
                 "ASSEMBLED",
                 "ASSEMBLING",
                 "CANCELLED",
+                "CLOSED",
                 "COMPLETE",
                 "DELIVERED",
                 "IN TRANSIT",
                 "NEW",
                 "PREPARED",
                 "PREPARING",
+                "READY",
                 "RECEIVED",
                 "REJECTED",
-                "SUBMITTED"
+                "SUBMITTED",
             };
 
             cboUpdateTxnStatus.DataSource = txnStatuses;

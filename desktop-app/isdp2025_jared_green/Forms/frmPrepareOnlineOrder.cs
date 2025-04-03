@@ -53,14 +53,14 @@ namespace idsp2025_jared_green.Forms
                             // Move the inventory 
                             await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", _orderDetails.txnID.ToString());
                         }
-                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "PREPARED");
-                        
+                        //await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "PREPARED");
+                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "READY");
+
                         this.Close();
                     }
                     else
                     {
-
-
+                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "RECEIVED");
                         MessageBox.Show("Unable to gather store data for preparing order.", "Site Data Error");
                     }
                 }

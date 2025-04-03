@@ -66,7 +66,7 @@ namespace idsp2025_jared_green
             _item.Active = (sbyte)(chkItemActive.Checked ? 1 : 0);
             _item.Description = txtUpdateItemDescription.Text;
             _item.Notes = txtUpdateItemNotes.Text;
-            _item.ImageLocation = cboImageSelect.SelectedText;
+            //_item.ImageLocation = cboImageSelect.DisplayMember;
 
             if (await _itemController.UpdateItem(_item))
             {
@@ -81,18 +81,25 @@ namespace idsp2025_jared_green
 
         private async void btnAddImage_Click(object sender, EventArgs e)
         {
-            string imageTitle = ImageManipulation.CopyImageToFolder(ofdAddImage);
-            // Set the new image to be the selected one...
-            _item.ImageLocation = imageTitle;
-            Image newImage = await _itemController.AddImage(_item.ImageLocation);
+            try
+            {
+                string imageTitle = ImageManipulation.CopyImageToFolder(ofdAddImage, _item.ItemId);
+                // Set the new image to be the selected one...
+                _item.ImageLocation = imageTitle;
+                Image newImage = await _itemController.AddImage(_item.ImageLocation);
 
-            await _itemController.AddImagePath(_item.ItemId, newImage.ImageID);
-            _item.ImageLocation = newImage.ImagePath;
+                await _itemController.AddImagePath(_item.ItemId, newImage.ImageID);
+                _item.ImageLocation = newImage.ImagePath;
 
-            UpdatePictureBoxDisplay(_item.ImageLocation);
+                UpdatePictureBoxDisplay(_item.ImageLocation);
 
-            await InitializeCboImages();
+                await InitializeCboImages();
 
+                await _itemController.UpdateItem(_item);
+            }
+            catch (Exception ex) {
+                MessageBox.Show("There was an error adding your desired image.");
+            }
         }
 
         private void UpdatePictureBoxDisplay(string path)

@@ -1162,6 +1162,9 @@ namespace idsp2025_jared_green
                         btnEditSupplier.Visible = true;
                         btnPickUpOrder.Visible = true;
                         btnMarkCustPickup.Visible = true;
+                        btnUpdateItem.Visible = true;
+                        btnCancelTxn.Visible = true;
+                        btnEditTxn.Visible = true;
                         // cboOnlineOrderStore.Visible = true;
                         break;
 
@@ -1821,7 +1824,7 @@ namespace idsp2025_jared_green
                         Notes = drv["Notes"] == DBNull.Value ? null : drv["Notes"].ToString(),
                     };
 
-                    if (selectedTransaction != null && ((selectedTransaction.TxnStatus).ToUpper() != "CANCELLED" && (selectedTransaction.TxnStatus).ToUpper() != "COMPLETE" && (selectedTransaction.TxnStatus).ToUpper() != "REJECTED" && (selectedTransaction.TxnStatus).ToUpper() != "IN TRANSIT" && (selectedTransaction.TxnStatus).ToUpper() != "DELIVERED"))
+                    if (selectedTransaction != null && ((selectedTransaction.TxnStatus).ToUpper() != "CANCELLED" && (selectedTransaction.TxnStatus).ToUpper() != "COMPLETE" && (selectedTransaction.TxnStatus).ToUpper() != "REJECTED" && (selectedTransaction.TxnStatus).ToUpper() != "CLOSED"))
                     {
                         BindingList<Employee> employees = await _dashboardController.GetEmployees();
                         Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
@@ -1870,15 +1873,21 @@ namespace idsp2025_jared_green
 
                     if (selectedTransaction != null)
                     {
-                        if (selectedTransaction.TxnStatus == "CANCELLED")
+                        if (selectedTransaction.TxnStatus.ToUpper() == "CANCELLED")
                         {
                             MessageBox.Show("Unable to cancel because this transaction has already been cancelled.", "Unable to cancel transaction");
                             return;
                         }
 
-                        if (selectedTransaction.TxnStatus == "COMPLETE" || selectedTransaction.TxnStatus == "REJECTED")
+                        if (selectedTransaction.TxnStatus.ToUpper() == "COMPLETE" || selectedTransaction.TxnStatus.ToUpper() == "REJECTED" || selectedTransaction.TxnStatus.ToUpper() == "CLOSED")
                         {
                             MessageBox.Show("Unable to cancel because this transaction has already been closed.", "Unable to cancel transaction");
+                            return;
+                        }
+
+                        if (selectedTransaction.TxnStatus.ToUpper() == "IN TRANSIT" || selectedTransaction.TxnStatus.ToUpper() == "DELIVERED")
+                        {
+                            MessageBox.Show("Unable to cancel because this order is already on its way.", "Unable to cancel transaction");
                             return;
                         }
 
@@ -1908,7 +1917,7 @@ namespace idsp2025_jared_green
                                 }
                             }
 
-                            if (selectedTransaction.TxnStatus == "PREPARED")
+                            if (selectedTransaction.TxnStatus.ToUpper() == "PREPARED")
                             {
                                 // Set txn Items back to the warehouse.
                                 BindingList<Site> site = await _locationController.GetBullseyeLocations();
@@ -1926,6 +1935,8 @@ namespace idsp2025_jared_green
                             }
 
                             bool result = await _transactionController.UpdateTransactionStatus(selectedTransaction.TxnId, employee.EmployeeId, "CANCELLED");
+
+                            await RefreshTransactionsTab(tabTransactions);
                             if (result)
                             {
                                 MessageBox.Show($"Transaction {selectedTransaction.TxnId} has been cancelled.", "Transaction Cancelled");

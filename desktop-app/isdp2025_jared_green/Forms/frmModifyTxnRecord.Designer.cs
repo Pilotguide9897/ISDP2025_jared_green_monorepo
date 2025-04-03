@@ -238,6 +238,7 @@
             // lstTxnRecord
             // 
             lstTxnRecord.FormattingEnabled = true;
+            lstTxnRecord.HorizontalScrollbar = true;
             lstTxnRecord.ItemHeight = 25;
             lstTxnRecord.Location = new Point(721, 307);
             lstTxnRecord.Name = "lstTxnRecord";
