@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import ComboBox from '../../Components/ComboBox/ComboBox';
 import axios from '../../../node_modules/axios/index';
+import Form from 'react-bootstrap/Form';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 import DataTable from '../../Components/DataTable/DataTable';
@@ -19,7 +20,8 @@ import Alert from '../../Components/Alert/Alert';
 function PlaceOrder() {
     const [locations, setLocations] = useState([])
     const [selectedStore, setSelectedStore] = useState(null);
-    const [storeInventory, setStoreInventory] = useState(null);
+    const [storeInventory, setStoreInventory] = useState([]);
+    const [filteredStoreInventory, setFilteredStoreInventory] = useState(null);
     const [orderData, setOrderData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -31,7 +33,8 @@ function PlaceOrder() {
     const [submittedOrderID, setSubmittedOrderID] = useState(null);
     const [image, setImage] = useState("");
     const [subtotal, setSubtotal] = useState(0);
-    const [quantityAvailable, setQuantityAvailable] = useState(0);
+    // const [quantityAvailable, setQuantityAvailable] = useState(0);
+    const [searchText, setSearchText] = useState("");
     let imagePath = "/images/";
 
     //const subtotal = orderData?.reduce(
@@ -94,6 +97,7 @@ function PlaceOrder() {
                 }));
 
                 setStoreInventory(invData);
+                setFilteredStoreInventory(invData)
 
             } catch (error) {
                 console.log("Error with the fetching inventory data");
@@ -112,6 +116,20 @@ function PlaceOrder() {
             setSelectedStore(locations[0]);
         }
     }, [locations]);
+
+    useEffect(() => {
+        if (storeInventory != null) {
+            let filteredData = storeInventory.filter((item) => (
+                item.Name.toLowerCase().includes(searchText.toLowerCase())
+                //console.log(JSON.stringify(item));
+            ));
+
+            console.log(JSON.stringify(filteredData));
+
+            setFilteredStoreInventory(filteredData);
+        }
+
+    }, [searchText])
 
 
     useEffect(() => {
@@ -182,8 +200,9 @@ function PlaceOrder() {
                 console.log("Payload:", JSON.stringify(payload, null, 2));
 
                 let response = await axios.post('api/orders', payload);
-
-                setSubmittedOrderID(response.orderID)
+                console.log("Response: " + JSON.stringify(response))
+                console.log("TxnId: " + JSON.stringify(response.data.txnId))
+                setSubmittedOrderID(response.data.txnId)
                 setShowOrderToast(true);
 
                 setCustomerDetails({
@@ -206,6 +225,10 @@ function PlaceOrder() {
         } else {
             alert("No items to submit");
         }
+    }
+
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
     }
 
     const handleQuantityChange = (rowIndex, newQuantity) => {
@@ -251,7 +274,7 @@ function PlaceOrder() {
 
     const showItemImage = async (row) => {
         console.log(row);
-        let imageSrc = imagePath + row.itemId + ".png";
+        let imageSrc = imagePath + row.ItemId + ".png";
         let imageName = row.name;
         imageSrc = imageSrc.replaceAll(" ", "");
         setImage({ imageSrc, imageName });
@@ -285,6 +308,12 @@ function PlaceOrder() {
             <NavBar />
             <h1>Bullseye Sporting Goods - Order Portal</h1>
             <ComboBox label="Select a Store" items={locations} onChange={handleStoreChange} aria-describedby="storeSelectHelp" />
+            <Form>
+                <Form.Group className="mb-3" controlId="formBasicSearch">
+                    <Form.Label>Search Items:</Form.Label>
+                    <Form.Control type="text" placeholder="Enter item name" onChange={handleSearchChange} />
+                </Form.Group>
+            </Form>
             {orderData && orderData.length > 0 && (
                 <Alert variant="warning" className="mt-5 mb-5" message="Changing store locations will reset your cart. Please proceed with caution." />
             )}
@@ -298,7 +327,7 @@ function PlaceOrder() {
                                     <Card.Header>Available Inventory</Card.Header>
                                     <Card.Body style={{maxHeight: '35vh'}} className="h-100 overflow-auto ">
                                         <DataTable
-                                            data={storeInventory}
+                                            data={filteredStoreInventory}
                                             handleAddItem={ handleAddToCart }
                                         />
                                     </Card.Body>

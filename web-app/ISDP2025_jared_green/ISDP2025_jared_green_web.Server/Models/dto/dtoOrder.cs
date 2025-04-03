@@ -6,6 +6,8 @@ namespace ISDP2025_jared_green_web.Server.Models.dto
     {
         public int TxnId { get; set; }
 
+        public string TxnStatus { get; set; } = null!;
+
         public dtoSite OrderSite { get; set; }
 
         public string CustFirstName { get; set; }

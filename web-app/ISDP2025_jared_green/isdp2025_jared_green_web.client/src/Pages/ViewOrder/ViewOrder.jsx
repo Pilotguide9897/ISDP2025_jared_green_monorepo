@@ -35,10 +35,11 @@ function ViewOrder() {
 
             const orderItems = response.data.txnitems;
 
-            const { txnId, custFirstName, custLastName, custEmail, custPhone } = response.data;
+            const { txnId, txnStatus, custFirstName, custLastName, custEmail, custPhone } = response.data;
 
             setOrderDetails({
                 txnId,
+                txnStatus,
                 custFirstName,
                 custLastName,
                 custEmail,
@@ -112,6 +113,11 @@ function ViewOrder() {
                                 <Row >
                                     <Col className="d-flex justify-content-start">
                                         <h5>Order ID: {orderDetails.txnId}</h5>
+                                    </Col>
+                                </Row>
+                                <Row >
+                                    <Col className="d-flex justify-content-start">
+                                        <h5>Order Status: {orderDetails.txnStatus}</h5>
                                     </Col>
                                 </Row>
                                 <Row>

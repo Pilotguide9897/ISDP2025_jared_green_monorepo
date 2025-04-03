@@ -3,8 +3,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
-function OrderSubmitToast({ show, onHide, orderId }) {
-
+function OrderSubmitToast({ show, onHide, orderID }) {
+    console.log(`Submitted order id: ${orderID}`)
     return (
         <ToastContainer position="top-end" className="p-3">
             <Row>
@@ -19,7 +19,7 @@ function OrderSubmitToast({ show, onHide, orderId }) {
                             <strong className="me-auto">Order Submission</strong>
                             <small>Now</small>
                         </Toast.Header>
-                        <Toast.Body>Order Submitted. Order ID: { orderId }.</Toast.Body>
+                        <Toast.Body>Order Submitted. Order ID: { orderID }.</Toast.Body>
                     </Toast>
                 </Col>
             </Row>

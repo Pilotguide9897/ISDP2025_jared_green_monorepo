@@ -12,8 +12,6 @@ import { AuthProvider } from "./Context/AuthContext/AuthContext";
 import AuthGatekeeper from './Components/AuthGatekeeper/AuthGatekeeper';
 
 
-
-
 function App() {
 
     return (
@@ -22,9 +20,10 @@ function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/placeorder" element={<PlaceOrder /> } /> 
                 <Route path="vieworder" element={<ViewOrder />} />
-                <Route element={<AuthGatekeeper />}>
-                    <Route path="/driverdashboard" element={<Dashboard />} />
-                </Route>
+                <Route path="/driverdashboard" element={<Dashboard />} />
+                {/*<Route element={<AuthGatekeeper />}>*/}
+
+                {/*</Route>*/}
                 <Route path="*" element={<Error />} />
             </Routes>
         </AuthProvider>

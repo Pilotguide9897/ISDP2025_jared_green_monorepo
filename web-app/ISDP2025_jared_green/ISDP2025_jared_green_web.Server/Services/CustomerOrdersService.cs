@@ -84,8 +84,7 @@ namespace ISDP2025_jared_green_web.Server.Services
             {
 
                 var dto = await _bullseyeContext.Txns
-                                        //.Where(txn => txn.TxnId == txnID && txn.ShipDate > DateTime.Now)
-                    .Where(txn => txn.TxnId == txnID)
+                    .Where(txn => txn.TxnId == txnID && txn.TxnType == "Online")
                     .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
@@ -121,7 +120,7 @@ namespace ISDP2025_jared_green_web.Server.Services
             {
 
                 var dto = await _bullseyeContext.Txns
-                    .Where(txn => txn.CustEmail == email && txn.ShipDate > DateTime.Now)
+                    .Where(txn => txn.CustEmail == email && txn.TxnType == "Online")
                     .ProjectTo<dtoOrder>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
