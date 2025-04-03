@@ -159,7 +159,7 @@ namespace idsp2025_jared_green.Controllers
         public void SetInactivityTimer()
         {
             _inactivityTimer = new System.Timers.Timer();
-            _inactivityTimer.Interval = 600000; // Set for 10 minutes
+            _inactivityTimer.Interval = 60000000; 
             _inactivityTimer.Elapsed += InactivityTimer_Elapsed;
             _inactivityTimer.Start();
         }

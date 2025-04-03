@@ -2145,7 +2145,7 @@ namespace idsp2025_jared_green
                         deliveryDate = null
                     };
 
-                    if (preparedOrder != null && preparedOrder.txnStatus == "PREPARED" && preparedOrder.txnType == "Online")
+                    if (preparedOrder != null && preparedOrder.txnStatus == "READY" && preparedOrder.txnType == "Online")
                     {
 
                         BindingList<Employee> employees = await _dashboardController.GetEmployees();
@@ -2172,7 +2172,7 @@ namespace idsp2025_jared_green
                     }
                     else
                     {
-                        MessageBox.Show("Can only prepare store orders that have a status of 'NEW' and a type of 'Online'.", "Unable to prepare order");
+                        MessageBox.Show("Can only prepare store orders that have a status of 'READY' and a type of 'Online'.", "Unable to prepare order");
                     }
                 }
             }
