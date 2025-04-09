@@ -69,10 +69,10 @@
             // lblItemNameAndID
             // 
             lblItemNameAndID.AutoSize = true;
-            lblItemNameAndID.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblItemNameAndID.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblItemNameAndID.Location = new Point(169, 29);
             lblItemNameAndID.Name = "lblItemNameAndID";
-            lblItemNameAndID.Size = new Size(290, 65);
+            lblItemNameAndID.Size = new Size(301, 65);
             lblItemNameAndID.TabIndex = 0;
             lblItemNameAndID.Text = "Update Item";
             // 

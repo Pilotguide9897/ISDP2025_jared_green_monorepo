@@ -32,12 +32,10 @@
             pictureBox1 = new PictureBox();
             label1 = new Label();
             txtReasonForReturn = new TextBox();
-            comboBox1 = new ComboBox();
-            button1 = new Button();
-            button2 = new Button();
+            btnCompleteReturn = new Button();
+            btnExitReturn = new Button();
             cboProductName = new ComboBox();
             label2 = new Label();
-            label3 = new Label();
             label4 = new Label();
             chkResalePossible = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -56,16 +54,17 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(238, 76);
             label1.Name = "label1";
-            label1.Size = new Size(340, 65);
+            label1.Size = new Size(353, 65);
             label1.TabIndex = 1;
             label1.Text = "Process Return";
             // 
             // txtReasonForReturn
             // 
-            txtReasonForReturn.Location = new Point(136, 484);
+            txtReasonForReturn.BorderStyle = BorderStyle.FixedSingle;
+            txtReasonForReturn.Location = new Point(136, 372);
             txtReasonForReturn.Multiline = true;
             txtReasonForReturn.Name = "txtReasonForReturn";
             txtReasonForReturn.Size = new Size(431, 267);
@@ -73,38 +72,31 @@
             txtReasonForReturn.Text = "\r\n";
             txtReasonForReturn.TextChanged += txtReasonForReturn_TextChanged;
             // 
-            // comboBox1
+            // btnCompleteReturn
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(285, 381);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(282, 33);
-            comboBox1.TabIndex = 3;
+            btnCompleteReturn.Location = new Point(439, 721);
+            btnCompleteReturn.Name = "btnCompleteReturn";
+            btnCompleteReturn.Size = new Size(112, 34);
+            btnCompleteReturn.TabIndex = 4;
+            btnCompleteReturn.Text = "&Complete";
+            btnCompleteReturn.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnExitReturn
             // 
-            button1.Location = new Point(439, 842);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 4;
-            button1.Text = "Complete";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(439, 893);
-            button2.Name = "button2";
-            button2.Size = new Size(112, 34);
-            button2.TabIndex = 5;
-            button2.Text = "Exit";
-            button2.UseVisualStyleBackColor = true;
+            btnExitReturn.Location = new Point(439, 772);
+            btnExitReturn.Name = "btnExitReturn";
+            btnExitReturn.Size = new Size(112, 34);
+            btnExitReturn.TabIndex = 5;
+            btnExitReturn.Text = "&Exit";
+            btnExitReturn.UseVisualStyleBackColor = true;
             // 
             // cboProductName
             // 
+            cboProductName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboProductName.AutoCompleteSource = AutoCompleteSource.CustomSource;
             cboProductName.FormattingEnabled = true;
-            cboProductName.Location = new Point(285, 294);
+            cboProductName.Location = new Point(285, 259);
+            cboProductName.MaxDropDownItems = 15;
             cboProductName.Name = "cboProductName";
             cboProductName.Size = new Size(282, 33);
             cboProductName.TabIndex = 6;
@@ -112,25 +104,16 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(136, 456);
+            label2.Location = new Point(136, 342);
             label2.Name = "label2";
             label2.Size = new Size(227, 25);
             label2.TabIndex = 7;
             label2.Text = "Reason for Return / Details:";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(136, 384);
-            label3.Name = "label3";
-            label3.Size = new Size(94, 25);
-            label3.TabIndex = 8;
-            label3.Text = "Condition:";
-            // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(136, 297);
+            label4.Location = new Point(136, 262);
             label4.Name = "label4";
             label4.Size = new Size(130, 25);
             label4.TabIndex = 9;
@@ -139,7 +122,7 @@
             // chkResalePossible
             // 
             chkResalePossible.AutoSize = true;
-            chkResalePossible.Location = new Point(136, 792);
+            chkResalePossible.Location = new Point(136, 670);
             chkResalePossible.Name = "chkResalePossible";
             chkResalePossible.Size = new Size(139, 29);
             chkResalePossible.TabIndex = 10;
@@ -150,15 +133,13 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(681, 938);
+            ClientSize = new Size(681, 833);
             Controls.Add(chkResalePossible);
             Controls.Add(label4);
-            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(cboProductName);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(comboBox1);
+            Controls.Add(btnExitReturn);
+            Controls.Add(btnCompleteReturn);
             Controls.Add(txtReasonForReturn);
             Controls.Add(label1);
             Controls.Add(pictureBox1);
@@ -166,6 +147,7 @@
             Name = "frmReturn";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bullseye Inventory Management System - Process Return";
+            Load += frmReturn_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -176,12 +158,10 @@
         private PictureBox pictureBox1;
         private Label label1;
         private TextBox txtReasonForReturn;
-        private ComboBox comboBox1;
-        private Button button1;
-        private Button button2;
+        private Button btnCompleteReturn;
+        private Button btnExitReturn;
         private ComboBox cboProductName;
         private Label label2;
-        private Label label3;
         private Label label4;
         private CheckBox chkResalePossible;
     }

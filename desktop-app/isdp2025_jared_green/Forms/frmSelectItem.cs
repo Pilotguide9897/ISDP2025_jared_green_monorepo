@@ -1,4 +1,6 @@
-﻿using System;
+﻿using idsp2025_jared_green.Entities;
+using idsp2025_jared_green.Interfaces.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +14,12 @@ namespace idsp2025_jared_green.Forms
 {
     public partial class frmSelectItem : Form
     {
-        public frmSelectItem()
+        private readonly IInventoryController _inventoryController;
+        private List<Item> _itemList;
+
+        public frmSelectItem(IInventoryController inventoryController)
         {
+            _inventoryController = inventoryController;
             InitializeComponent();
         }
 
@@ -24,7 +30,7 @@ namespace idsp2025_jared_green.Forms
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-
+            // Get which checkboxes are selected. Add them to the list from the tag!
         }
 
         private void txtSearchItem_TextChanged(object sender, EventArgs e)
@@ -32,13 +38,26 @@ namespace idsp2025_jared_green.Forms
             string filterText = txtSearchItem.Text;
             if (string.IsNullOrEmpty(filterText))
             {
-                bsBullseyeInventory.RemoveFilter();
+                bsProductSearch.RemoveFilter();
             }
             else
             {
-                bsBullseyeInventory.Filter = $"Name LIKE '*{filterText}*' OR Description LIKE '*{filterText}*' OR Category LIKE '*{filterText}*'";
+                bsProductSearch.Filter = $"Name LIKE '*{filterText}*'";
             }
-       
+        }
+
+        private void frmSelectItem_Load(object sender, EventArgs e)
+        {
+            bsProductSearch.DataSource = _inventoryController.GetInventoryNames();
+            dgvItemSelect.DataSource = bsProductSearch;
+
+            if (this.Tag != null) {
+                _itemList = this.Tag as List<Item>;
+            }
+            if (_itemList != null && _itemList.Count > 0)
+            {
+                // Check the specified checkboxes.
+            }
         }
     }
 }

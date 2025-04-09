@@ -28,16 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSelectItem));
             pictureBox1 = new PictureBox();
             label1 = new Label();
             label2 = new Label();
             txtSearchItem = new TextBox();
-            dataGridView1 = new DataGridView();
+            dgvItemSelect = new DataGridView();
             btnConfirm = new Button();
             btnCancel = new Button();
+            bsProductSearch = new BindingSource(components);
+            ProductName = new DataGridViewTextBoxColumn();
+            Select = new DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvItemSelect).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bsProductSearch).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -78,14 +83,23 @@
             txtSearchItem.TabIndex = 3;
             txtSearchItem.TextChanged += txtSearchItem_TextChanged;
             // 
-            // dataGridView1
+            // dgvItemSelect
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(46, 199);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(1171, 404);
-            dataGridView1.TabIndex = 4;
+            dgvItemSelect.AllowUserToAddRows = false;
+            dgvItemSelect.AllowUserToDeleteRows = false;
+            dgvItemSelect.AllowUserToResizeColumns = false;
+            dgvItemSelect.AllowUserToResizeRows = false;
+            dgvItemSelect.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvItemSelect.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvItemSelect.Columns.AddRange(new DataGridViewColumn[] { ProductName, Select });
+            dgvItemSelect.Location = new Point(46, 199);
+            dgvItemSelect.MultiSelect = false;
+            dgvItemSelect.Name = "dgvItemSelect";
+            dgvItemSelect.RowHeadersVisible = false;
+            dgvItemSelect.RowHeadersWidth = 62;
+            dgvItemSelect.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvItemSelect.Size = new Size(1171, 404);
+            dgvItemSelect.TabIndex = 4;
             // 
             // btnConfirm
             // 
@@ -107,6 +121,18 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // ProductName
+            // 
+            ProductName.HeaderText = "Product Name";
+            ProductName.MinimumWidth = 8;
+            ProductName.Name = "ProductName";
+            // 
+            // Select
+            // 
+            Select.HeaderText = "Select";
+            Select.MinimumWidth = 8;
+            Select.Name = "Select";
+            // 
             // frmSelectItem
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -114,7 +140,7 @@
             ClientSize = new Size(1258, 664);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvItemSelect);
             Controls.Add(txtSearchItem);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -123,8 +149,10 @@
             Name = "frmSelectItem";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Bullseye Inventory Management System - Select Item(s)";
+            Load += frmSelectItem_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvItemSelect).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bsProductSearch).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -135,8 +163,11 @@
         private Label label1;
         private Label label2;
         private TextBox txtSearchItem;
-        private DataGridView dataGridView1;
+        private DataGridView dgvItemSelect;
         private Button btnConfirm;
         private Button btnCancel;
+        private BindingSource bsProductSearch;
+        private DataGridViewTextBoxColumn ProductName;
+        private DataGridViewCheckBoxColumn Select;
     }
 }

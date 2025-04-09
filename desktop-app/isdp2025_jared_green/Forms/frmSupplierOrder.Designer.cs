@@ -28,26 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSupplierOrder));
             pictureBox1 = new PictureBox();
-            dataGridView1 = new DataGridView();
-            dataGridView2 = new DataGridView();
+            dgvSupplierOrderCart = new DataGridView();
+            dgvSupplierInventory = new DataGridView();
             btnCloseSupplierOrder = new Button();
             btnCreateSupplierOrder = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
             btnAddToSupplierOrder = new Button();
             label5 = new Label();
             label6 = new Label();
-            textBox1 = new TextBox();
-            comboBox1 = new ComboBox();
+            txtSearchSupplierInventory = new TextBox();
+            cboSuppliers = new ComboBox();
             label7 = new Label();
+            bsSupplierOrderCart = new BindingSource(components);
+            bsSupplierInventory = new BindingSource(components);
             label8 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvSupplierOrderCart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvSupplierInventory).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bsSupplierOrderCart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bsSupplierInventory).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -60,23 +61,26 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // dataGridView1
+            // dgvSupplierOrderCart
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(53, 329);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(756, 505);
-            dataGridView1.TabIndex = 1;
+            dgvSupplierOrderCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSupplierOrderCart.Location = new Point(53, 329);
+            dgvSupplierOrderCart.MultiSelect = false;
+            dgvSupplierOrderCart.Name = "dgvSupplierOrderCart";
+            dgvSupplierOrderCart.RowHeadersWidth = 62;
+            dgvSupplierOrderCart.Size = new Size(756, 505);
+            dgvSupplierOrderCart.TabIndex = 1;
             // 
-            // dataGridView2
+            // dgvSupplierInventory
             // 
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(896, 266);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersWidth = 62;
-            dataGridView2.Size = new Size(962, 652);
-            dataGridView2.TabIndex = 2;
+            dgvSupplierInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSupplierInventory.Location = new Point(896, 272);
+            dgvSupplierInventory.MultiSelect = false;
+            dgvSupplierInventory.Name = "dgvSupplierInventory";
+            dgvSupplierInventory.RowHeadersWidth = 62;
+            dgvSupplierInventory.Size = new Size(962, 652);
+            dgvSupplierInventory.TabIndex = 2;
+            dgvSupplierInventory.CellDoubleClick += dgvSupplierInventory_CellDoubleClick;
             // 
             // btnCloseSupplierOrder
             // 
@@ -97,42 +101,6 @@
             btnCreateSupplierOrder.Text = "Submit";
             btnCreateSupplierOrder.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(1625, 76);
-            label1.Name = "label1";
-            label1.Size = new Size(59, 25);
-            label1.TabIndex = 5;
-            label1.Text = "label1";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(1625, 152);
-            label2.Name = "label2";
-            label2.Size = new Size(59, 25);
-            label2.TabIndex = 6;
-            label2.Text = "label2";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(1746, 76);
-            label3.Name = "label3";
-            label3.Size = new Size(59, 25);
-            label3.TabIndex = 7;
-            label3.Text = "label3";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(1746, 152);
-            label4.Name = "label4";
-            label4.Size = new Size(59, 25);
-            label4.TabIndex = 8;
-            label4.Text = "label4";
-            // 
             // btnAddToSupplierOrder
             // 
             btnAddToSupplierOrder.BackgroundImage = Properties.Resources.vector_left_arrow_icon;
@@ -147,54 +115,60 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.Location = new Point(323, 112);
             label5.Name = "label5";
-            label5.Size = new Size(339, 65);
+            label5.Size = new Size(350, 65);
             label5.TabIndex = 10;
             label5.Text = "Supplier Order";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(1229, 227);
+            label6.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(1229, 224);
             label6.Name = "label6";
-            label6.Size = new Size(78, 25);
+            label6.Size = new Size(105, 32);
             label6.TabIndex = 11;
             label6.Text = "Product:";
+            label6.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // textBox1
+            // txtSearchSupplierInventory
             // 
-            textBox1.Location = new Point(1313, 226);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(545, 31);
-            textBox1.TabIndex = 12;
+            txtSearchSupplierInventory.Location = new Point(1340, 226);
+            txtSearchSupplierInventory.Name = "txtSearchSupplierInventory";
+            txtSearchSupplierInventory.Size = new Size(518, 31);
+            txtSearchSupplierInventory.TabIndex = 12;
+            txtSearchSupplierInventory.TextChanged += txtSearchSupplierInventory_TextChanged;
             // 
-            // comboBox1
+            // cboSuppliers
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(983, 224);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(218, 33);
-            comboBox1.TabIndex = 13;
+            cboSuppliers.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSuppliers.FormattingEnabled = true;
+            cboSuppliers.Location = new Point(1012, 224);
+            cboSuppliers.Name = "cboSuppliers";
+            cboSuppliers.Size = new Size(211, 33);
+            cboSuppliers.TabIndex = 13;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(896, 227);
+            label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(896, 222);
             label7.Name = "label7";
-            label7.Size = new Size(81, 25);
+            label7.Size = new Size(110, 32);
             label7.TabIndex = 14;
             label7.Text = "Supplier:";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(53, 286);
+            label8.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(53, 272);
             label8.Name = "label8";
-            label8.Size = new Size(44, 25);
+            label8.Size = new Size(90, 45);
             label8.TabIndex = 15;
-            label8.Text = "Cart";
+            label8.Text = "Cart:\r\n";
             // 
             // frmSupplierOrder
             // 
@@ -203,27 +177,26 @@
             ClientSize = new Size(1898, 1024);
             Controls.Add(label8);
             Controls.Add(label7);
-            Controls.Add(comboBox1);
-            Controls.Add(textBox1);
+            Controls.Add(cboSuppliers);
+            Controls.Add(txtSearchSupplierInventory);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(btnAddToSupplierOrder);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
             Controls.Add(btnCreateSupplierOrder);
             Controls.Add(btnCloseSupplierOrder);
-            Controls.Add(dataGridView2);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvSupplierInventory);
+            Controls.Add(dgvSupplierOrderCart);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmSupplierOrder";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bullseye Inventory Management System - Supplier Order";
+            Load += frmSupplierOrder_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvSupplierOrderCart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvSupplierInventory).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bsSupplierOrderCart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bsSupplierInventory).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -231,20 +204,18 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private DataGridView dataGridView1;
-        private DataGridView dataGridView2;
+        private DataGridView dgvSupplierOrderCart;
+        private DataGridView dgvSupplierInventory;
         private Button btnCloseSupplierOrder;
         private Button btnCreateSupplierOrder;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
         private Button btnAddToSupplierOrder;
         private Label label5;
         private Label label6;
-        private TextBox textBox1;
-        private ComboBox comboBox1;
+        private TextBox txtSearchSupplierInventory;
+        private ComboBox cboSuppliers;
         private Label label7;
+        private BindingSource bsSupplierOrderCart;
+        private BindingSource bsSupplierInventory;
         private Label label8;
     }
 }

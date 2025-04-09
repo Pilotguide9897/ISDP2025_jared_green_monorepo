@@ -97,6 +97,7 @@
             // 
             // cboProductName
             // 
+            cboProductName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboProductName.FormattingEnabled = true;
             cboProductName.Location = new Point(168, 10);
             cboProductName.MaxDropDownItems = 15;
