@@ -24,11 +24,8 @@ namespace idsp2025_jared_green.Forms
         private int _employeeID;
         private int _orderID;
 
-        //public frmModifyOrder(IItemController itemController, ITransactionController transactionController, int orderID, int employeeID)
         public frmModifyOrder(IItemController itemController, ITransactionController transactionController, IInventoryController inventoryController)
         {
-            //_employeeID = employeeID;
-            //_orderID = orderID;
             _transactionController = transactionController;
             _itemController = itemController;
             _inventoryController = inventoryController;
@@ -128,144 +125,6 @@ namespace idsp2025_jared_green.Forms
                 dgv.Columns.Remove(name);
             }
         }
-
-        //private async void frmModifyOrder_Load(object sender, EventArgs e)
-        //{
-        //    await Task.Yield();
-
-        //    LoadOrderMetadata();
-        //    BindingList<Item> items = await LoadInventoryData();
-        //    BindingList<dtoOrderItem> orderItems = await LoadOrderItems();
-
-        //    //BindingList<Item> items = await _itemController.GetAllItems();
-        //    //DataTable dt = DataTableConverter.ConvertToDataTable(items);
-        //    //bsBullseyeInventory.DataSource = dt;
-        //    //dgvBullseyeInventory.DataSource = bsBullseyeInventory;
-        //    //dgvBullseyeInventory.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-        //    //bsBullseyeInventory.Filter = "Active = 1";
-
-        //    // Remove unnecessary columns
-        //    HideColumnsInDGV(new List<string> { "Sku", "Weight", "CostPrice", "RetailPrice", "SupplierId", "Notes", "Active", "ImageLocation", "CategoryNavigation", "Inventories", "Supplier", "Txnitems", "ImagePaths" , "CaseSize"}, dgvBullseyeInventory);
-        //    //dgvBullseyeInventory.Columns["CaseSize"].Visible = false;
-        //    dgvBullseyeInventory.AutoResizeColumns();
-
-
-        //    //dgvOrderItems.DataSource = null; // Clear existing columns before rebinding
-        //    //dgvOrderItems.AutoGenerateColumns = false; // Prevent auto column creation
-        //    //dgvOrderItems.Columns.Clear();
-
-        //    //// Add Product Name Column
-        //    //dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn
-        //    //{
-        //    //    HeaderText = "Product ID",
-        //    //    DataPropertyName = "itemID",
-        //    //    Name = "itemID",
-        //    //    ReadOnly = true
-        //    //});
-
-
-        //    //dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn
-        //    //{
-        //    //    HeaderText = "Product Name",
-        //    //    DataPropertyName = "productName",
-        //    //    Name = "ProductName",
-        //    //    ReadOnly = true
-        //    //});
-
-        //    AddNumericCount();
-
-        //    //for (int i = 0; i < dgvOrderItems.Rows.Count; i++)
-        //    //{
-        //    //    var oldCell = dgvOrderItems.Rows[i].Cells["QuantityRequested"];
-        //    //    if (oldCell is DataGridViewNumericUpDownCell)
-        //    //    {
-        //    //        DataGridViewNumericUpDownCell numericCell = new DataGridViewNumericUpDownCell();
-        //    //        int caseSize = (from itm in items where itm.ItemId == orderItems[i].itemID select itm.CaseSize).FirstOrDefault();
-
-        //    //        numericCell.Minimum = caseSize > 0 ? caseSize : 1;
-        //    //        numericCell.Increment = caseSize > 0 ? caseSize : 1;
-        //    //        numericCell.Value = orderItems[i].quantityRequested;
-
-        //    //        dgvOrderItems.Rows[i].Cells["QuantityRequested"] = numericCell;
-        //    //    }
-        //    //}
-
-        //    SetNudProperties(items, orderItems);
-
-        //}
-
-        //private void SetNudProperties(BindingList<Item> items, BindingList<dtoOrderItem> orderItems)
-        //{
-        //    var caseSizeMap = items.ToDictionary(i => i.ItemId, i => i.CaseSize);
-
-        //    for (int i = 0; i < dgvOrderItems.Rows.Count; i++)
-        //    {
-        //        var cell = dgvOrderItems.Rows[i].Cells["QuantityRequested"] as DataGridViewNumericUpDownCell;
-        //        if (cell != null && i < orderItems.Count)
-        //        {
-        //            int itemId = orderItems[i].itemID;
-        //            int caseSize = caseSizeMap.TryGetValue(itemId, out var cs) ? cs : 1;
-
-        //            cell.Minimum = caseSize;
-        //            cell.Increment = caseSize;
-        //            cell.Value = orderItems[i].quantityRequested;
-        //        }
-        //    }
-        //}
-
-        //private void AddNumericCount()
-        //{
-        //    // Add Quantity Requested as a Numeric Column
-        //    DataGridViewNumericUpDownColumn nudColumn = new DataGridViewNumericUpDownColumn
-        //    {
-        //        HeaderText = "Quantity Requested",
-        //        Name = "quantityRequested",
-        //        DataPropertyName = "quantityRequested",
-        //        Width = 150
-        //    };
-        //    dgvOrderItems.Columns.Add(nudColumn);
-
-        //    dgvOrderItems.DataSource = bsOrderItems;
-        //    dgvOrderItems.Columns["quantityAtWarehouse"].Visible = false;
-        //    bsOrderItems.ResetBindings(false);
-        //}
-
-        //private void LoadOrderMetadata()
-        //{
-        //    _employeeID = (this.Tag as Txn).EmployeeId;
-        //    _orderID = (this.Tag as Txn).TxnId;
-        //    if ((this.Tag as Txn).TxnType == "Back Order")
-        //    {
-        //        lblOrderType.Text = "Back Order";
-        //        dtpBackorderDate.Visible = true;
-        //        dtpBackorderDate.Value = (this.Tag as Txn).ShipDate;
-        //    }
-        //    else
-        //    {
-        //        lblOrderType.Text = (this.Tag as Txn).EmergencyDelivery == 1 ? "Emergency" : "Standard";
-        //    }
-        //    lblOrderID.Text = _orderID.ToString();
-        //}
-
-        //private async Task<BindingList<dtoOrderItem>> LoadOrderItems()
-        //{
-        //    // Load Existing Order Data
-        //    BindingList<dtoOrderItem> orderItems = await _transactionController.GetTxnItems(_orderID);
-        //    bsOrderItems.DataSource = orderItems;
-        //    bsOrderItems.ResetBindings(false);
-
-        //    return orderItems;
-        //}
-
-        //private async Task<BindingList<Item>> LoadInventoryData()
-        //{
-        //    // Load Inventory
-        //    BindingList<Item> items = await _itemController.GetAllItems();
-        //    bsBullseyeInventory.DataSource = items;
-        //    dgvBullseyeInventory.DataSource = bsBullseyeInventory;
-        //    bsBullseyeInventory.Filter = "Active = 1";
-        //    return items;
-        //}
 
         private void txtInventorySearch_TextChanged(object sender, EventArgs e)
         {

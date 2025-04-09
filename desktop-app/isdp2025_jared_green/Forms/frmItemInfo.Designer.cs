@@ -44,9 +44,9 @@
             lblProductName = new Label();
             panel1 = new Panel();
             txtDescription = new TextBox();
-            txtPrice = new Label();
-            txtCaseSize = new Label();
-            txtWeight = new Label();
+            lblPrice = new Label();
+            lblCaseSize = new Label();
+            lblWeight = new Label();
             lblCategory = new Label();
             lblSku = new Label();
             ((System.ComponentModel.ISupportInitialize)picProductImage).BeginInit();
@@ -186,9 +186,9 @@
             panel1.BackColor = Color.WhiteSmoke;
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(txtDescription);
-            panel1.Controls.Add(txtPrice);
-            panel1.Controls.Add(txtCaseSize);
-            panel1.Controls.Add(txtWeight);
+            panel1.Controls.Add(lblPrice);
+            panel1.Controls.Add(lblCaseSize);
+            panel1.Controls.Add(lblWeight);
             panel1.Controls.Add(lblCategory);
             panel1.Controls.Add(lblSku);
             panel1.Controls.Add(label6);
@@ -216,35 +216,35 @@
             txtDescription.Size = new Size(513, 106);
             txtDescription.TabIndex = 20;
             // 
-            // txtPrice
+            // lblPrice
             // 
-            txtPrice.AutoSize = true;
-            txtPrice.Location = new Point(167, 416);
-            txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(69, 25);
-            txtPrice.TabIndex = 19;
-            txtPrice.Text = "label17";
-            txtPrice.TextAlign = ContentAlignment.MiddleLeft;
+            lblPrice.AutoSize = true;
+            lblPrice.Location = new Point(167, 416);
+            lblPrice.Name = "lblPrice";
+            lblPrice.Size = new Size(69, 25);
+            lblPrice.TabIndex = 19;
+            lblPrice.Text = "label17";
+            lblPrice.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // txtCaseSize
+            // lblCaseSize
             // 
-            txtCaseSize.AutoSize = true;
-            txtCaseSize.Location = new Point(167, 361);
-            txtCaseSize.Name = "txtCaseSize";
-            txtCaseSize.Size = new Size(69, 25);
-            txtCaseSize.TabIndex = 18;
-            txtCaseSize.Text = "label16";
-            txtCaseSize.TextAlign = ContentAlignment.MiddleLeft;
+            lblCaseSize.AutoSize = true;
+            lblCaseSize.Location = new Point(167, 361);
+            lblCaseSize.Name = "lblCaseSize";
+            lblCaseSize.Size = new Size(69, 25);
+            lblCaseSize.TabIndex = 18;
+            lblCaseSize.Text = "label16";
+            lblCaseSize.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // txtWeight
+            // lblWeight
             // 
-            txtWeight.AutoSize = true;
-            txtWeight.Location = new Point(167, 303);
-            txtWeight.Name = "txtWeight";
-            txtWeight.Size = new Size(69, 25);
-            txtWeight.TabIndex = 17;
-            txtWeight.Text = "label15";
-            txtWeight.TextAlign = ContentAlignment.MiddleLeft;
+            lblWeight.AutoSize = true;
+            lblWeight.Location = new Point(167, 303);
+            lblWeight.Name = "lblWeight";
+            lblWeight.Size = new Size(69, 25);
+            lblWeight.TabIndex = 17;
+            lblWeight.Text = "label15";
+            lblWeight.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblCategory
             // 
@@ -303,9 +303,9 @@
         private Label lblSupplier;
         private Label lblProductName;
         private Panel panel1;
-        private Label txtPrice;
-        private Label txtCaseSize;
-        private Label txtWeight;
+        private Label lblPrice;
+        private Label lblCaseSize;
+        private Label lblWeight;
         private Label lblCategory;
         private Label lblSku;
         private TextBox txtDescription;

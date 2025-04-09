@@ -44,6 +44,9 @@
             bsSupplierOrderCart = new BindingSource(components);
             bsSupplierInventory = new BindingSource(components);
             label8 = new Label();
+            productName = new DataGridViewTextBoxColumn();
+            supplier = new DataGridViewTextBoxColumn();
+            quantityRequested = new CustomControls.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierOrderCart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierInventory).BeginInit();
@@ -63,13 +66,18 @@
             // 
             // dgvSupplierOrderCart
             // 
+            dgvSupplierOrderCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSupplierOrderCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSupplierOrderCart.Columns.AddRange(new DataGridViewColumn[] { productName, supplier, quantityRequested });
             dgvSupplierOrderCart.Location = new Point(53, 329);
             dgvSupplierOrderCart.MultiSelect = false;
             dgvSupplierOrderCart.Name = "dgvSupplierOrderCart";
+            dgvSupplierOrderCart.RowHeadersVisible = false;
             dgvSupplierOrderCart.RowHeadersWidth = 62;
+            dgvSupplierOrderCart.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvSupplierOrderCart.Size = new Size(756, 505);
             dgvSupplierOrderCart.TabIndex = 1;
+            dgvSupplierOrderCart.CellValueChanged += dgvSupplierOrderCart_CellValueChanged;
             // 
             // dgvSupplierInventory
             // 
@@ -170,6 +178,27 @@
             label8.TabIndex = 15;
             label8.Text = "Cart:\r\n";
             // 
+            // productName
+            // 
+            productName.HeaderText = "Product Name";
+            productName.MinimumWidth = 8;
+            productName.Name = "productName";
+            productName.ReadOnly = true;
+            // 
+            // supplier
+            // 
+            supplier.HeaderText = "Supplier";
+            supplier.MinimumWidth = 8;
+            supplier.Name = "supplier";
+            supplier.ReadOnly = true;
+            // 
+            // quantityRequested
+            // 
+            quantityRequested.HeaderText = "Quantity Requested";
+            quantityRequested.MinimumWidth = 8;
+            quantityRequested.Name = "quantityRequested";
+            quantityRequested.ReadOnly = true;
+            // 
             // frmSupplierOrder
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -217,5 +246,8 @@
         private BindingSource bsSupplierOrderCart;
         private BindingSource bsSupplierInventory;
         private Label label8;
+        private DataGridViewTextBoxColumn productName;
+        private DataGridViewTextBoxColumn supplier;
+        private CustomControls.DataGridViewNumericUpDownColumn quantityRequested;
     }
 }
