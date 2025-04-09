@@ -1,5 +1,6 @@
 ﻿using idsp2025_jared_green.Entities;
 using idsp2025_jared_green.Entities.dto;
+using idsp2025_jared_green.Error;
 using idsp2025_jared_green.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
@@ -16,6 +17,7 @@ namespace idsp2025_jared_green.Services
 {
     public class InventoryService : IInventory
     {
+        private static readonly NLog.Logger _inventoryLogger = NLog.LogManager.GetCurrentClassLogger();
         private readonly BullseyeContext _bullseyeContext;
         public InventoryService(BullseyeContext bullseyeContext) 
         {
@@ -300,12 +302,6 @@ namespace idsp2025_jared_green.Services
             }
         }
 
-
-        public async Task TransferInventoryRecords()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<BindingList<Inventory>> GetInventoryInNeedOfResupply(int siteID)
         {
             try
@@ -336,6 +332,36 @@ namespace idsp2025_jared_green.Services
                 MessageBox.Show("An unexpected error occurred while accessing the inventory. Please try again later.", "Unexpected Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //ItemLogger.Error(ex, "");
                 return null;
+            }
+        }
+
+        public async Task<object> GetInventoryNames()
+        {
+            try
+            {
+                List<string> itemNames = await (from itm in _bullseyeContext.Items select itm.Name).ToListAsync();
+                if (itemNames == null)
+                {
+                    _inventoryLogger.Error($"No item information found");
+                    return new ErrorResult("NO_MATCHES", "No item information found.");
+                }
+                return itemNames!;
+
+            }
+            catch (MySqlException msqlEx)
+            {
+                _inventoryLogger.Error(msqlEx, "Database error occurred when querying item names.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _inventoryLogger.Error(toEx, "Operation timed out when querying item names.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _inventoryLogger.Error(ex, "An unexpected error occurred when querying item names.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }
     }

@@ -98,7 +98,7 @@
             btnConfirmLoss.TabIndex = 6;
             btnConfirmLoss.Text = "Confirm";
             btnConfirmLoss.UseVisualStyleBackColor = true;
-            btnConfirmLoss.Click += button1_Click;
+            btnConfirmLoss.Click += btnConfirmLoss_Click;
             // 
             // btnExitReportLoss
             // 
@@ -108,6 +108,7 @@
             btnExitReportLoss.TabIndex = 7;
             btnExitReportLoss.Text = "Exit";
             btnExitReportLoss.UseVisualStyleBackColor = true;
+            btnExitReportLoss.Click += btnExitReportLoss_Click;
             // 
             // label2
             // 
@@ -158,7 +159,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(599, 847);
+            ClientSize = new Size(619, 847);
             Controls.Add(cboLossSite);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -175,6 +176,7 @@
             Name = "frmLoss";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bullseye Inventory Management System - Report Loss";
+            Load += frmLoss_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

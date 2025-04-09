@@ -99,6 +99,7 @@
             Controls.Add(btnCancelSigning);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmSignForOrder";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Customer Signature";
             Load += frmSignForOrder_Load;
             ResumeLayout(false);

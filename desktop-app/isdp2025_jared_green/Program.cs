@@ -162,6 +162,10 @@ namespace idsp2025_jared_green
                 {
                     return ActivatorUtilities.CreateInstance<frmPrepareOnlineOrder>(sp, Employee);
                 });
+                services.AddTransient<Func<Employee, frmSupplierOrder>>(sp => (Employee) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmSupplierOrder>(sp, Employee);
+                });
             });
         }
 

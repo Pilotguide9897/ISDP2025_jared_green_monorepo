@@ -8,9 +8,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Site = idsp2025_jared_green.Entities.Site;
 
 namespace idsp2025_jared_green.Forms
 {
@@ -100,14 +102,29 @@ namespace idsp2025_jared_green.Forms
                     Site site = (from loc in bullseyeLocations where loc.SiteId == _employee.SiteId select loc).FirstOrDefault();
 
                     BindingList<dtoOrderItem> items = await _transactionController.GetTxnItems(_orderDetails.txnID);
+                    BindingList<Txn> txn = await _transactionController.GetAllTransactions();
+                    int stId = (from tx in txn where tx.TxnId == _orderDetails.txnID select tx.SiteIdfrom).FirstOrDefault();
 
-                    foreach (dtoOrderItem item in items)
+                    if (_employee.PositionId == 6)
                     {
-                        await _inventoryController.MoveInventory(9999, site.SiteId, item.quantityRequested, item.itemID, "On Truck", "Storeroom");
+                        foreach (dtoOrderItem item in items)
+                        {
+                            // Sending to truck inventory...
+                            await _inventoryController.MoveInventory(9999, stId, item.quantityRequested, item.itemID, "On Truck", "Storeroom");
+                        }
+                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "DELIVERED");
+                        this.Close();
                     }
-                    // Replace the hard-coded employeeID with the id of the logged in employee.
-                    await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "DELIVERED");
-                    this.Close();
+
+                    if (_employee.PositionId == 4 || _employee.PositionId == 7)
+                    {
+                        foreach (dtoOrderItem item in items)
+                        {
+                            await _inventoryController.MoveInventory(site.SiteId, site.SiteId, item.quantityRequested, item.itemID, "Storeroom", "");
+                        }
+                        await _transactionController.UpdateTransactionStatus(_orderDetails.txnID, _employee.EmployeeId, "CLOSED");
+                        this.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -149,9 +166,21 @@ namespace idsp2025_jared_green.Forms
             _orderDetails = this.Tag as dtoOrders;
             if (_orderDetails != null)
             {
+                if (_employee.PositionId == 6)
+                {
+                    lblFormTitle.Text = "Deliver Store Order";
+                }
+
+                if (_employee.PositionId == 4 || _employee.PositionId == 7)
+                {
+                    lblFormTitle.Text = "Integrate Order into Inventory";
+                }
+
                 lblOrderID.Text = _orderDetails.txnID.ToString();
                 BindingList<dtoOrderItem> txnItems = await _transactionController.GetTxnItems(_orderDetails.txnID);
                 RefreshDataGridView(dgvOrderItems, bsOrderArrival, txnItems);
+
+                lblSignature.Text = $"{_employee.Position.PermissionLevel} signature:";
 
                 // Add the tracking column:
                 DataGridViewCheckBoxColumn dgvCbc = new DataGridViewCheckBoxColumn();

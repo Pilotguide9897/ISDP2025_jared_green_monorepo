@@ -55,7 +55,7 @@ namespace idsp2025_jared_green.Forms
                 foreach (dtoOrderItem item in items)
                 {
 
-                    await _inventoryController.MoveInventory(site.SiteId, 10000, item.quantityRequested, item.itemID, "0", "Cst Rtrvd");
+                    await _inventoryController.MoveInventory(10000, 10000, item.quantityRequested, item.itemID, $"{_orderDetails.txnID}", "Cst Rtrvd");
                 }
 
                 // Save Blob

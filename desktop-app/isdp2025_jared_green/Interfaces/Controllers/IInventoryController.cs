@@ -15,6 +15,8 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         //public Task<BindingList<Inventory>> GetAllInventory();
         public Task<BindingList<Inventory>> GetAllInventory();
 
+        public Task<List<String>> GetInventoryNames();
+
         public Task<BindingList<Inventory>> GetInventoryByLocation(Site site);
 
         public Task<bool> UpdateInventory(Inventory oldItem, Inventory updates);

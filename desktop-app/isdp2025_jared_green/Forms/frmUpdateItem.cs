@@ -20,10 +20,12 @@ namespace idsp2025_jared_green
         private Item _item;
         private BindingList<string>? _imagePaths;
         private readonly IItemController _itemController;
-        public frmUpdateItem(Item item, IItemController itemController)
+        private readonly ISupplierController _supplierController;
+        public frmUpdateItem(Item item, IItemController itemController, ISupplierController supplierController)
         {
             _item = item;
             _itemController = itemController;
+            _supplierController = supplierController;
             InitializeComponent();
             PopulateFields(_item);
         }
@@ -39,26 +41,6 @@ namespace idsp2025_jared_green
             chkItemActive.Checked = _item.Active == 1 ? true : false;
             txtUpdateItemDescription.Text = _item.Description;
             txtUpdateItemNotes.Text = _item.Notes;
-        }
-
-        public void ApplyPermissions(List<Posn> employeePositions)
-        {
-            foreach (Posn position in employeePositions)
-            {
-                switch (position)
-                {
-                    //case :
-
-                    //case :
-
-                    //case :
-
-                    default:
-                        MessageBox.Show("Error: No permissions detected for updating items. Closing form");
-                        this.Close();
-                        break;
-                }
-            }
         }
 
         private async void btnUpdateItem_Click(object sender, EventArgs e)
@@ -125,6 +107,21 @@ namespace idsp2025_jared_green
         private async void frmUpdateItem_Load(object sender, EventArgs e)
         {
             await InitializeCboImages();
+            LoadSupplierCbo();
+        }
+
+        private async void LoadSupplierCbo()
+        {
+            BindingList<Supplier> suppliers = await _supplierController.GetSuppliers();
+            cboSupplier.DataSource = suppliers;
+            cboSupplier.DisplayMember = "Name";
+            Supplier sup = (from s in suppliers where s.SupplierId == _item.SupplierId select s).FirstOrDefault();
+            if (sup != null) {
+                cboSupplier.SelectedText = sup.Name;
+            } else
+            {
+                cboSupplier.SelectedIndex = 0;
+            }
         }
 
         private async Task InitializeCboImages()
@@ -156,11 +153,6 @@ namespace idsp2025_jared_green
         {
             string helpText = "Update an item's information in our records. Modify the description and notes by typing in the respective text fields. Set whether the item is available for sale by checking the 'active' checkbox. If an item has one or more images saved to our system, the image currently set to the product will be displayed. If there are more photographs on file, a dropdown box will appear to allow you to select the image you would like. To add a new image, click the 'add image' button to open a file viewer where you can select a picture from your system. Once all the desired changes are made, click the update button to submit. Otherwise, click the cancel button to undo any changes.";
             MessageBox.Show(helpText, "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

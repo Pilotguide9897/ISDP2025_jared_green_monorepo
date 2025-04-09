@@ -1,7 +1,9 @@
 ﻿using idsp2025_jared_green.Entities;
 using idsp2025_jared_green.Entities.dto;
+using idsp2025_jared_green.Error;
 using idsp2025_jared_green.Interfaces.Controllers;
 using idsp2025_jared_green.Interfaces.Services;
+using idsp2025_jared_green.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,6 +58,23 @@ namespace idsp2025_jared_green.Controllers
         {
             int availableInventory = await _inventoryService.CheckInventoryLevel(siteID, itemID);
             return availableInventory;
+        }
+
+        public async Task<List<string>> GetInventoryNames()
+        {
+            object itemNames = await _inventoryService.GetInventoryNames();
+
+
+            // Handle the state of the object!
+            if (itemNames is ErrorResult er)
+            {
+                MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<string>();
+            }
+            else
+            {
+                return itemNames as List<string>;
+            }
         }
     }
 }

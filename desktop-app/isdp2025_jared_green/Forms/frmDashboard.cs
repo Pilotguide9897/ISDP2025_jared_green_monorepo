@@ -725,12 +725,10 @@ namespace idsp2025_jared_green
                 //frmUpdateItem frmUpdateItem = new frmUpdateItem(dgvItems.SelectedRows[0]);
                 Item item = dgvItems.SelectedRows[0].DataBoundItem as Item;
                 IItemController itemController = Program._serviceProvider.GetService<IItemController>();
-                //frmUpdateItem frmUpdateItem = Program._serviceProvider.GetRequiredService<frmUpdateItem>();
-                frmUpdateItem frmUpdateItem = new frmUpdateItem(item, itemController);
-                //frmUpdateItem.Tag = dgvItems.SelectedRows;
+                ISupplierController supplierController = Program._serviceProvider.GetService<ISupplierController>();
+                frmUpdateItem frmUpdateItem = new frmUpdateItem(item, itemController, supplierController);
                 frmUpdateItem.ShowDialog();
                 await RefreshItemsTab(tabItems);
-                // ReassignDataSource(dgvItems);
             }
         }
 
@@ -1126,11 +1124,22 @@ namespace idsp2025_jared_green
                         break;
 
                     case "Delivery":
-                        AddTabIfNotExists(tabEmployees);
-                        AddTabIfNotExists(tabItems);
+                        //AddTabIfNotExists(tabEmployees);
+                        //AddTabIfNotExists(tabItems);
                         AddTabIfNotExists(tabOrders);
                         btnPickUpOrder.Visible = true;
                         btnDeliverStoreOrder.Visible= true;
+                        break;
+
+
+                    case "Store Worker":
+                        AddTabIfNotExists(tabEmployees);
+                        AddTabIfNotExists(tabItems);
+                        AddTabIfNotExists(tabLocations);
+                        AddTabIfNotExists(tabOrders);
+                        AddTabIfNotExists(tabCustomerOrders);
+                        btnDeliverStoreOrder.Visible = true;
+                        btnPickUpOrder.Visible = true;
                         break;
 
                     case "Administrator":
@@ -1363,6 +1372,7 @@ namespace idsp2025_jared_green
                     {
                         var form = formFactory(Convert.ToInt32(dgvOrders.SelectedRows[0].Cells[0].Value.ToString()), employee.EmployeeId);
                         form.ShowDialog();
+                        await RefreshOrdersTab(tabOrders);
                         
                     }
                 }
@@ -1986,7 +1996,7 @@ namespace idsp2025_jared_green
                         deliveryDate = null
                     };
 
-                    if (deliveredOrder != null && deliveredOrder.txnStatus == "IN TRANSIT")
+                    if (deliveredOrder != null && (deliveredOrder.txnStatus == "IN TRANSIT" || deliveredOrder.txnStatus == "DELIVERED"))
                     {
                         // Get the txn id, 
                         BindingList<Employee> employees = await _dashboardController.GetEmployees();
@@ -1994,7 +2004,7 @@ namespace idsp2025_jared_green
                         List<string> roles = _sessionManager.GetPermissionsFromToken();
 
 
-                        if (employee != null && roles.Contains("Administrator") || deliveredOrder.siteName == employee.Site.SiteName)
+                        if (employee != null && roles.Contains("Administrator") || deliveredOrder.siteName == employee.Site.SiteName || roles.Contains("Delivery"))
                         {
                             // Move the quantities of all the items in the order.
                             BindingList<Txnitem> txnItems = await _transactionController.GetTxnItemsFromOrder(deliveredOrder.txnID);
@@ -2008,7 +2018,7 @@ namespace idsp2025_jared_green
                         }
                         else
                         {
-                            MessageBox.Show("Only administrators or store managers can receive orders and store managers may only accept store orders for their location.", "Unable to receive delivery");
+                            MessageBox.Show("Only administrators or store employees may accept store orders for their location.", "Unable to proceed delivery");
                         }
                     }
                     else

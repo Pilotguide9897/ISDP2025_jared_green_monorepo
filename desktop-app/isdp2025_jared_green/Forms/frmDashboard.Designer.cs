@@ -472,7 +472,7 @@
             // 
             // btnPickUpOrder
             // 
-            btnPickUpOrder.Location = new Point(1003, 629);
+            btnPickUpOrder.Location = new Point(1014, 629);
             btnPickUpOrder.Name = "btnPickUpOrder";
             btnPickUpOrder.Size = new Size(134, 34);
             btnPickUpOrder.TabIndex = 19;
@@ -485,9 +485,9 @@
             // 
             btnDeliverStoreOrder.Location = new Point(838, 629);
             btnDeliverStoreOrder.Name = "btnDeliverStoreOrder";
-            btnDeliverStoreOrder.Size = new Size(149, 34);
+            btnDeliverStoreOrder.Size = new Size(165, 34);
             btnDeliverStoreOrder.TabIndex = 17;
-            btnDeliverStoreOrder.Text = "Mark Delivered";
+            btnDeliverStoreOrder.Text = "Manage Delivery";
             btnDeliverStoreOrder.UseVisualStyleBackColor = true;
             btnDeliverStoreOrder.Visible = false;
             btnDeliverStoreOrder.Click += btnDeliverStoreOrder_Click;

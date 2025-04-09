@@ -31,10 +31,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAcceptStoreOrder));
             pictureBox1 = new PictureBox();
-            label1 = new Label();
+            lblFormTitle = new Label();
             label2 = new Label();
             dgvOrderItems = new DataGridView();
-            label3 = new Label();
+            lblSignature = new Label();
             btnAcceptDelivery = new Button();
             btnExitAcceptDelivery = new Button();
             pnlManagerSignature = new Panel();
@@ -56,15 +56,15 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // label1
+            // lblFormTitle
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(303, 58);
-            label1.Name = "label1";
-            label1.Size = new Size(356, 65);
-            label1.TabIndex = 1;
-            label1.Text = "Accept Delivery";
+            lblFormTitle.AutoSize = true;
+            lblFormTitle.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblFormTitle.Location = new Point(303, 58);
+            lblFormTitle.Name = "lblFormTitle";
+            lblFormTitle.Size = new Size(356, 65);
+            lblFormTitle.TabIndex = 1;
+            lblFormTitle.Text = "Accept Delivery";
             // 
             // label2
             // 
@@ -93,15 +93,15 @@
             dgvOrderItems.TabIndex = 3;
             dgvOrderItems.CellContentClick += dgvOrderItems_CellContentClick;
             // 
-            // label3
+            // lblSignature
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(94, 872);
-            label3.Name = "label3";
-            label3.Size = new Size(203, 30);
-            label3.TabIndex = 4;
-            label3.Text = "Manager Signature:";
+            lblSignature.AutoSize = true;
+            lblSignature.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSignature.Location = new Point(94, 872);
+            lblSignature.Name = "lblSignature";
+            lblSignature.Size = new Size(175, 30);
+            lblSignature.TabIndex = 4;
+            lblSignature.Text = "Driver Signature:";
             // 
             // btnAcceptDelivery
             // 
@@ -126,9 +126,9 @@
             // pnlManagerSignature
             // 
             pnlManagerSignature.BackColor = SystemColors.Window;
-            pnlManagerSignature.Location = new Point(303, 872);
+            pnlManagerSignature.Location = new Point(455, 872);
             pnlManagerSignature.Name = "pnlManagerSignature";
-            pnlManagerSignature.Size = new Size(1366, 175);
+            pnlManagerSignature.Size = new Size(1214, 175);
             pnlManagerSignature.TabIndex = 8;
             pnlManagerSignature.MouseDown += pnlManagerSignature_MouseDown;
             pnlManagerSignature.MouseMove += pnlManagerSignature_MouseMove;
@@ -136,7 +136,7 @@
             // 
             // btnResetSignature
             // 
-            btnResetSignature.Location = new Point(173, 923);
+            btnResetSignature.Location = new Point(303, 972);
             btnResetSignature.Name = "btnResetSignature";
             btnResetSignature.Size = new Size(112, 34);
             btnResetSignature.TabIndex = 9;
@@ -164,15 +164,16 @@
             Controls.Add(pnlManagerSignature);
             Controls.Add(btnExitAcceptDelivery);
             Controls.Add(btnAcceptDelivery);
-            Controls.Add(label3);
+            Controls.Add(lblSignature);
             Controls.Add(dgvOrderItems);
             Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(lblFormTitle);
             Controls.Add(pictureBox1);
             HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmAcceptStoreOrder";
-            Text = "Bullseye Inventory Management System - Accept Store Order";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Bullseye Inventory Management System - Manage Order";
             Load += frmAcceptStoreOrder_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvOrderItems).EndInit();
@@ -184,10 +185,10 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private Label label1;
+        private Label lblFormTitle;
         private Label label2;
         private DataGridView dgvOrderItems;
-        private Label label3;
+        private Label lblSignature;
         private Button btnAcceptDelivery;
         private Button btnExitAcceptDelivery;
         private Panel pnlManagerSignature;
