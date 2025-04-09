@@ -32,7 +32,7 @@
             pictureBox1 = new PictureBox();
             label1 = new Label();
             cboLossCategory = new ComboBox();
-            textBox2 = new TextBox();
+            txtLossDescription = new TextBox();
             cboProductName = new ComboBox();
             btnConfirmLoss = new Button();
             btnExitReportLoss = new Button();
@@ -41,7 +41,19 @@
             label4 = new Label();
             label5 = new Label();
             cboLossSite = new ComboBox();
+            tabControl1 = new TabControl();
+            tabPage1 = new TabPage();
+            lstLossItems = new TabPage();
+            btnAddLossItem = new Button();
+            btnRemoveLossItem = new Button();
+            dataGridView1 = new DataGridView();
+            Product = new DataGridViewTextBoxColumn();
+            Quantity = new CustomControls.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            lstLossItems.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -69,51 +81,53 @@
             cboLossCategory.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLossCategory.FormattingEnabled = true;
             cboLossCategory.Items.AddRange(new object[] { "LOSS (e.g., Stolen, Missing)", "DAMAGE (e.g., Damaged Inventory)" });
-            cboLossCategory.Location = new Point(225, 389);
+            cboLossCategory.Location = new Point(168, 124);
             cboLossCategory.Name = "cboLossCategory";
             cboLossCategory.Size = new Size(301, 33);
             cboLossCategory.TabIndex = 3;
             // 
-            // textBox2
+            // txtLossDescription
             // 
-            textBox2.Location = new Point(74, 479);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(454, 196);
-            textBox2.TabIndex = 4;
+            txtLossDescription.Location = new Point(17, 214);
+            txtLossDescription.MaxLength = 255;
+            txtLossDescription.Multiline = true;
+            txtLossDescription.Name = "txtLossDescription";
+            txtLossDescription.Size = new Size(454, 196);
+            txtLossDescription.TabIndex = 4;
             // 
             // cboProductName
             // 
             cboProductName.FormattingEnabled = true;
-            cboProductName.Location = new Point(225, 275);
+            cboProductName.Location = new Point(168, 10);
+            cboProductName.MaxDropDownItems = 15;
             cboProductName.Name = "cboProductName";
             cboProductName.Size = new Size(301, 33);
             cboProductName.TabIndex = 5;
             // 
             // btnConfirmLoss
             // 
-            btnConfirmLoss.Location = new Point(395, 722);
+            btnConfirmLoss.Location = new Point(395, 735);
             btnConfirmLoss.Name = "btnConfirmLoss";
             btnConfirmLoss.Size = new Size(112, 34);
             btnConfirmLoss.TabIndex = 6;
-            btnConfirmLoss.Text = "Confirm";
+            btnConfirmLoss.Text = "&Confirm";
             btnConfirmLoss.UseVisualStyleBackColor = true;
             btnConfirmLoss.Click += btnConfirmLoss_Click;
             // 
             // btnExitReportLoss
             // 
-            btnExitReportLoss.Location = new Point(395, 777);
+            btnExitReportLoss.Location = new Point(395, 790);
             btnExitReportLoss.Name = "btnExitReportLoss";
             btnExitReportLoss.Size = new Size(112, 34);
             btnExitReportLoss.TabIndex = 7;
-            btnExitReportLoss.Text = "Exit";
+            btnExitReportLoss.Text = "&Exit";
             btnExitReportLoss.UseVisualStyleBackColor = true;
             btnExitReportLoss.Click += btnExitReportLoss_Click;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(72, 278);
+            label2.Location = new Point(15, 13);
             label2.Name = "label2";
             label2.Size = new Size(130, 25);
             label2.TabIndex = 8;
@@ -122,7 +136,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(74, 393);
+            label3.Location = new Point(17, 128);
             label3.Name = "label3";
             label3.Size = new Size(128, 25);
             label3.TabIndex = 9;
@@ -131,7 +145,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(74, 451);
+            label4.Location = new Point(17, 186);
             label4.Name = "label4";
             label4.Size = new Size(210, 25);
             label4.TabIndex = 10;
@@ -140,7 +154,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(72, 333);
+            label5.Location = new Point(15, 68);
             label5.Name = "label5";
             label5.Size = new Size(45, 25);
             label5.TabIndex = 11;
@@ -150,26 +164,110 @@
             // 
             cboLossSite.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLossSite.FormattingEnabled = true;
-            cboLossSite.Location = new Point(225, 332);
+            cboLossSite.Location = new Point(168, 67);
             cboLossSite.Name = "cboLossSite";
             cboLossSite.Size = new Size(301, 33);
             cboLossSite.TabIndex = 12;
+            // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(lstLossItems);
+            tabControl1.Location = new Point(44, 243);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(494, 473);
+            tabControl1.TabIndex = 13;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(txtLossDescription);
+            tabPage1.Controls.Add(cboLossSite);
+            tabPage1.Controls.Add(cboLossCategory);
+            tabPage1.Controls.Add(label5);
+            tabPage1.Controls.Add(cboProductName);
+            tabPage1.Controls.Add(label4);
+            tabPage1.Controls.Add(label2);
+            tabPage1.Controls.Add(label3);
+            tabPage1.Location = new Point(4, 34);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(486, 435);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Loss Details";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lstLossItems
+            // 
+            lstLossItems.Controls.Add(dataGridView1);
+            lstLossItems.Controls.Add(btnRemoveLossItem);
+            lstLossItems.Controls.Add(btnAddLossItem);
+            lstLossItems.Location = new Point(4, 34);
+            lstLossItems.Name = "lstLossItems";
+            lstLossItems.Padding = new Padding(3);
+            lstLossItems.Size = new Size(486, 435);
+            lstLossItems.TabIndex = 1;
+            lstLossItems.Text = "Loss Items";
+            lstLossItems.UseVisualStyleBackColor = true;
+            // 
+            // btnAddLossItem
+            // 
+            btnAddLossItem.Location = new Point(24, 364);
+            btnAddLossItem.Name = "btnAddLossItem";
+            btnAddLossItem.Size = new Size(143, 34);
+            btnAddLossItem.TabIndex = 1;
+            btnAddLossItem.Text = "Add Loss Item";
+            btnAddLossItem.UseVisualStyleBackColor = true;
+            btnAddLossItem.Click += btnAddLossItem_Click;
+            // 
+            // btnRemoveLossItem
+            // 
+            btnRemoveLossItem.Location = new Point(182, 364);
+            btnRemoveLossItem.Name = "btnRemoveLossItem";
+            btnRemoveLossItem.Size = new Size(166, 34);
+            btnRemoveLossItem.TabIndex = 2;
+            btnRemoveLossItem.Text = "Remove Loss Item";
+            btnRemoveLossItem.UseVisualStyleBackColor = true;
+            btnRemoveLossItem.Click += btnRemoveLossItem_Click;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Product, Quantity });
+            dataGridView1.Location = new Point(6, 6);
+            dataGridView1.MultiSelect = false;
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidth = 62;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dataGridView1.Size = new Size(474, 337);
+            dataGridView1.TabIndex = 3;
+            // 
+            // Product
+            // 
+            Product.HeaderText = "Product Name";
+            Product.MinimumWidth = 8;
+            Product.Name = "Product";
+            Product.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            Quantity.HeaderText = "Quantity";
+            Quantity.MinimumWidth = 8;
+            Quantity.Name = "Quantity";
             // 
             // frmLoss
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(619, 847);
-            Controls.Add(cboLossSite);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
+            ClientSize = new Size(593, 847);
+            Controls.Add(tabControl1);
             Controls.Add(btnExitReportLoss);
             Controls.Add(btnConfirmLoss);
-            Controls.Add(cboProductName);
-            Controls.Add(textBox2);
-            Controls.Add(cboLossCategory);
             Controls.Add(label1);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -178,6 +276,11 @@
             Text = "Bullseye Inventory Management System - Report Loss";
             Load += frmLoss_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            lstLossItems.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -187,7 +290,7 @@
         private PictureBox pictureBox1;
         private Label label1;
         private ComboBox cboLossCategory;
-        private TextBox textBox2;
+        private TextBox txtLossDescription;
         private ComboBox cboProductName;
         private Button btnConfirmLoss;
         private Button btnExitReportLoss;
@@ -196,5 +299,13 @@
         private Label label4;
         private Label label5;
         private ComboBox cboLossSite;
+        private TabControl tabControl1;
+        private TabPage tabPage1;
+        private TabPage lstLossItems;
+        private Button btnRemoveLossItem;
+        private Button btnAddLossItem;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn Product;
+        private CustomControls.DataGridViewNumericUpDownColumn Quantity;
     }
 }

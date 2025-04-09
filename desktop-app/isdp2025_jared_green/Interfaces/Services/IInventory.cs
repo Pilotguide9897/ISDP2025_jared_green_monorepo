@@ -16,6 +16,8 @@ namespace idsp2025_jared_green.Interfaces.Services
 
         public Task<object> GetInventoryNames();
 
+        public Task<object> GetCategoryNames();
+
         public Task<BindingList<Inventory>> GetInventoryByLocation(Site site);
 
         public Task<bool> UpdateInventory(Inventory inventory);

@@ -76,5 +76,22 @@ namespace idsp2025_jared_green.Controllers
                 return itemNames as List<string>;
             }
         }
+
+        public async Task<List<string>> GetCategoryNames()
+        {
+            object categoryNames = await _inventoryService.GetCategoryNames();
+
+
+            // Handle the state of the object!
+            if (categoryNames is ErrorResult er)
+            {
+                MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<string>();
+            }
+            else
+            {
+                return categoryNames as List<string>;
+            }
+        }
     }
 }

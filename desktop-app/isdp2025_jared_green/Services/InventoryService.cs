@@ -364,5 +364,35 @@ namespace idsp2025_jared_green.Services
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }
+
+        public async Task<object> GetCategoryNames()
+        {
+            try
+            {
+                List<string> itemNames = await (from itm in _bullseyeContext.Items select itm.Category).ToListAsync();
+                if (itemNames == null)
+                {
+                    _inventoryLogger.Error($"No item category information found");
+                    return new ErrorResult("NO_MATCHES", "No item information found.");
+                }
+                return itemNames!;
+
+            }
+            catch (MySqlException msqlEx)
+            {
+                _inventoryLogger.Error(msqlEx, "Database error occurred when querying item categories.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _inventoryLogger.Error(toEx, "Operation timed out when querying item categories.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _inventoryLogger.Error(ex, "An unexpected error occurred when querying item categories.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
     }
 }

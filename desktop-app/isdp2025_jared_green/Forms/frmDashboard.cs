@@ -738,11 +738,9 @@ namespace idsp2025_jared_green
         {
             if (dgvEmployees.DataSource != null)
             {
-                //frmAddEmployee frmAddNewEmployee = new frmAddEmployee();
                 frmAddEmployee frmAddEmployee = Program._serviceProvider.GetRequiredService<frmAddEmployee>();
                 frmAddEmployee.ShowDialog();
                 await RefreshEmployeesTab(tabEmployees);
-                // ReassignDataSource(dgvEmployees);
             }
         }
 
@@ -756,12 +754,8 @@ namespace idsp2025_jared_green
                 ILocationController locationController = Program._serviceProvider.GetRequiredService<ILocationController>();
                 IAuthenticationController authenticationController = Program._serviceProvider.GetRequiredService<IAuthenticationController>();
                 frmUpdateEmployee frmUpdateEmployee = new frmUpdateEmployee(employee, employeeController, permissionController, locationController, authenticationController);
-                // frmUpdateEmployee frmUpdateEmployee = new frmUpdateEmployee(dgvItems.SelectedRows[0]);
-                // frmUpdateEmployee frmUpdateEmployee = Program._serviceProvider.GetRequiredService<frmUpdateEmployee>();
-                // frmUpdateEmployee.Tag = dgvEmployees.SelectedRows;
                 frmUpdateEmployee.ShowDialog();
                 await RefreshEmployeesTab(tabEmployees);
-                // ReassignDataSource(dgvEmployees);
             }
 
         }
