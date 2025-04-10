@@ -295,19 +295,25 @@ namespace idsp2025_jared_green.Controllers
             }
         }
 
-        public async Task<Txn> CreateSupplierOrder()
+        public async Task<Txn> CreateSupplierOrder(Txn supplierOrder)
         {
-            //var trn = await _transactionService.ProcessReturn(rtrn);
-            //if (trn is ErrorResult error)
-            //{
-            //    MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return new Txn();
-            //}
-            //else
-            //{
-            //    Txn orders = trn as Txn;
-            //    return orders;
-            //}
+            var trn = await _transactionService.AddTransaction(supplierOrder);
+            object res = null;
+            if (trn == null)
+            {
+                res = new ErrorResult("ERROR", "An error occurred creating the supplier order.");
+            }
+
+            if (res is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Txn();
+            }
+            else
+            {
+                Txn order = trn as Txn;
+                return order;
+            }
         }
     }
 }

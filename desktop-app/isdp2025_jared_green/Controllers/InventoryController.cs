@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,9 +17,11 @@ namespace idsp2025_jared_green.Controllers
     internal class InventoryController : IInventoryController
     {
         private readonly IInventory _inventoryService;
-        public InventoryController(IInventory inventoryService) 
+        private readonly IItems _itemService;
+        public InventoryController(IInventory inventoryService, IItems itemService) 
         {
             _inventoryService = inventoryService;
+            _itemService = itemService;
         }
 
         public async Task<BindingList<Inventory>> GetAllInventory()
@@ -108,6 +111,40 @@ namespace idsp2025_jared_green.Controllers
             else
             {
                 return modifiedInventory as Inventory;
+            }
+        }
+
+        public async Task<object> GetWarehouseResupply()
+        {
+            object itemsForResupply = await _inventoryService.GetInventoryInNeedOfResupply(2);
+            BindingList<Inventory> ifrs = itemsForResupply as BindingList<Inventory>;
+
+            HashSet<int> ids = new HashSet<int>(ifrs.Select(i => i.ItemId));
+            List<dtoSupplierOrderItem> items = new List<dtoSupplierOrderItem>();
+            BindingList<Item> it = await _itemService.GetAllItems();
+
+            foreach (Item item in it) {
+                if (ids.Contains(item.ItemId)) {
+                    dtoSupplierOrderItem orderSupplierItem = new dtoSupplierOrderItem()
+                    {
+                        itemID = item.ItemId,
+                        productName = item.Name,
+                        quantityRequested = ifrs.Where(k => ids.Contains(k.ItemId)).Select(i => i.Quantity).FirstOrDefault(),
+                        supplierName = item.Supplier.Name
+                    };
+                    items.Add(orderSupplierItem);
+                }
+            }
+            // Handle the state of the object!
+            if (items is null)
+            {
+                ErrorResult er = new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<Inventory>();
+            }
+            else
+            {
+                return items;
             }
         }
     }

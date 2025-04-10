@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSupplierOrder));
             pictureBox1 = new PictureBox();
             dgvSupplierOrderCart = new DataGridView();
+            productName = new DataGridViewTextBoxColumn();
+            supplier = new DataGridViewTextBoxColumn();
+            quantityRequested = new CustomControls.DataGridViewNumericUpDownColumn();
             dgvSupplierInventory = new DataGridView();
             btnCloseSupplierOrder = new Button();
             btnCreateSupplierOrder = new Button();
@@ -44,9 +47,6 @@
             bsSupplierOrderCart = new BindingSource(components);
             bsSupplierInventory = new BindingSource(components);
             label8 = new Label();
-            productName = new DataGridViewTextBoxColumn();
-            supplier = new DataGridViewTextBoxColumn();
-            quantityRequested = new CustomControls.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierOrderCart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierInventory).BeginInit();
@@ -79,6 +79,27 @@
             dgvSupplierOrderCart.TabIndex = 1;
             dgvSupplierOrderCart.CellValueChanged += dgvSupplierOrderCart_CellValueChanged;
             // 
+            // productName
+            // 
+            productName.HeaderText = "Product Name";
+            productName.MinimumWidth = 8;
+            productName.Name = "productName";
+            productName.ReadOnly = true;
+            // 
+            // supplier
+            // 
+            supplier.HeaderText = "Supplier";
+            supplier.MinimumWidth = 8;
+            supplier.Name = "supplier";
+            supplier.ReadOnly = true;
+            // 
+            // quantityRequested
+            // 
+            quantityRequested.HeaderText = "Quantity Requested";
+            quantityRequested.MinimumWidth = 8;
+            quantityRequested.Name = "quantityRequested";
+            quantityRequested.ReadOnly = true;
+            // 
             // dgvSupplierInventory
             // 
             dgvSupplierInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -96,7 +117,7 @@
             btnCloseSupplierOrder.Name = "btnCloseSupplierOrder";
             btnCloseSupplierOrder.Size = new Size(112, 34);
             btnCloseSupplierOrder.TabIndex = 3;
-            btnCloseSupplierOrder.Text = "Exit";
+            btnCloseSupplierOrder.Text = "&Exit";
             btnCloseSupplierOrder.UseVisualStyleBackColor = true;
             btnCloseSupplierOrder.Click += btnCloseSupplierOrder_Click;
             // 
@@ -106,8 +127,9 @@
             btnCreateSupplierOrder.Name = "btnCreateSupplierOrder";
             btnCreateSupplierOrder.Size = new Size(112, 34);
             btnCreateSupplierOrder.TabIndex = 4;
-            btnCreateSupplierOrder.Text = "Submit";
+            btnCreateSupplierOrder.Text = "&Submit";
             btnCreateSupplierOrder.UseVisualStyleBackColor = true;
+            btnCreateSupplierOrder.Click += btnCreateSupplierOrder_Click;
             // 
             // btnAddToSupplierOrder
             // 
@@ -178,31 +200,12 @@
             label8.TabIndex = 15;
             label8.Text = "Cart:\r\n";
             // 
-            // productName
-            // 
-            productName.HeaderText = "Product Name";
-            productName.MinimumWidth = 8;
-            productName.Name = "productName";
-            productName.ReadOnly = true;
-            // 
-            // supplier
-            // 
-            supplier.HeaderText = "Supplier";
-            supplier.MinimumWidth = 8;
-            supplier.Name = "supplier";
-            supplier.ReadOnly = true;
-            // 
-            // quantityRequested
-            // 
-            quantityRequested.HeaderText = "Quantity Requested";
-            quantityRequested.MinimumWidth = 8;
-            quantityRequested.Name = "quantityRequested";
-            quantityRequested.ReadOnly = true;
-            // 
             // frmSupplierOrder
             // 
+            AcceptButton = btnCreateSupplierOrder;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCloseSupplierOrder;
             ClientSize = new Size(1898, 1024);
             Controls.Add(label8);
             Controls.Add(label7);
@@ -218,7 +221,7 @@
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmSupplierOrder";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Bullseye Inventory Management System - Supplier Order";
             Load += frmSupplierOrder_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

@@ -65,8 +65,8 @@ namespace idsp2025_jared_green.Forms
             // Load Existing Order Data
             BindingList<dtoOrderItem> orderItems = await _transactionController.GetTxnItems(_orderID);
             bsOrderItems.DataSource = orderItems;
-            dgvOrderItems.DataSource = null; // Clear existing columns before rebinding
-            dgvOrderItems.AutoGenerateColumns = false; // Prevent auto column creation
+            dgvOrderItems.DataSource = null;
+            dgvOrderItems.AutoGenerateColumns = false; 
             dgvOrderItems.Columns.Clear();
 
             // Add Product Name Column

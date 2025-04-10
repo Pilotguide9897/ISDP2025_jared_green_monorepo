@@ -56,6 +56,6 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         public Task<Txn> RecordLoss(Txn loss);
         public Task<Txn> ProcessReturn(Txn rtrn);
 
-        public Task<Txn> CreateSupplierOrder();
+        public Task<Txn> CreateSupplierOrder(Txn supplierOrder);
     }
 }

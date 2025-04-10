@@ -2,6 +2,7 @@
 using idsp2025_jared_green.Entities.dto;
 using idsp2025_jared_green.Helpers;
 using idsp2025_jared_green.Interfaces.Controllers;
+using idsp2025_jared_green.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace idsp2025_jared_green.Forms
         private readonly IInventoryController _inventoryController;
         private readonly IServiceProvider _serviceProvider;
         private int _employeeID;
-        private int _orderID;
 
         public frmSupplierOrder(IItemController itemController, ITransactionController transactionController, IInventoryController inventoryController, IServiceProvider serviceProvider)
         {
@@ -99,6 +99,20 @@ namespace idsp2025_jared_green.Forms
         private async void frmSupplierOrder_Load(object sender, EventArgs e)
         {
             await LoadData();
+            await LoadResupply();
+        }
+
+        private async Task LoadResupply()
+        {
+            var resupply = await _inventoryController.GetWarehouseResupply();
+            if (resupply is List<Inventory> && ((List<Inventory>)resupply).Count < 0)
+            {
+                MessageBox.Show("No items in need of resupply by default: All stock above reorder threshold.", "No items automatically added");
+            }
+            else
+            {
+                bsSupplierOrderCart.DataSource = resupply;
+            }
         }
 
         private async Task LoadData()
@@ -110,8 +124,6 @@ namespace idsp2025_jared_green.Forms
             dgvSupplierInventory.DataSource = bsSupplierInventory;
             dgvSupplierInventory.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             bsSupplierInventory.Filter = "Active = 1";
-
-
         }
 
         private void txtSearchSupplierInventory_TextChanged(object sender, EventArgs e)
@@ -162,6 +174,57 @@ namespace idsp2025_jared_green.Forms
                         dgvSupplierOrderCart.Rows.RemoveAt(e.RowIndex);
                     }
                 }
+            }
+        }
+
+        private async void btnCreateSupplierOrder_Click(object sender, EventArgs e)
+        {
+            // Get all the rows of the cart
+            try
+            {
+                List<Txnitem> itemList = new List<Txnitem>();
+                // Add Items to it
+                foreach (DataGridViewRow dataGridViewRow in dgvSupplierOrderCart.Rows)
+                {
+                    dtoOrderItem oi = dataGridViewRow.DataBoundItem as dtoOrderItem;
+                    if (oi != null)
+                    {
+                        Txnitem ti = new Txnitem()
+                        {
+                            TxnId = 0,
+                            ItemId = oi.itemID,
+                            Quantity = oi.quantityRequested,
+                            Notes = ""
+                        };
+                    }
+                }
+
+                // Create a string with all the supplier ids.
+                string supplierString = "";
+
+                // Create transaction
+                Txn txn = new Txn()
+                {
+                    TxnId = 0,
+                    EmployeeId = _employeeID,
+                    SiteIdto = 10002,
+                    SiteIdfrom = 2,
+                    TxnStatus = "SUBMITTED",
+                    ShipDate = DateTime.Now,
+                    TxnType = "Supplier Order",
+                    BarCode = Guid.NewGuid().ToString(),
+                    CreatedDate = DateTime.Now,
+                    DeliveryId = 0,
+                    EmergencyDelivery = 0,
+                    Notes = supplierString,
+                    Txnitems = itemList
+                };
+
+                Txn res = await _transactionController.CreateSupplierOrder(txn);
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
