@@ -50,7 +50,7 @@ namespace idsp2025_jared_green.Forms
         private async void LoadItemCbo()
         {
             List<string> items = await _inventoryController.GetInventoryNames();
-            cboProductName.DataSource = items;
+            cboProductName.DataSource = items.Order();
             cboProductName.SelectedIndex = 0;
         }
 
@@ -94,15 +94,16 @@ namespace idsp2025_jared_green.Forms
                     Txnitems = _lossItems
                 };
 
-                
-                _transactionController.c
+                // Create return
+                var result = _transactionController.RecordLoss(txn);
+                // Modify Inventory
+
+                // Set Loss, if applicable.
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred processing the loss.", "Please try again");
             }
-
-
         }
 
         private void btnExitReportLoss_Click(object sender, EventArgs e)

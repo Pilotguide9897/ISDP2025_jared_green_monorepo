@@ -1,6 +1,8 @@
 ﻿using idsp2025_jared_green.Entities;
+using idsp2025_jared_green.Error;
 using idsp2025_jared_green.Interfaces.Controllers;
 using idsp2025_jared_green.Interfaces.Services;
+using idsp2025_jared_green.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,9 +56,35 @@ namespace idsp2025_jared_green.Controllers
             return await _itemService.GetAllItems();
         }
 
-        public Task<bool> AddProduct()
+        public async Task<Item> AddProduct(Item item)
         {
-            throw new NotImplementedException();
+            var itm = await _itemService.AddItem(item);
+            if (itm is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Item();
+            }
+            else
+            {
+                Item item = itm as Item;
+                return item;
+            }
+        }
+        }
+
+        public async Task<Item> GetItemByName(string itemName)
+        {
+            var itm = await _itemService.GetItem(itemName);
+            if (itm is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Item();
+            }
+            else
+            {
+                Item item = itm as Item;
+                return item;
+            }
         }
     } 
 }

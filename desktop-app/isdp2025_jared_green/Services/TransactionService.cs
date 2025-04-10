@@ -826,7 +826,7 @@ namespace idsp2025_jared_green.Services
             }
             catch (Exception ex)
             {
-                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting to update transaction {transaction.TxnId}");
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting to update transaction {transaction.TxnId}.");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }
@@ -850,7 +850,7 @@ namespace idsp2025_jared_green.Services
             }
             catch (ArgumentException argEx)
             {
-                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to to get transaction log.");
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to get transaction log.");
                 return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
             }
             catch (MySqlException msqlEx)
@@ -865,7 +865,7 @@ namespace idsp2025_jared_green.Services
             }
             catch (Exception ex)
             {
-                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get transaction log");
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get transaction log.");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }
@@ -905,19 +905,89 @@ namespace idsp2025_jared_green.Services
             }
             catch (Exception ex)
             {
-                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get online orders");
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when attempting get online orders.");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }
 
-        public Task<object> RecordLoss()
+        public async Task<object> RecordLoss(Txn txn)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                await _bullseyeContext.AddAsync(txn);
+                int alterations = await _bullseyeContext.SaveChangesAsync();
+
+                if (alterations > 0)
+                {
+                    return txn;
+                }
+                else
+                {
+                    _transactionLogger.Error("Unable to save loss", $"An unexpected error occurred when attempting to save a record of the loss");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to record the loss.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to record the loss.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _transactionLogger.Error(toEx, "Operation timed out when when attempting to record the loss.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when to record the loss.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
         }
 
-        public Task<object> ProcessReturn()
+        public async Task<object> ProcessReturn(Txn txn)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                await _bullseyeContext.AddAsync(txn);
+                int alterations = await _bullseyeContext.SaveChangesAsync();
+
+                if (alterations > 0)
+                {
+                    return txn;
+                }
+                else
+                {
+                    _transactionLogger.Error("Unable to get online orders", $"An unexpected error occurred when when attempting to create a record of the return.");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _transactionLogger.Error(argEx, "Invalid argument provided when attempting to create a record of the return.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _transactionLogger.Error(msqlEx, "Database error occurred when when attempting to create a record of the return.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _transactionLogger.Error(toEx, "Operation timed out when when attempting to create a record of the return.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _transactionLogger.Error(ex, $"An unexpected error occurred when when to create a record of the return.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
         }
 
         public Task<object> CreateSupplierOrder(Txn transaction, List<Txnitem> txnitems)

@@ -1,4 +1,6 @@
-﻿using idsp2025_jared_green.Interfaces.Controllers;
+﻿using idsp2025_jared_green.Entities;
+using idsp2025_jared_green.Interfaces.Controllers;
+using idsp2025_jared_green.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,16 +16,18 @@ namespace idsp2025_jared_green.Forms
     public partial class frmReturn : Form
     {
         private readonly IInventoryController _inventoryController;
+        private readonly IItemController _itemController;
+        private readonly ITransactionController _transactionController;
+        private readonly ILocationController _locationController;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly Employee _employee;
+        private readonly List<string> _employeeRoles;
+        private List<Txnitem> _returnItem = new List<Txnitem>();
 
-        public frmReturn(IInventoryController inventoryController)
+        public frmReturn(IItemController itemController, IInventoryController inventoryController, ITransactionController transactionController, ILocationController locationController, IServiceProvider serviceProvider, Employee employee, List<string> roles)
         {
             _inventoryController = inventoryController;
             InitializeComponent();
-        }
-
-        private void txtReasonForReturn_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private async void frmReturn_Load(object sender, EventArgs e)
@@ -40,10 +44,74 @@ namespace idsp2025_jared_green.Forms
 
         private async Task InitializeFormAsync()
         {
+            await LoadItemCbo();
+            await LoadSiteCbo();
+
+        }
+
+        private async Task LoadItemCbo()
+        {
             List<string> items = await _inventoryController.GetInventoryNames();
             cboProductName.DataSource = items.Order();
             cboProductName.SelectedIndex = 0;
+        }
 
+        private async Task LoadSiteCbo()
+        {
+            BindingList<Site> sites = await _locationController.GetBullseyeLocations();
+            cboReturnSite.DataSource = sites.Order();
+            cboReturnSite.DisplayMember = "SiteName";
+            cboReturnSite.SelectedItem = _employee.Site;
+            if (!_employeeRoles.Contains("Administrator"))
+            {
+                cboReturnSite.Enabled = false;
+            }
+        }
+
+        private async void btnCompleteReturn_Click(object sender, EventArgs e)
+        {
+            if (!Helpers.ValidateInput.IsTextFieldEmpty(txtReasonForReturn))
+            {
+                _returnItem.Clear();
+                Item rtItm = await _itemController.GetItemByName(cboProductName.SelectedText);
+
+
+                _returnItem.Add();
+
+                Txn txn = new Txn()
+                {
+                    TxnId = 0,
+                    EmployeeId = _employee.EmployeeId,
+                    SiteIdto = (cboReturnSite.SelectedItem as Site).SiteId,
+                    SiteIdfrom = (cboReturnSite.SelectedItem as Site).SiteId,
+                    TxnStatus = "COMPLETE",
+                    ShipDate = DateTime.Now,
+                    TxnType = "Return",
+                    BarCode = Guid.NewGuid().ToString(),
+                    CreatedDate = DateTime.Now,
+                    DeliveryId = 0,
+                    EmergencyDelivery = 0,
+                    Notes = txtReasonForReturn.Text,
+                    Txnitems = _returnItem
+                };
+
+                var res = await _transactionController.ProcessReturn(txn);
+                if (res != null) {
+                    MessageBox.Show("Successfully processed return", "Return Processed");
+                    this.Close();
+                } else
+                {
+                    MessageBox.Show("Failed to process return", "Return Failed");
+                }
+            } else
+            {
+                MessageBox.Show("Please supply a reason for the return.", "Reason for return required");
+            }
+        }
+
+        private void btnExitReturn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

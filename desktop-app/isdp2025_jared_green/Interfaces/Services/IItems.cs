@@ -21,6 +21,8 @@ namespace idsp2025_jared_green.Interfaces.Services
 
         Task<bool> AddImagePath(ImagePath image);
 
-        Task<bool> AddItem(Item item);
+        Task<object> AddItem(Item item);
+
+        public Task<object> GetItem(string itemName);
     }
 }

@@ -267,17 +267,47 @@ namespace idsp2025_jared_green.Controllers
 
         public async Task<Txn> RecordLoss(Txn loss)
         {
-           return await _transactionService.RecordLoss(loss);
+            var trn = await _transactionService.RecordLoss(loss);
+            if (trn is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Txn();
+            }
+            else
+            {
+                Txn orders = trn as Txn;
+                return orders;
+            }
         }
 
         public async Task<Txn> ProcessReturn(Txn rtrn)
         {
-           return await _transactionService.ProcessReturn(rtrn);
+            var trn = await _transactionService.ProcessReturn(rtrn);
+            if (trn is ErrorResult error)
+            {
+                MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Txn();
+            }
+            else
+            {
+                Txn orders = trn as Txn;
+                return orders;
+            }
         }
 
-        public Task<Txn> CreateSupplierOrder()
+        public async Task<Txn> CreateSupplierOrder()
         {
-            throw new NotImplementedException();
+            //var trn = await _transactionService.ProcessReturn(rtrn);
+            //if (trn is ErrorResult error)
+            //{
+            //    MessageBox.Show(error.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return new Txn();
+            //}
+            //else
+            //{
+            //    Txn orders = trn as Txn;
+            //    return orders;
+            //}
         }
     }
 }

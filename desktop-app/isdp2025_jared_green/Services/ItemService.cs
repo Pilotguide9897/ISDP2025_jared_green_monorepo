@@ -1,5 +1,7 @@
 ﻿using idsp2025_jared_green.Entities;
+using idsp2025_jared_green.Error;
 using idsp2025_jared_green.Interfaces.Services;
+using idsp2025_jared_green.Loggers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MySqlConnector;
@@ -17,6 +19,7 @@ namespace idsp2025_jared_green.Services
     {
         // Declare the static logger.
         private static readonly NLog.Logger ItemLogger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger _itemLogger = NLog.LogManager.GetCurrentClassLogger();
         private readonly BullseyeContext _bullseyeContext;
 
         public ItemService(BullseyeContext context)
@@ -172,28 +175,28 @@ namespace idsp2025_jared_green.Services
             }
         }
 
-        public async Task<Item> GetItem(int itemID)
-        {
-            try { 
-                var item = await (from itm in _bullseyeContext.Items
-                             where itm.ItemId == itemID
-                             select itm).FirstOrDefaultAsync();
+        //public async Task<Item> GetItem(int itemID)
+        //{
+        //    try { 
+        //        var item = await (from itm in _bullseyeContext.Items
+        //                     where itm.ItemId == itemID
+        //                     select itm).FirstOrDefaultAsync();
 
-                if (item != null)
-                {
-                    return item;
-                } else
-                {
-                    return new Item();
-                }
+        //        if (item != null)
+        //        {
+        //            return item;
+        //        } else
+        //        {
+        //            return new Item();
+        //        }
 
-            }
-            // Add any other type of exceptions that I explicitly want to catch.
-            catch (Exception ex)
-            {
-                return new Item();
-            }
-        }
+        //    }
+        //    // Add any other type of exceptions that I explicitly want to catch.
+        //    catch (Exception ex)
+        //    {
+        //        return new Item();
+        //    }
+        //}
 
         public async Task<bool> AddImagePath(ImagePath imagePath) 
         {
@@ -229,9 +232,89 @@ namespace idsp2025_jared_green.Services
             }
         }
 
-        public Task<bool> AddItem(Item item)
+        public async Task<object> AddItem(Item item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _bullseyeContext.AddAsync(item);
+                int alterations = await _bullseyeContext.SaveChangesAsync();
+
+                if (alterations > 0)
+                {
+                    return item;
+                } else { 
+                _itemLogger.Error("Unable to add item",
+                        "An unexpected error occurred when attempting to add the item.");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _itemLogger.Error(argEx,
+                    "Invalid argument provided when attempting to add the item.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _itemLogger.Error(msqlEx,
+                    "Database error occurred when attempting to add the item.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _itemLogger.Error(toEx,
+                    "Operation timed out when attempting to add the item.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _itemLogger.Error(ex,
+                    "An unexpected error occurred when attempting to add the item.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
+
+        public async Task<object> GetItem(string itemName)
+        {
+            try
+            {
+                Item? item = await (from itm in _bullseyeContext.Items where itm.Name == itemName select itm).FirstOrDefaultAsync();
+
+                if (item != null)
+                {
+                    return item;
+                }
+                else
+                {
+                    _itemLogger.Error("Unable to get item",
+                        "An unexpected error occurred when attempting to get the item.");
+                    return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.");
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _itemLogger.Error(argEx,
+                    "Invalid argument provided when attempting to get the item.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _itemLogger.Error(msqlEx,
+                    "Database error occurred when attempting to get the item.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _itemLogger.Error(toEx,
+                    "Operation timed out when attempting to get the item.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _itemLogger.Error(ex,
+                    "An unexpected error occurred when attempting to get the item.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
         }
     }
 }

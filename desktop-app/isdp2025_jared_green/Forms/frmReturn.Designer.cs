@@ -38,6 +38,8 @@
             label2 = new Label();
             label4 = new Label();
             chkResalePossible = new CheckBox();
+            label3 = new Label();
+            cboReturnSite = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -70,7 +72,6 @@
             txtReasonForReturn.Size = new Size(431, 267);
             txtReasonForReturn.TabIndex = 2;
             txtReasonForReturn.Text = "\r\n";
-            txtReasonForReturn.TextChanged += txtReasonForReturn_TextChanged;
             // 
             // btnCompleteReturn
             // 
@@ -80,6 +81,7 @@
             btnCompleteReturn.TabIndex = 4;
             btnCompleteReturn.Text = "&Complete";
             btnCompleteReturn.UseVisualStyleBackColor = true;
+            btnCompleteReturn.Click += btnCompleteReturn_Click;
             // 
             // btnExitReturn
             // 
@@ -89,13 +91,14 @@
             btnExitReturn.TabIndex = 5;
             btnExitReturn.Text = "&Exit";
             btnExitReturn.UseVisualStyleBackColor = true;
+            btnExitReturn.Click += btnExitReturn_Click;
             // 
             // cboProductName
             // 
             cboProductName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboProductName.AutoCompleteSource = AutoCompleteSource.CustomSource;
             cboProductName.FormattingEnabled = true;
-            cboProductName.Location = new Point(285, 259);
+            cboProductName.Location = new Point(285, 231);
             cboProductName.MaxDropDownItems = 15;
             cboProductName.Name = "cboProductName";
             cboProductName.Size = new Size(282, 33);
@@ -113,7 +116,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(136, 262);
+            label4.Location = new Point(136, 234);
             label4.Name = "label4";
             label4.Size = new Size(130, 25);
             label4.TabIndex = 9;
@@ -129,11 +132,31 @@
             chkResalePossible.Text = "Fit for Resale";
             chkResalePossible.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(136, 290);
+            label3.Name = "label3";
+            label3.Size = new Size(45, 25);
+            label3.TabIndex = 11;
+            label3.Text = "Site:";
+            // 
+            // cboReturnSite
+            // 
+            cboReturnSite.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboReturnSite.FormattingEnabled = true;
+            cboReturnSite.Location = new Point(285, 290);
+            cboReturnSite.Name = "cboReturnSite";
+            cboReturnSite.Size = new Size(282, 33);
+            cboReturnSite.TabIndex = 12;
+            // 
             // frmReturn
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(681, 833);
+            Controls.Add(cboReturnSite);
+            Controls.Add(label3);
             Controls.Add(chkResalePossible);
             Controls.Add(label4);
             Controls.Add(label2);
@@ -164,5 +187,7 @@
         private Label label2;
         private Label label4;
         private CheckBox chkResalePossible;
+        private Label label3;
+        private ComboBox cboReturnSite;
     }
 }

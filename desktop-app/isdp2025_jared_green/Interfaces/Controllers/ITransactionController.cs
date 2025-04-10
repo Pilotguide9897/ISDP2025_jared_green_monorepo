@@ -53,8 +53,8 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         public Task<List<Txnaudit>> GetTransactionAudit(int txnId);
 
         public Task<BindingList<Txn>> GetOnlineOrdersForStores();
-        public Task<bool> RecordLoss();
-        public Task<bool> ProcessReturn();
+        public Task<Txn> RecordLoss(Txn loss);
+        public Task<Txn> ProcessReturn(Txn rtrn);
 
         public Task<Txn> CreateSupplierOrder();
     }
