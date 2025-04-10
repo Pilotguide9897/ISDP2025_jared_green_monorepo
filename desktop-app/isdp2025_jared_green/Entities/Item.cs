@@ -29,6 +29,8 @@ public partial class Item
 
     public sbyte Active { get; set; }
 
+    public bool IsSelected { get; set; }
+
     public string? ImageLocation { get; set; } = null;
 
     public virtual Category CategoryNavigation { get; set; } = null!;

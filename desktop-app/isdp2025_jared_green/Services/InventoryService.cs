@@ -2,6 +2,7 @@
 using idsp2025_jared_green.Entities.dto;
 using idsp2025_jared_green.Error;
 using idsp2025_jared_green.Interfaces.Services;
+using idsp2025_jared_green.Loggers;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using System;
@@ -391,6 +392,68 @@ namespace idsp2025_jared_green.Services
             catch (Exception ex)
             {
                 _inventoryLogger.Error(ex, "An unexpected error occurred when querying item categories.");
+                return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
+            }
+        }
+
+        public async Task<object> ModifyItem(int siteID, int itemID, int quantity)
+        {
+            try
+            {
+                Inventory? inv = await (from inventory in _bullseyeContext.Inventories where siteID == inventory.SiteId && inventory.ItemId == itemID select inventory).FirstOrDefaultAsync();
+                if (inv == null)
+                {
+                    _inventoryLogger.Error($"No item information found for matching inventory");
+                    return new ErrorResult("NO_MATCHES", "No inventory information found.");
+                }
+                else
+                {
+                    if (quantity > 0)
+                    {
+                        inv.Quantity += quantity;
+                    }
+
+                    if (quantity < 0 && Math.Abs(quantity) > inv.Quantity)
+                    {
+                        _inventoryLogger.Error($"Unable to modify quantities of an item that are greater than is present at location");
+                        return new ErrorResult("QUANTITY_IN_EXCESS", "Unable to remove that much inventory");
+                    }
+                    else
+                    {
+                        inv.Quantity += quantity;
+                    }
+
+                    int res = await _bullseyeContext.SaveChangesAsync();
+
+                    if (res > 0)
+                    {
+                        return inv;
+                    }
+                    else
+                    {
+                        _inventoryLogger.Error($"No change has been made to the inventory's quantity.");
+                        return new ErrorResult("NO_CHANGES", "No updates to quantity were made.");
+                    }
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                _inventoryLogger.Error(argEx, "Invalid argument provided when attempting to create a record of the return.");
+                return new ErrorResult("ARGUMENT_EXCEPTION", "Invalid argument provided.", argEx);
+            }
+            catch (MySqlException msqlEx)
+            {
+                _inventoryLogger.Error(msqlEx, "Database error occurred when querying item names.");
+                return new ErrorResult("DB_EXCEPTION", "Database error occurred.", msqlEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                _inventoryLogger.Error(toEx, "Operation timed out when querying item names.");
+                return new ErrorResult("TIMEOUT_EXCEPTION", "Operation timed out.", toEx);
+            }
+            catch (Exception ex)
+            {
+                _inventoryLogger.Error(ex, "An unexpected error occurred when querying item names.");
                 return new ErrorResult("UNKNOWN_ERROR", "An unexpected error occurred.", ex);
             }
         }

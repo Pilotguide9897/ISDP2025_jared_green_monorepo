@@ -32,7 +32,18 @@ namespace idsp2025_jared_green.Forms
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            _itemList.Clear();
+
             // Get which checkboxes are selected. Add them to the list from the tag!
+            var allItems = bsProductSearch.List.Cast<Item>();
+            foreach (var item in allItems)
+            {
+                if (item.IsSelected)
+                {
+                    _itemList.Add(item);
+                }
+            }
+
         }
 
         private void txtSearchItem_TextChanged(object sender, EventArgs e)
@@ -44,7 +55,7 @@ namespace idsp2025_jared_green.Forms
             }
             else
             {
-                bsProductSearch.Filter = $"Name LIKE '*{filterText}*'";
+                bsProductSearch.Filter = $"productName LIKE '*{filterText}*' OR sku LIKE '*{filterText}*' OR supplier LIKE '*{filterText}*' OR category LIKE '*{filterText}*'";
             }
         }
 
@@ -58,7 +69,15 @@ namespace idsp2025_jared_green.Forms
             }
             if (_itemList != null && _itemList.Count > 0)
             {
-                // Check the specified checkboxes.
+                HashSet<int> idsOfItems = new HashSet<int>(_itemList.Select(i => i.ItemId));
+
+                foreach (DataGridViewRow dataGridViewRow in dgvItemSelect.Rows) {
+                    if (dataGridViewRow.DataBoundItem is Item rowItem && idsOfItems.Contains(rowItem.ItemId))
+                    {
+                        dataGridViewRow.Cells["Select"].Value = true;
+                    }
+                }
+
             }
         }
     }

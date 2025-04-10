@@ -126,12 +126,14 @@
             // 
             // ProductName
             // 
+            ProductName.DataPropertyName = "\"Name\"";
             ProductName.HeaderText = "Product Name";
             ProductName.MinimumWidth = 8;
             ProductName.Name = "ProductName";
             // 
             // sku
             // 
+            sku.DataPropertyName = "\"Sku\"";
             sku.HeaderText = "SKU";
             sku.MinimumWidth = 8;
             sku.Name = "sku";
@@ -139,6 +141,7 @@
             // 
             // supplier
             // 
+            supplier.DataPropertyName = "\"Supplier.Name\"";
             supplier.HeaderText = "Supplier";
             supplier.MinimumWidth = 8;
             supplier.Name = "supplier";
@@ -146,6 +149,7 @@
             // 
             // category
             // 
+            category.DataPropertyName = "\"Category\"";
             category.HeaderText = "Category";
             category.MinimumWidth = 8;
             category.Name = "category";
@@ -153,6 +157,7 @@
             // 
             // Select
             // 
+            Select.DataPropertyName = "\"IsSelected\"";
             Select.HeaderText = "Select";
             Select.MinimumWidth = 8;
             Select.Name = "Select";

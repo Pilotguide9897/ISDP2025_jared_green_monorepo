@@ -27,5 +27,7 @@ namespace idsp2025_jared_green.Interfaces.Controllers
         public Task MoveInventory(int siteIDFrom, int siteIDTo, int quantity, int itemID, string itemLocationFrom, string itemLocationTo);
 
         public Task<int> GetInventoryForLocationByItem(int siteID, int itemID, string locationID);
+
+        public Task<object> ModifyItemsInCirculation(int siteID, int itemID, int quantity);
     }
 }

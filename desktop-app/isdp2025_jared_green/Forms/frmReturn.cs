@@ -73,10 +73,12 @@ namespace idsp2025_jared_green.Forms
             if (!Helpers.ValidateInput.IsTextFieldEmpty(txtReasonForReturn))
             {
                 _returnItem.Clear();
-                Item rtItm = await _itemController.GetItemByName(cboProductName.SelectedText);
+                object rtItm = await _itemController.GetItemByName(cboProductName.SelectedText);
+                Txnitem txnitem = rtItm as Txnitem;
+                if (txnitem != null) {
+                    _returnItem.Add(txnitem);
+                }
 
-
-                _returnItem.Add();
 
                 Txn txn = new Txn()
                 {
@@ -98,11 +100,48 @@ namespace idsp2025_jared_green.Forms
                 var res = await _transactionController.ProcessReturn(txn);
                 if (res != null) {
                     MessageBox.Show("Successfully processed return", "Return Processed");
-                    this.Close();
+
+                    if (chkResalePossible.Checked) {
+                        try
+                        {
+                            await _inventoryController.ModifyItemsInCirculation((cboReturnSite.SelectedItem as Site).SiteId, _returnItem[0].ItemId, 1);
+                        }
+                        catch (Exception ex) {
+                            MessageBox.Show("An unexpected error occurred while returning the item to inventory. Please contact your admin.", "Unexpected Inventory Error");
+                        }
+                    } else
+                    {
+                        Txn lossTxn = new Txn()
+                        {
+                            TxnId = 0,
+                            EmployeeId = _employee.EmployeeId,
+                            SiteIdto = (cboReturnSite.SelectedItem as Site).SiteId,
+                            SiteIdfrom = (cboReturnSite.SelectedItem as Site).SiteId,
+                            TxnStatus = "COMPLETE",
+                            ShipDate = DateTime.Now,
+                            TxnType = "Loss",
+                            BarCode = Guid.NewGuid().ToString(),
+                            CreatedDate = DateTime.Now,
+                            DeliveryId = 0,
+                            EmergencyDelivery = 0,
+                            Notes = txtReasonForReturn.Text,
+                            Txnitems = _returnItem
+                        };
+
+                        try
+                        {
+                           Txn result = await _transactionController.RecordLoss(lossTxn);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("An unexpected error occurred while removing the item to inventory. Please contact your admin.", "Unexpected Inventory Error");
+                        }
+                    }
                 } else
                 {
                     MessageBox.Show("Failed to process return", "Return Failed");
                 }
+
             } else
             {
                 MessageBox.Show("Please supply a reason for the return.", "Reason for return required");

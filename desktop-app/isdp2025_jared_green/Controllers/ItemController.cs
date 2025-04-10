@@ -66,11 +66,11 @@ namespace idsp2025_jared_green.Controllers
             }
             else
             {
-                Item item = itm as Item;
+                Item addedProduct = itm as Item;
                 return item;
             }
         }
-        }
+        
 
         public async Task<Item> GetItemByName(string itemName)
         {

@@ -33,10 +33,8 @@
             label1 = new Label();
             cboLossCategory = new ComboBox();
             txtLossDescription = new TextBox();
-            cboProductName = new ComboBox();
             btnConfirmLoss = new Button();
             btnExitReportLoss = new Button();
-            label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
@@ -81,29 +79,19 @@
             cboLossCategory.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLossCategory.FormattingEnabled = true;
             cboLossCategory.Items.AddRange(new object[] { "LOSS (e.g., Stolen, Missing)", "DAMAGE (e.g., Damaged Inventory)" });
-            cboLossCategory.Location = new Point(168, 124);
+            cboLossCategory.Location = new Point(168, 72);
             cboLossCategory.Name = "cboLossCategory";
             cboLossCategory.Size = new Size(301, 33);
             cboLossCategory.TabIndex = 3;
             // 
             // txtLossDescription
             // 
-            txtLossDescription.Location = new Point(17, 214);
+            txtLossDescription.Location = new Point(17, 162);
             txtLossDescription.MaxLength = 255;
             txtLossDescription.Multiline = true;
             txtLossDescription.Name = "txtLossDescription";
-            txtLossDescription.Size = new Size(454, 196);
+            txtLossDescription.Size = new Size(454, 251);
             txtLossDescription.TabIndex = 4;
-            // 
-            // cboProductName
-            // 
-            cboProductName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cboProductName.FormattingEnabled = true;
-            cboProductName.Location = new Point(168, 10);
-            cboProductName.MaxDropDownItems = 15;
-            cboProductName.Name = "cboProductName";
-            cboProductName.Size = new Size(301, 33);
-            cboProductName.TabIndex = 5;
             // 
             // btnConfirmLoss
             // 
@@ -125,19 +113,10 @@
             btnExitReportLoss.UseVisualStyleBackColor = true;
             btnExitReportLoss.Click += btnExitReportLoss_Click;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(15, 13);
-            label2.Name = "label2";
-            label2.Size = new Size(130, 25);
-            label2.TabIndex = 8;
-            label2.Text = "Product Name:";
-            // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(17, 128);
+            label3.Location = new Point(17, 76);
             label3.Name = "label3";
             label3.Size = new Size(128, 25);
             label3.TabIndex = 9;
@@ -146,7 +125,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(17, 186);
+            label4.Location = new Point(17, 134);
             label4.Name = "label4";
             label4.Size = new Size(210, 25);
             label4.TabIndex = 10;
@@ -155,7 +134,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(15, 68);
+            label5.Location = new Point(15, 16);
             label5.Name = "label5";
             label5.Size = new Size(45, 25);
             label5.TabIndex = 11;
@@ -165,7 +144,7 @@
             // 
             cboLossSite.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLossSite.FormattingEnabled = true;
-            cboLossSite.Location = new Point(168, 67);
+            cboLossSite.Location = new Point(168, 15);
             cboLossSite.Name = "cboLossSite";
             cboLossSite.Size = new Size(301, 33);
             cboLossSite.TabIndex = 12;
@@ -186,9 +165,7 @@
             tabPage1.Controls.Add(cboLossSite);
             tabPage1.Controls.Add(cboLossCategory);
             tabPage1.Controls.Add(label5);
-            tabPage1.Controls.Add(cboProductName);
             tabPage1.Controls.Add(label4);
-            tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(label3);
             tabPage1.Location = new Point(4, 34);
             tabPage1.Name = "tabPage1";
@@ -292,10 +269,8 @@
         private Label label1;
         private ComboBox cboLossCategory;
         private TextBox txtLossDescription;
-        private ComboBox cboProductName;
         private Button btnConfirmLoss;
         private Button btnExitReportLoss;
-        private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;

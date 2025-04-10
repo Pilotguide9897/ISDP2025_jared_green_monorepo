@@ -28,5 +28,7 @@ namespace idsp2025_jared_green.Interfaces.Services
         public Task<int> CheckInventoryLevel(int siteID, int productID);
 
         public Task<BindingList<Inventory>> GetInventoryInNeedOfResupply(int siteID);
+
+        public Task<object> ModifyItem(int siteID, int itemID, int quantity);
     }
 }

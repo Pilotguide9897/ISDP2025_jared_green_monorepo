@@ -42,16 +42,8 @@ namespace idsp2025_jared_green.Forms
 
         private void frmLoss_Load(object sender, EventArgs e)
         {
-            LoadItemCbo();
             LoadSiteCbo();
             cboLossCategory.SelectedIndex = 0;
-        }
-
-        private async void LoadItemCbo()
-        {
-            List<string> items = await _inventoryController.GetInventoryNames();
-            cboProductName.DataSource = items.Order();
-            cboProductName.SelectedIndex = 0;
         }
 
         private async void LoadSiteCbo()
@@ -90,15 +82,20 @@ namespace idsp2025_jared_green.Forms
                     CreatedDate = DateTime.Now,
                     DeliveryId = 0,
                     EmergencyDelivery = 0,
-                    Notes = "",
+                    Notes = txtLossDescription.Text,
                     Txnitems = _lossItems
                 };
 
-                // Create return
+                // Create Loss
                 var result = _transactionController.RecordLoss(txn);
                 // Modify Inventory
-
-                // Set Loss, if applicable.
+                if (result != null) {
+                    foreach (var item in _lossItems)
+                    {
+                        await _inventoryController.ModifyItemsInCirculation((cboLossSite.SelectedItem as Site).SiteId, item.ItemId, -(item.Quantity));
+                    }
+                }
+                
             }
             catch (Exception ex)
             {

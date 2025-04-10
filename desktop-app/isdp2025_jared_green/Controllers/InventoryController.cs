@@ -93,5 +93,22 @@ namespace idsp2025_jared_green.Controllers
                 return categoryNames as List<string>;
             }
         }
+
+        public async Task<object> ModifyItemsInCirculation(int siteID, int itemID, int quantity)
+        {
+            object modifiedInventory = await _inventoryService.ModifyItem(siteID, itemID, quantity);
+
+
+            // Handle the state of the object!
+            if (modifiedInventory is ErrorResult er)
+            {
+                MessageBox.Show(er.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Inventory();
+            }
+            else
+            {
+                return modifiedInventory as Inventory;
+            }
+        }
     }
 }
