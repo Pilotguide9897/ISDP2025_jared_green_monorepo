@@ -16,10 +16,12 @@ namespace idsp2025_jared_green.Forms
     {
         private readonly IInventoryController _inventoryController;
         private List<Item> _itemList;
+        private readonly string _lossOrReturn;
 
-        public frmSelectItem(IInventoryController inventoryController)
+        public frmSelectItem(IInventoryController inventoryController, string lossOrReturn)
         {
             _inventoryController = inventoryController;
+            _lossOrReturn = lossOrReturn;
             InitializeComponent();
         }
 

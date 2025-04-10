@@ -55,9 +55,9 @@ namespace idsp2025_jared_green.Interfaces.Services
 
         public Task<object> GetOnlineOrders();
 
-        public Task<object> RecordLoss();
+        public Task<object> RecordLoss(Txn txn);
 
-        public Task<object> ProcessReturn();
+        public Task<object> ProcessReturn(Txn txn);
 
         public Task<object> CreateSupplierOrder(Txn transaction, List<Txnitem> txnitems);
     }

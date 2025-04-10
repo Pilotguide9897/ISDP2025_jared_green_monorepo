@@ -1,6 +1,8 @@
 ﻿using idsp2025_jared_green.Controllers;
 using idsp2025_jared_green.Entities;
 using idsp2025_jared_green.Interfaces.Controllers;
+using idsp2025_jared_green.Interfaces.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,15 +21,20 @@ namespace idsp2025_jared_green.Forms
     {
         private readonly IInventoryController _inventoryController;
         private readonly IItemController _itemController;
+        private readonly ITransactionController _transactionController;
         private readonly ILocationController _locationController;
+        private readonly IServiceProvider _serviceProvider;
         private readonly Employee _employee;
         private readonly List<string> _employeeRoles;
+        private List<Txnitem> _lossItems;
 
-        public frmLoss(IItemController itemController, IInventoryController inventoryController, ILocationController locationController, Employee employee, List<string> roles)
+        public frmLoss(IItemController itemController, IInventoryController inventoryController, ITransactionController transactionController, ILocationController locationController, IServiceProvider serviceProvider, Employee employee, List<string> roles)
         {
             _inventoryController = inventoryController;
             _itemController = itemController;
+            _transactionController = transactionController;
             _locationController = locationController;
+            _serviceProvider = serviceProvider;
             _employee = employee;
             _employeeRoles = roles;
             InitializeComponent();
@@ -62,13 +69,6 @@ namespace idsp2025_jared_green.Forms
 
         private async void btnConfirmLoss_Click(object sender, EventArgs e)
         {
-            // 1. Validate the inputs
-            // The explanatory note cannot be blank...
-
-            // 2. Create the new Txn Object
-
-            // 3. 
-
             try
             {
                 if (Helpers.ValidateInput.IsTextFieldEmpty(txtLossDescription))
@@ -91,13 +91,15 @@ namespace idsp2025_jared_green.Forms
                     DeliveryId = 0,
                     EmergencyDelivery = 0,
                     Notes = "",
-                    Txnitems = new List<Txnitem>()
+                    Txnitems = _lossItems
                 };
 
+                
+                _transactionController.c
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show("An error occurred processing the loss.", "Please try again");
             }
 
 
@@ -110,12 +112,26 @@ namespace idsp2025_jared_green.Forms
 
         private void btnAddLossItem_Click(object sender, EventArgs e)
         {
-
+            var formFactory = _serviceProvider.GetRequiredService<Func<string, frmSelectItem>>();
+            frmSelectItem fsi = formFactory("Loss");
+            fsi.Tag = _lossItems;
+            fsi.ShowDialog();
+            List<Txnitem> tis = fsi.Tag as List<Txnitem>;
+            if (tis != null && tis.Count > 0)
+            {
+                _lossItems = tis;
+            }
         }
 
         private void btnRemoveLossItem_Click(object sender, EventArgs e)
         {
-
+            if (dgvLossItems.SelectedRows.Count == 1) {
+                var confirm = MessageBox.Show("Remove item from loss accounting?", "Confirm", MessageBoxButtons.YesNo);
+                if (confirm == DialogResult.Yes)
+                {
+                    dgvLossItems.Rows.RemoveAt(dgvLossItems.SelectedRows[0].Index);
+                }
+            }
         }
     }
 }

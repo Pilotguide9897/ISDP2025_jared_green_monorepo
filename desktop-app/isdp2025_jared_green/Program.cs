@@ -115,6 +115,8 @@ namespace idsp2025_jared_green
                 services.AddTransient<frmModifyOrder>();
                 services.AddTransient<frmEditLocation>();
                 services.AddTransient<frmAddSupplierProduct>();
+                services.AddTransient<frmItemInfo>();
+
 
                 // Forms with Runtime Parameters
                     // Register functions to prepare the forms.
@@ -165,6 +167,10 @@ namespace idsp2025_jared_green
                 services.AddTransient<Func<Employee, frmSupplierOrder>>(sp => (Employee) =>
                 {
                     return ActivatorUtilities.CreateInstance<frmSupplierOrder>(sp, Employee);
+                });
+                services.AddTransient<Func<string, frmSelectItem>>(sp => (lossOrReturn) =>
+                {
+                    return ActivatorUtilities.CreateInstance<frmSelectItem>(sp, lossOrReturn);
                 });
             });
         }

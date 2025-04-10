@@ -265,14 +265,14 @@ namespace idsp2025_jared_green.Controllers
             }
         }
 
-        public Task<bool> RecordLoss()
+        public async Task<Txn> RecordLoss(Txn loss)
         {
-            throw new NotImplementedException();
+           return await _transactionService.RecordLoss(loss);
         }
 
-        public Task<bool> ProcessReturn()
+        public async Task<Txn> ProcessReturn(Txn rtrn)
         {
-            throw new NotImplementedException();
+           return await _transactionService.ProcessReturn(rtrn);
         }
 
         public Task<Txn> CreateSupplierOrder()

@@ -144,8 +144,6 @@ namespace idsp2025_jared_green.Forms
                 {
                     MessageBox.Show("Unable to access item data.", "Data Error");
                 }
-
-
             }
         }
 

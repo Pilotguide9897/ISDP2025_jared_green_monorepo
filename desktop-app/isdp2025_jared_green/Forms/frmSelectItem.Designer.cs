@@ -39,6 +39,9 @@
             btnCancel = new Button();
             bsProductSearch = new BindingSource(components);
             ProductName = new DataGridViewTextBoxColumn();
+            sku = new DataGridViewTextBoxColumn();
+            supplier = new DataGridViewTextBoxColumn();
+            category = new DataGridViewTextBoxColumn();
             Select = new DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvItemSelect).BeginInit();
@@ -91,7 +94,7 @@
             dgvItemSelect.AllowUserToResizeRows = false;
             dgvItemSelect.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvItemSelect.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvItemSelect.Columns.AddRange(new DataGridViewColumn[] { ProductName, Select });
+            dgvItemSelect.Columns.AddRange(new DataGridViewColumn[] { ProductName, sku, supplier, category, Select });
             dgvItemSelect.Location = new Point(46, 199);
             dgvItemSelect.MultiSelect = false;
             dgvItemSelect.Name = "dgvItemSelect";
@@ -126,6 +129,27 @@
             ProductName.HeaderText = "Product Name";
             ProductName.MinimumWidth = 8;
             ProductName.Name = "ProductName";
+            // 
+            // sku
+            // 
+            sku.HeaderText = "SKU";
+            sku.MinimumWidth = 8;
+            sku.Name = "sku";
+            sku.ReadOnly = true;
+            // 
+            // supplier
+            // 
+            supplier.HeaderText = "Supplier";
+            supplier.MinimumWidth = 8;
+            supplier.Name = "supplier";
+            supplier.ReadOnly = true;
+            // 
+            // category
+            // 
+            category.HeaderText = "Category";
+            category.MinimumWidth = 8;
+            category.Name = "category";
+            category.ReadOnly = true;
             // 
             // Select
             // 
@@ -168,6 +192,9 @@
         private Button btnCancel;
         private BindingSource bsProductSearch;
         private DataGridViewTextBoxColumn ProductName;
+        private DataGridViewTextBoxColumn sku;
+        private DataGridViewTextBoxColumn supplier;
+        private DataGridViewTextBoxColumn category;
         private DataGridViewCheckBoxColumn Select;
     }
 }

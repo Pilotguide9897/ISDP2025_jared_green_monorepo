@@ -44,16 +44,16 @@
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             lstLossItems = new TabPage();
-            btnAddLossItem = new Button();
-            btnRemoveLossItem = new Button();
-            dataGridView1 = new DataGridView();
+            dgvLossItems = new DataGridView();
             Product = new DataGridViewTextBoxColumn();
             Quantity = new CustomControls.DataGridViewNumericUpDownColumn();
+            btnRemoveLossItem = new Button();
+            btnAddLossItem = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             lstLossItems.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvLossItems).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -200,7 +200,7 @@
             // 
             // lstLossItems
             // 
-            lstLossItems.Controls.Add(dataGridView1);
+            lstLossItems.Controls.Add(dgvLossItems);
             lstLossItems.Controls.Add(btnRemoveLossItem);
             lstLossItems.Controls.Add(btnAddLossItem);
             lstLossItems.Location = new Point(4, 34);
@@ -211,42 +211,22 @@
             lstLossItems.Text = "Loss Items";
             lstLossItems.UseVisualStyleBackColor = true;
             // 
-            // btnAddLossItem
+            // dgvLossItems
             // 
-            btnAddLossItem.Location = new Point(24, 364);
-            btnAddLossItem.Name = "btnAddLossItem";
-            btnAddLossItem.Size = new Size(143, 34);
-            btnAddLossItem.TabIndex = 1;
-            btnAddLossItem.Text = "Add Loss Item";
-            btnAddLossItem.UseVisualStyleBackColor = true;
-            btnAddLossItem.Click += btnAddLossItem_Click;
-            // 
-            // btnRemoveLossItem
-            // 
-            btnRemoveLossItem.Location = new Point(182, 364);
-            btnRemoveLossItem.Name = "btnRemoveLossItem";
-            btnRemoveLossItem.Size = new Size(166, 34);
-            btnRemoveLossItem.TabIndex = 2;
-            btnRemoveLossItem.Text = "Remove Loss Item";
-            btnRemoveLossItem.UseVisualStyleBackColor = true;
-            btnRemoveLossItem.Click += btnRemoveLossItem_Click;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Product, Quantity });
-            dataGridView1.Location = new Point(6, 6);
-            dataGridView1.MultiSelect = false;
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dataGridView1.Size = new Size(474, 337);
-            dataGridView1.TabIndex = 3;
+            dgvLossItems.AllowUserToAddRows = false;
+            dgvLossItems.AllowUserToDeleteRows = false;
+            dgvLossItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvLossItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvLossItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvLossItems.Columns.AddRange(new DataGridViewColumn[] { Product, Quantity });
+            dgvLossItems.Location = new Point(6, 6);
+            dgvLossItems.MultiSelect = false;
+            dgvLossItems.Name = "dgvLossItems";
+            dgvLossItems.RowHeadersVisible = false;
+            dgvLossItems.RowHeadersWidth = 62;
+            dgvLossItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLossItems.Size = new Size(474, 337);
+            dgvLossItems.TabIndex = 3;
             // 
             // Product
             // 
@@ -260,6 +240,26 @@
             Quantity.HeaderText = "Quantity";
             Quantity.MinimumWidth = 8;
             Quantity.Name = "Quantity";
+            // 
+            // btnRemoveLossItem
+            // 
+            btnRemoveLossItem.Location = new Point(182, 364);
+            btnRemoveLossItem.Name = "btnRemoveLossItem";
+            btnRemoveLossItem.Size = new Size(166, 34);
+            btnRemoveLossItem.TabIndex = 2;
+            btnRemoveLossItem.Text = "Remove Loss Item";
+            btnRemoveLossItem.UseVisualStyleBackColor = true;
+            btnRemoveLossItem.Click += btnRemoveLossItem_Click;
+            // 
+            // btnAddLossItem
+            // 
+            btnAddLossItem.Location = new Point(24, 364);
+            btnAddLossItem.Name = "btnAddLossItem";
+            btnAddLossItem.Size = new Size(143, 34);
+            btnAddLossItem.TabIndex = 1;
+            btnAddLossItem.Text = "Add Loss Item";
+            btnAddLossItem.UseVisualStyleBackColor = true;
+            btnAddLossItem.Click += btnAddLossItem_Click;
             // 
             // frmLoss
             // 
@@ -281,7 +281,7 @@
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             lstLossItems.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvLossItems).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -305,7 +305,7 @@
         private TabPage lstLossItems;
         private Button btnRemoveLossItem;
         private Button btnAddLossItem;
-        private DataGridView dataGridView1;
+        private DataGridView dgvLossItems;
         private DataGridViewTextBoxColumn Product;
         private CustomControls.DataGridViewNumericUpDownColumn Quantity;
     }
