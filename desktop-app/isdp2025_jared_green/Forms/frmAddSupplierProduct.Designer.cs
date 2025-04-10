@@ -31,17 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddSupplierProduct));
             pictureBox1 = new PictureBox();
             label1 = new Label();
-            button1 = new Button();
+            btnAddSupplierProduct = new Button();
             btnExitProductAdd = new Button();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
+            txtNotes = new TextBox();
+            txtProductName = new TextBox();
+            txtDescription = new TextBox();
+            txtCategory = new TextBox();
             btnAddImage = new Button();
-            numericUpDown1 = new NumericUpDown();
-            numericUpDown2 = new NumericUpDown();
-            numericUpDown3 = new NumericUpDown();
-            numericUpDown4 = new NumericUpDown();
+            nudRetailPrice = new NumericUpDown();
+            nudCaseSize = new NumericUpDown();
+            nudWeight = new NumericUpDown();
+            nudCostPrice = new NumericUpDown();
             cboSuppliers = new ComboBox();
             label2 = new Label();
             label3 = new Label();
@@ -52,11 +52,12 @@
             label8 = new Label();
             label9 = new Label();
             label10 = new Label();
+            ofdAddImage = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudRetailPrice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudCaseSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudWeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudCostPrice).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -79,14 +80,15 @@
             label1.TabIndex = 1;
             label1.Text = "Add Supplier Product";
             // 
-            // button1
+            // btnAddSupplierProduct
             // 
-            button1.Location = new Point(605, 808);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 2;
-            button1.Text = "Add";
-            button1.UseVisualStyleBackColor = true;
+            btnAddSupplierProduct.Location = new Point(605, 808);
+            btnAddSupplierProduct.Name = "btnAddSupplierProduct";
+            btnAddSupplierProduct.Size = new Size(112, 34);
+            btnAddSupplierProduct.TabIndex = 2;
+            btnAddSupplierProduct.Text = "&Add";
+            btnAddSupplierProduct.UseVisualStyleBackColor = true;
+            btnAddSupplierProduct.Click += btnAddSupplierProduct_Click;
             // 
             // btnExitProductAdd
             // 
@@ -94,43 +96,43 @@
             btnExitProductAdd.Name = "btnExitProductAdd";
             btnExitProductAdd.Size = new Size(112, 34);
             btnExitProductAdd.TabIndex = 3;
-            btnExitProductAdd.Text = "Exit";
+            btnExitProductAdd.Text = "&Exit";
             btnExitProductAdd.UseVisualStyleBackColor = true;
             btnExitProductAdd.Click += btnExitProductAdd_Click;
             // 
-            // textBox1
+            // txtNotes
             // 
-            textBox1.Location = new Point(104, 808);
-            textBox1.MaxLength = 255;
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(453, 94);
-            textBox1.TabIndex = 4;
+            txtNotes.Location = new Point(104, 808);
+            txtNotes.MaxLength = 255;
+            txtNotes.Multiline = true;
+            txtNotes.Name = "txtNotes";
+            txtNotes.Size = new Size(453, 94);
+            txtNotes.TabIndex = 4;
             // 
-            // textBox2
+            // txtProductName
             // 
-            textBox2.Location = new Point(366, 305);
-            textBox2.MaxLength = 100;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(284, 31);
-            textBox2.TabIndex = 5;
+            txtProductName.Location = new Point(366, 305);
+            txtProductName.MaxLength = 100;
+            txtProductName.Name = "txtProductName";
+            txtProductName.Size = new Size(284, 31);
+            txtProductName.TabIndex = 5;
             // 
-            // textBox3
+            // txtDescription
             // 
-            textBox3.Location = new Point(104, 481);
-            textBox3.MaxLength = 255;
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(546, 110);
-            textBox3.TabIndex = 6;
+            txtDescription.Location = new Point(104, 481);
+            txtDescription.MaxLength = 255;
+            txtDescription.Multiline = true;
+            txtDescription.Name = "txtDescription";
+            txtDescription.Size = new Size(546, 110);
+            txtDescription.TabIndex = 6;
             // 
-            // textBox4
+            // txtCategory
             // 
-            textBox4.Location = new Point(366, 390);
-            textBox4.MaxLength = 32;
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(284, 31);
-            textBox4.TabIndex = 7;
+            txtCategory.Location = new Point(366, 390);
+            txtCategory.MaxLength = 32;
+            txtCategory.Name = "txtCategory";
+            txtCategory.Size = new Size(284, 31);
+            txtCategory.TabIndex = 7;
             // 
             // btnAddImage
             // 
@@ -142,44 +144,44 @@
             btnAddImage.UseVisualStyleBackColor = true;
             btnAddImage.Click += btnAddImage_Click;
             // 
-            // numericUpDown1
+            // nudRetailPrice
             // 
-            numericUpDown1.DecimalPlaces = 2;
-            numericUpDown1.Location = new Point(537, 734);
-            numericUpDown1.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(180, 31);
-            numericUpDown1.TabIndex = 9;
-            numericUpDown1.Value = new decimal(new int[] { 2000, 0, 0, 131072 });
+            nudRetailPrice.DecimalPlaces = 2;
+            nudRetailPrice.Location = new Point(537, 734);
+            nudRetailPrice.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+            nudRetailPrice.Name = "nudRetailPrice";
+            nudRetailPrice.Size = new Size(180, 31);
+            nudRetailPrice.TabIndex = 9;
+            nudRetailPrice.Value = new decimal(new int[] { 2000, 0, 0, 131072 });
             // 
-            // numericUpDown2
+            // nudCaseSize
             // 
-            numericUpDown2.Location = new Point(537, 650);
-            numericUpDown2.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.Size = new Size(180, 31);
-            numericUpDown2.TabIndex = 10;
-            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            nudCaseSize.Location = new Point(537, 650);
+            nudCaseSize.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            nudCaseSize.Name = "nudCaseSize";
+            nudCaseSize.Size = new Size(180, 31);
+            nudCaseSize.TabIndex = 10;
+            nudCaseSize.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // numericUpDown3
+            // nudWeight
             // 
-            numericUpDown3.DecimalPlaces = 2;
-            numericUpDown3.Location = new Point(204, 650);
-            numericUpDown3.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
-            numericUpDown3.Name = "numericUpDown3";
-            numericUpDown3.Size = new Size(165, 31);
-            numericUpDown3.TabIndex = 11;
-            numericUpDown3.Value = new decimal(new int[] { 100, 0, 0, 131072 });
+            nudWeight.DecimalPlaces = 2;
+            nudWeight.Location = new Point(204, 650);
+            nudWeight.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+            nudWeight.Name = "nudWeight";
+            nudWeight.Size = new Size(165, 31);
+            nudWeight.TabIndex = 11;
+            nudWeight.Value = new decimal(new int[] { 100, 0, 0, 131072 });
             // 
-            // numericUpDown4
+            // nudCostPrice
             // 
-            numericUpDown4.DecimalPlaces = 2;
-            numericUpDown4.Location = new Point(204, 734);
-            numericUpDown4.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
-            numericUpDown4.Name = "numericUpDown4";
-            numericUpDown4.Size = new Size(165, 31);
-            numericUpDown4.TabIndex = 12;
-            numericUpDown4.Value = new decimal(new int[] { 1000, 0, 0, 131072 });
+            nudCostPrice.DecimalPlaces = 2;
+            nudCostPrice.Location = new Point(204, 734);
+            nudCostPrice.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
+            nudCostPrice.Name = "nudCostPrice";
+            nudCostPrice.Size = new Size(165, 31);
+            nudCostPrice.TabIndex = 12;
+            nudCostPrice.Value = new decimal(new int[] { 1000, 0, 0, 131072 });
             // 
             // cboSuppliers
             // 
@@ -231,9 +233,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(104, 780);
             label6.Name = "label6";
-            label6.Size = new Size(59, 25);
+            label6.Size = new Size(63, 25);
             label6.TabIndex = 18;
-            label6.Text = "Notes";
+            label6.Text = "Notes:";
             // 
             // label7
             // 
@@ -271,10 +273,16 @@
             label10.TabIndex = 22;
             label10.Text = "Retail Price:";
             // 
+            // ofdAddImage
+            // 
+            ofdAddImage.FileName = "openFileDialog1";
+            // 
             // frmAddSupplierProduct
             // 
+            AcceptButton = btnAddSupplierProduct;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnExitProductAdd;
             ClientSize = new Size(768, 939);
             Controls.Add(label10);
             Controls.Add(label9);
@@ -286,28 +294,30 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(cboSuppliers);
-            Controls.Add(numericUpDown4);
-            Controls.Add(numericUpDown3);
-            Controls.Add(numericUpDown2);
-            Controls.Add(numericUpDown1);
+            Controls.Add(nudCostPrice);
+            Controls.Add(nudWeight);
+            Controls.Add(nudCaseSize);
+            Controls.Add(nudRetailPrice);
             Controls.Add(btnAddImage);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(txtCategory);
+            Controls.Add(txtDescription);
+            Controls.Add(txtProductName);
+            Controls.Add(txtNotes);
             Controls.Add(btnExitProductAdd);
-            Controls.Add(button1);
+            Controls.Add(btnAddSupplierProduct);
             Controls.Add(label1);
             Controls.Add(pictureBox1);
+            HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmAddSupplierProduct";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Bullseye Inventory Management System - Add Supplier Product";
             Load += frmAddSupplierProduct_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudRetailPrice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudCaseSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudWeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudCostPrice).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -316,17 +326,17 @@
 
         private PictureBox pictureBox1;
         private Label label1;
-        private Button button1;
+        private Button btnAddSupplierProduct;
         private Button btnExitProductAdd;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
+        private TextBox txtNotes;
+        private TextBox txtProductName;
+        private TextBox txtDescription;
+        private TextBox txtCategory;
         private Button btnAddImage;
-        private NumericUpDown numericUpDown1;
-        private NumericUpDown numericUpDown2;
-        private NumericUpDown numericUpDown3;
-        private NumericUpDown numericUpDown4;
+        private NumericUpDown nudRetailPrice;
+        private NumericUpDown nudCaseSize;
+        private NumericUpDown nudWeight;
+        private NumericUpDown nudCostPrice;
         private ComboBox cboSuppliers;
         private Label label2;
         private Label label3;
@@ -337,5 +347,6 @@
         private Label label8;
         private Label label9;
         private Label label10;
+        private OpenFileDialog ofdAddImage;
     }
 }

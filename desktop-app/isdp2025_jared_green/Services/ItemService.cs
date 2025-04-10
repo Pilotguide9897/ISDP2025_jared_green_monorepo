@@ -139,41 +139,77 @@ namespace idsp2025_jared_green.Services
             }
         }
 
+        //public async Task<bool> UpdateItem(Item item)
+        //{
+        //    try
+        //    {
+        //        _bullseyeContext.Attach(item);
+        //        _bullseyeContext.Entry(item).State = EntityState.Modified;
+        //        var result = await _bullseyeContext.SaveChangesAsync();
+        //        if (result != null)
+        //        {
+        //            return true;
+        //        } else
+        //        {
+        //            return false;
+        //        }
+
+        //    }
+        //    catch (MySqlException msqlEx)
+        //    {
+        //        MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        ItemLogger.Error(msqlEx, "");
+        //        return false;
+        //    }
+        //    catch (TimeoutException toEx)
+        //    {
+        //        MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        ItemLogger.Error(toEx, "");
+        //        return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("An unexpected error occurred fetching the item data", "A problem occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        ItemLogger.Error(ex, "");
+        //        return false;
+        //    }
+        //}
+
         public async Task<bool> UpdateItem(Item item)
         {
             try
             {
-                _bullseyeContext.Attach(item);
-                _bullseyeContext.Entry(item).State = EntityState.Modified;
-                var result = await _bullseyeContext.SaveChangesAsync();
-                if (result != null)
+                var trackedEntity = await _bullseyeContext.Items.FindAsync(item.ItemId);
+                if (trackedEntity == null)
                 {
-                    return true;
-                } else
-                {
-                    return false;
+                    return false; // or throw if appropriate
                 }
-                    
+
+                _bullseyeContext.Entry(trackedEntity).CurrentValues.SetValues(item);
+
+                var result = await _bullseyeContext.SaveChangesAsync();
+                return result > 0;
             }
             catch (MySqlException msqlEx)
             {
-                MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ItemLogger.Error(msqlEx, "");
+                MessageBox.Show("A database error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ItemLogger.Error(msqlEx, "Database error while updating item.");
                 return false;
             }
             catch (TimeoutException toEx)
             {
-                MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ItemLogger.Error(toEx, "");
+                MessageBox.Show("The operation timed out.", "Timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ItemLogger.Error(toEx, "Timeout while updating item.");
                 return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An unexpected error occurred fetching the item data", "A problem occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ItemLogger.Error(ex, "");
+                MessageBox.Show("An unexpected error occurred while updating the item.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ItemLogger.Error(ex, "Unexpected error while updating item.");
                 return false;
             }
         }
+
 
         //public async Task<Item> GetItem(int itemID)
         //{
@@ -236,6 +272,7 @@ namespace idsp2025_jared_green.Services
         {
             try
             {
+                item.Sku = Guid.NewGuid().ToString();
                 await _bullseyeContext.AddAsync(item);
                 int alterations = await _bullseyeContext.SaveChangesAsync();
 

@@ -37,10 +37,18 @@ namespace idsp2025_jared_green
 
         private void PopulateFields(Item item)
         {
+            // Tab 1
             lblItemSKU.Text = _item.Sku.ToString();
             chkItemActive.Checked = _item.Active == 1 ? true : false;
             txtUpdateItemDescription.Text = _item.Description;
             txtUpdateItemNotes.Text = _item.Notes;
+
+            // Tab 2
+            txtItemName.Text = _item.Name;
+            txtItemCategory.Text = _item.Category;
+            cboSupplier.SelectedItem = _item.Supplier;
+            nudCaseSize.Value = _item.CaseSize;
+            nudWeight.Value = _item.Weight;
         }
 
         private async void btnUpdateItem_Click(object sender, EventArgs e)
@@ -48,7 +56,33 @@ namespace idsp2025_jared_green
             _item.Active = (sbyte)(chkItemActive.Checked ? 1 : 0);
             _item.Description = txtUpdateItemDescription.Text;
             _item.Notes = txtUpdateItemNotes.Text;
-            //_item.ImageLocation = cboImageSelect.DisplayMember;
+
+            // Check all required fields are filled
+            if (string.IsNullOrWhiteSpace(txtItemName.Text))
+            {
+                MessageBox.Show("Item name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (string.IsNullOrWhiteSpace(txtItemCategory.Text))
+            {
+                MessageBox.Show("Category is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (nudWeight.Value > 0)
+            {
+                MessageBox.Show("Please enter a valid weight.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (nudCaseSize.Value > 1)
+            {
+                MessageBox.Show("Please enter a valid case size.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (cboSupplier.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a supplier.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (await _itemController.UpdateItem(_item))
             {
@@ -107,10 +141,12 @@ namespace idsp2025_jared_green
         private async void frmUpdateItem_Load(object sender, EventArgs e)
         {
             await InitializeCboImages();
-            LoadSupplierCbo();
+            await LoadSupplierCbo();
+            PopulateFields(_item);
+
         }
 
-        private async void LoadSupplierCbo()
+        private async Task LoadSupplierCbo()
         {
             BindingList<Supplier> suppliers = await _supplierController.GetSuppliers();
             cboSupplier.DataSource = suppliers;
