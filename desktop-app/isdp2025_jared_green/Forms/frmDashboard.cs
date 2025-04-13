@@ -471,7 +471,7 @@ namespace idsp2025_jared_green
             SetDataGridViewDataSource<Item>(dgvItems, bsItems);
 
             // Lists for Sanitizing the DataGridView
-            List<string> columnsToRemove = new List<string>(["CategoryNavigation", "Inventories", "SupplierId", "Txnitems", "ImageLocation", "ImagePaths"]);
+            List<string> columnsToRemove = new List<string>(["CategoryNavigation", "Inventories", "SupplierId", "Txnitems", "ImageLocation", "ImagePaths", "isSelected"]);
             List<string> columnNames = new List<string>(["ItemId", "Name", "Sku", "Description", "Category", "Weight", "CaseSize", "CostPrice", "RetailPrice", "Notes", "Active", "Supplier"]);
             List<string> desiredColumns = new List<string>(["Item ID", "Name", "SKU", "Description", "Category", "Weight", "Case Size", "Unit Price", "Retail Price", "Notes", "Active", "Supplier"]);
             List<string> columnOrder = new List<string>(["ItemId", "Name", "Sku", "Description", "Category", "Supplier", "Weight", "CaseSize", "CostPrice", "RetailPrice", "Notes", "Active"]);
@@ -1092,6 +1092,8 @@ namespace idsp2025_jared_green
                         btnCheckOrderSubmissions.Visible = true;
                         btnAddSupplier.Visible = true;
                         btnEditSupplier.Visible = true;
+                        btnAddNewItem.Visible = true;
+                        btnUpdateItem.Visible = true;
                         break;
 
                     case "Store Manager":
@@ -1168,6 +1170,8 @@ namespace idsp2025_jared_green
                         btnUpdateItem.Visible = true;
                         btnCancelTxn.Visible = true;
                         btnEditTxn.Visible = true;
+                        btnAddNewItem.Visible = true;
+                        btnUpdateItem.Visible = true;
                         // cboOnlineOrderStore.Visible = true;
                         break;
 
@@ -2191,7 +2195,7 @@ namespace idsp2025_jared_green
             // Pass types to the delegate.
             var formFactory = _serviceProvider.GetRequiredService<Func<Employee, List<string>, frmLoss>>();
             frmLoss lossForm = formFactory(employee, roles);
-            lossForm.Show();
+            lossForm.ShowDialog();
             await RefreshInventoryTab(tabInventory);
         }
 
@@ -2203,21 +2207,21 @@ namespace idsp2025_jared_green
 
             var formFactory = _serviceProvider.GetRequiredService<Func<Employee, List<string>, frmReturn>>();
             frmReturn returnForm = formFactory(employee, roles);
-            returnForm.Show();
+            returnForm.ShowDialog();
             await RefreshInventoryTab(tabInventory);
         }
 
         private async void btnAddNewItem_Click(object sender, EventArgs e)
         {
             frmAddSupplierProduct addProductForm = _serviceProvider.GetRequiredService<frmAddSupplierProduct>();
-            addProductForm.Show();
+            addProductForm.ShowDialog();
             await RefreshInventoryTab(tabInventory);
         }
 
         private void btnPlaceSupplierOrder_Click(object sender, EventArgs e)
         {
             frmSupplierOrder supplierOrderForm = _serviceProvider.GetRequiredService<frmSupplierOrder>();
-            supplierOrderForm.Show();
+            supplierOrderForm.ShowDialog();
 
         }
     }

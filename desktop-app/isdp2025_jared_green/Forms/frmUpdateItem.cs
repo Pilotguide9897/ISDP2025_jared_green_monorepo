@@ -45,7 +45,7 @@ namespace idsp2025_jared_green
 
             // Tab 2
             txtItemName.Text = _item.Name;
-            txtItemCategory.Text = _item.Category;
+            cboItemCategory.SelectedItem = _item.Category;
             cboSupplier.SelectedItem = _item.Supplier;
             nudCaseSize.Value = _item.CaseSize;
             nudWeight.Value = _item.Weight;
@@ -63,7 +63,7 @@ namespace idsp2025_jared_green
                 MessageBox.Show("Item name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else if (string.IsNullOrWhiteSpace(txtItemCategory.Text))
+            else if (cboItemCategory.SelectedIndex > 0)
             {
                 MessageBox.Show("Category is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

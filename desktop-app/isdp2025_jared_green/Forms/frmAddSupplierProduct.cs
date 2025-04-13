@@ -39,20 +39,34 @@ namespace idsp2025_jared_green.Forms
 
         private async void frmAddSupplierProduct_Load(object sender, EventArgs e)
         {
-            BindingList<Supplier> suppliers = await _supplierController.GetSuppliers();
-            cboSuppliers.DataSource = suppliers;
-            cboSuppliers.DisplayMember = "Name";
-            _item = await CreatePlaceholderItem();
+            try
+            {
+                var result = await _supplierController.GetSuppliers();
+
+                if (result is BindingList<Supplier> suppliers)
+                {
+                    cboSuppliers.DataSource = suppliers;
+                    cboSuppliers.DisplayMember = "Name";
+                }
+
+                await CreatePlaceholderItem();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        public async Task<Item> CreatePlaceholderItem()
+
+        public async Task CreatePlaceholderItem()
         {
-            return new Item
+            _item =  new Item
             {
                 Name = "TEMP_ITEM",
+
                 Sku = $"TEMP-{Guid.NewGuid().ToString("N").Substring(0, 8)}",
                 Description = "Placeholder item for later update",
-                Category = "TEMP",
+                Category = "Apparel",
                 Weight = 0m,
                 CaseSize = 1,
                 CostPrice = 0.00m,
@@ -64,9 +78,8 @@ namespace idsp2025_jared_green.Forms
                 ImageLocation = null
             };
 
-            Item newProduct = (await _itemController.AddProduct(_item)) as Item;
+            _item = (await _itemController.AddProduct(_item)) as Item;
 
-            return newProduct;
         }
 
         private async void btnAddImage_Click(object sender, EventArgs e)
@@ -101,7 +114,7 @@ namespace idsp2025_jared_green.Forms
                     MessageBox.Show("Item name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (string.IsNullOrWhiteSpace(txtCategory.Text))
+                else if (cboItemCategory.SelectedIndex > 0)
                 {
                     MessageBox.Show("Category is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -132,10 +145,14 @@ namespace idsp2025_jared_green.Forms
                     return;
                 }
 
+                BindingList<Supplier> sup = await _supplierController.GetSuppliers();
+                Supplier selectedSupplier = (from Suppl in sup where Suppl.Name == cboItemCategory.Text select Suppl).FirstOrDefault();
+
+
                 // Update item properties
                 _item.Name = txtProductName.Text;
                 _item.Description = txtDescription.Text;
-                _item.Category = txtCategory.Text;
+                _item.Category = cboItemCategory.SelectedItem.ToString();
                 _item.Weight = nudWeight.Value;
                 _item.CaseSize = Convert.ToInt32(nudCaseSize.Value);
                 _item.CostPrice = nudCostPrice.Value;

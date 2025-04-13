@@ -1033,6 +1033,7 @@
             btnAddNewItem.TabIndex = 10;
             btnAddNewItem.Text = "Add Item to Catalogue";
             btnAddNewItem.UseVisualStyleBackColor = true;
+            btnAddNewItem.Visible = false;
             btnAddNewItem.Click += btnAddNewItem_Click;
             // 
             // label4
@@ -1052,6 +1053,7 @@
             btnUpdateItem.TabIndex = 8;
             btnUpdateItem.Text = "&Edit";
             btnUpdateItem.UseVisualStyleBackColor = true;
+            btnUpdateItem.Visible = false;
             btnUpdateItem.Click += btnUpdateItem_Click;
             // 
             // dgvItems

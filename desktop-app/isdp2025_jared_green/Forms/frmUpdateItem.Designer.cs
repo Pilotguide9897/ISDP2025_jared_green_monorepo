@@ -47,6 +47,7 @@
             tabItemDetails = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
+            cboItemCategory = new ComboBox();
             label8 = new Label();
             label7 = new Label();
             label6 = new Label();
@@ -55,7 +56,6 @@
             nudWeight = new NumericUpDown();
             nudCaseSize = new NumericUpDown();
             cboSupplier = new ComboBox();
-            txtItemCategory = new TextBox();
             txtItemName = new TextBox();
             ((System.ComponentModel.ISupportInitialize)picItemImage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picUpdateItemFrmLogo).BeginInit();
@@ -236,6 +236,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(cboItemCategory);
             tabPage2.Controls.Add(label8);
             tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(label6);
@@ -244,7 +245,6 @@
             tabPage2.Controls.Add(nudWeight);
             tabPage2.Controls.Add(nudCaseSize);
             tabPage2.Controls.Add(cboSupplier);
-            tabPage2.Controls.Add(txtItemCategory);
             tabPage2.Controls.Add(txtItemName);
             tabPage2.Location = new Point(4, 34);
             tabPage2.Name = "tabPage2";
@@ -253,6 +253,16 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Item Particulars";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // cboItemCategory
+            // 
+            cboItemCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboItemCategory.FormattingEnabled = true;
+            cboItemCategory.Items.AddRange(new object[] { "Apparel", "Camping", "Fitness", "Footwear", "Sports" });
+            cboItemCategory.Location = new Point(156, 148);
+            cboItemCategory.Name = "cboItemCategory";
+            cboItemCategory.Size = new Size(255, 33);
+            cboItemCategory.TabIndex = 25;
             // 
             // label8
             // 
@@ -322,18 +332,11 @@
             // 
             cboSupplier.DropDownStyle = ComboBoxStyle.DropDownList;
             cboSupplier.FormattingEnabled = true;
+            cboSupplier.Items.AddRange(new object[] { "Reebok", "Spalding", "Asics", "Puma", "Burton", "TaylorMade", "New Balance", "Nike", "Northface", "CCM", "Bauer", "Coleman", "UnderArmor" });
             cboSupplier.Location = new Point(157, 247);
             cboSupplier.Name = "cboSupplier";
             cboSupplier.Size = new Size(254, 33);
             cboSupplier.TabIndex = 17;
-            // 
-            // txtItemCategory
-            // 
-            txtItemCategory.Location = new Point(158, 148);
-            txtItemCategory.MaxLength = 32;
-            txtItemCategory.Name = "txtItemCategory";
-            txtItemCategory.Size = new Size(254, 31);
-            txtItemCategory.TabIndex = 16;
             // 
             // txtItemName
             // 
@@ -408,7 +411,7 @@
         private NumericUpDown nudWeight;
         private NumericUpDown nudCaseSize;
         private ComboBox cboSupplier;
-        private TextBox txtItemCategory;
         private TextBox txtItemName;
+        private ComboBox cboItemCategory;
     }
 }

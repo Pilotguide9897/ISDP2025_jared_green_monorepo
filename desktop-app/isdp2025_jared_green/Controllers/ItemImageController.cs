@@ -55,5 +55,25 @@ namespace idsp2025_jared_green.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public Task<object> AddProduct(Item item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> GetItemByName(string itemName)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Item> IItemController.AddProduct(Item item)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Item> IItemController.GetItemByName(string itemName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

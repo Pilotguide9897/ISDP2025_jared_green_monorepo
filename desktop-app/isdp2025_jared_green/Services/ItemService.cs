@@ -272,7 +272,7 @@ namespace idsp2025_jared_green.Services
         {
             try
             {
-                item.Sku = Guid.NewGuid().ToString();
+                item.Sku = Guid.NewGuid().ToString("N").Substring(0, 19);
                 await _bullseyeContext.AddAsync(item);
                 int alterations = await _bullseyeContext.SaveChangesAsync();
 

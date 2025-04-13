@@ -307,6 +307,7 @@ public partial class BullseyeContext : DbContext
             entity.Property(e => e.Weight)
                 .HasPrecision(10, 2)
                 .HasColumnName("weight");
+            entity.Property(e => e.IsSelected).HasColumnName("isSelected");
 
             entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.Items)
                 .HasForeignKey(d => d.Category)
