@@ -66,6 +66,7 @@
             // 
             // dgvSupplierOrderCart
             // 
+            dgvSupplierOrderCart.AllowUserToAddRows = false;
             dgvSupplierOrderCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSupplierOrderCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSupplierOrderCart.Columns.AddRange(new DataGridViewColumn[] { productName, supplier, quantityRequested });
@@ -102,6 +103,8 @@
             // 
             // dgvSupplierInventory
             // 
+            dgvSupplierInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvSupplierInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvSupplierInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSupplierInventory.Location = new Point(896, 272);
             dgvSupplierInventory.MultiSelect = false;
@@ -179,6 +182,7 @@
             cboSuppliers.Name = "cboSuppliers";
             cboSuppliers.Size = new Size(211, 33);
             cboSuppliers.TabIndex = 13;
+            cboSuppliers.SelectedIndexChanged += cboSuppliers_SelectedIndexChanged;
             // 
             // label7
             // 

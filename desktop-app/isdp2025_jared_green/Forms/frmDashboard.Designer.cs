@@ -392,6 +392,7 @@
             btnPlaceSupplierOrder.TabIndex = 11;
             btnPlaceSupplierOrder.Text = "Place Supplier Order";
             btnPlaceSupplierOrder.UseVisualStyleBackColor = true;
+            btnPlaceSupplierOrder.Visible = false;
             btnPlaceSupplierOrder.Click += btnPlaceSupplierOrder_Click;
             // 
             // btnEditSupplier

@@ -1096,6 +1096,7 @@ namespace idsp2025_jared_green
                         btnUpdateItem.Visible = true;
                         btnLossOrDamage.Visible = true;
                         btnReturn.Visible = true;
+                        btnPlaceSupplierOrder.Visible = true;
                         break;
 
                     case "Store Manager":
@@ -1178,6 +1179,7 @@ namespace idsp2025_jared_green
                         btnUpdateItem.Visible = true;
                         btnLossOrDamage.Visible = true;
                         btnReturn.Visible = true;
+                        btnPlaceSupplierOrder.Visible = true;
                         // cboOnlineOrderStore.Visible = true;
                         break;
 
@@ -2224,11 +2226,13 @@ namespace idsp2025_jared_green
             await RefreshItemsTab(tabItems);
         }
 
-        private void btnPlaceSupplierOrder_Click(object sender, EventArgs e)
+        private async void btnPlaceSupplierOrder_Click(object sender, EventArgs e)
         {
-            frmSupplierOrder supplierOrderForm = _serviceProvider.GetRequiredService<frmSupplierOrder>();
-            supplierOrderForm.ShowDialog();
-
+            var formFactory = _serviceProvider.GetRequiredService<Func<Employee, frmSupplierOrder>>();
+            BindingList<Employee> employees = await _dashboardController.GetEmployees();
+            Employee? employee = (from emp in employees where emp.Username == lblUser.Text select emp).FirstOrDefault();
+            frmSupplierOrder fsp = formFactory(employee);
+            fsp.ShowDialog();
         }
     }
 }

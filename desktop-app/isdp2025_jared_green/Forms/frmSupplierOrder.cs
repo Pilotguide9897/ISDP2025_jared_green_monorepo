@@ -24,15 +24,17 @@ namespace idsp2025_jared_green.Forms
         private readonly ITransactionController _transactionController;
         private readonly IInventoryController _inventoryController;
         private readonly IServiceProvider _serviceProvider;
-        private int _employeeID;
+        private readonly ISupplierController _supplierController;
+        private readonly Employee _employee;
 
-        public frmSupplierOrder(IItemController itemController, ITransactionController transactionController, IInventoryController inventoryController, IServiceProvider serviceProvider)
+        public frmSupplierOrder(IItemController itemController, ITransactionController transactionController, ISupplierController supplierController, IInventoryController inventoryController, IServiceProvider serviceProvider, Employee employee)
         {
             _transactionController = transactionController;
+            _supplierController = supplierController;
             _itemController = itemController;
             _inventoryController = inventoryController;
             _serviceProvider = serviceProvider;
-
+            _employee = employee;
             InitializeComponent();
         }
 
@@ -100,6 +102,25 @@ namespace idsp2025_jared_green.Forms
         {
             await LoadData();
             await LoadResupply();
+            await LoadSuppliers();
+        }
+
+        private async Task LoadSuppliers()
+        {
+            try
+            {
+                BindingList<Supplier> Suppliers = await _supplierController.GetSuppliers();
+                cboSuppliers.DataSource = Suppliers;
+                cboSuppliers.DisplayMember = "Name";
+                cboSuppliers.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("A problem occurred gathering the supplier information.", "No supplier info");
+            }
+
+
+
         }
 
         private async Task LoadResupply()
@@ -121,7 +142,22 @@ namespace idsp2025_jared_green.Forms
             BindingList<Item> items = await _itemController.GetAllItems();
             DataTable dt = DataTableConverter.ConvertToDataTable(items);
             bsSupplierInventory.DataSource = dt;
+
             dgvSupplierInventory.DataSource = bsSupplierInventory;
+            dgvSupplierInventory.Columns["Description"].Visible = false;
+            dgvSupplierInventory.Columns["Weight"].Visible = false;
+            dgvSupplierInventory.Columns["CaseSize"].Visible = false;
+            dgvSupplierInventory.Columns["CostPrice"].Visible = false;
+            dgvSupplierInventory.Columns["RetailPrice"].Visible = false;
+            dgvSupplierInventory.Columns["SupplierId"].Visible = false;
+            dgvSupplierInventory.Columns["Notes"].Visible = false;
+            dgvSupplierInventory.Columns["Active"].Visible = false;
+            dgvSupplierInventory.Columns["ImageLocation"].Visible = false;
+            dgvSupplierInventory.Columns["CategoryNavigation"].Visible = false;
+            dgvSupplierInventory.Columns["Inventories"].Visible = false;
+            dgvSupplierInventory.Columns["Txnitems"].Visible = false;
+            dgvSupplierInventory.Columns["ImagePaths"].Visible = false;
+            dgvSupplierInventory.Columns["Supplier"].Visible = false;
             dgvSupplierInventory.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             bsSupplierInventory.Filter = "Active = 1";
         }
@@ -129,14 +165,16 @@ namespace idsp2025_jared_green.Forms
         private void txtSearchSupplierInventory_TextChanged(object sender, EventArgs e)
         {
             // To support filtering, the data source must be a DataTable or DataView!!
+            var selectedSupplier = cboSuppliers.SelectedItem as Supplier;
             string filterText = txtSearchSupplierInventory.Text;
             if (string.IsNullOrEmpty(filterText))
             {
                 bsSupplierInventory.RemoveFilter();
+                bsSupplierInventory.Filter = $"SupplierId = {(cboSuppliers.SelectedItem as Supplier).SupplierId}";
             }
             else
             {
-                bsSupplierInventory.Filter = $"Name LIKE '*{filterText}*' OR Description LIKE '*{filterText}*' OR Category LIKE '*{filterText}*' AND Active = 1";
+                bsSupplierInventory.Filter = $"(Name LIKE '*{filterText}*' OR Description LIKE '*{filterText}*' OR Category LIKE '*{filterText}*') AND Active = 1 AND SupplierId = {selectedSupplier.SupplierId}";
             }
         }
 
@@ -206,7 +244,7 @@ namespace idsp2025_jared_green.Forms
                 Txn txn = new Txn()
                 {
                     TxnId = 0,
-                    EmployeeId = _employeeID,
+                    EmployeeId = _employee.EmployeeId,
                     SiteIdto = 10002,
                     SiteIdfrom = 2,
                     TxnStatus = "SUBMITTED",
@@ -225,6 +263,25 @@ namespace idsp2025_jared_green.Forms
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private void cboSuppliers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedSupplier = cboSuppliers.SelectedItem as Supplier;
+            string filterText = txtSearchSupplierInventory.Text;
+            if (string.IsNullOrEmpty(filterText))
+            {
+                bsSupplierInventory.RemoveFilter();
+                if (selectedSupplier != null)
+                {
+                    bsSupplierInventory.Filter = $"SupplierId = {selectedSupplier.SupplierId}";
+                }
+
+            }
+            else
+            {
+                bsSupplierInventory.Filter = $"(Name LIKE '*{filterText}*' OR Description LIKE '*{filterText}*' OR Category LIKE '*{filterText}*') AND Active = 1 AND SupplierId = {selectedSupplier.SupplierId}";
             }
         }
     }
