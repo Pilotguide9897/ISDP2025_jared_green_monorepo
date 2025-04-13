@@ -27,6 +27,12 @@ namespace idsp2025_jared_green.Forms
         public frmReturn(IItemController itemController, IInventoryController inventoryController, ITransactionController transactionController, ILocationController locationController, IServiceProvider serviceProvider, Employee employee, List<string> roles)
         {
             _inventoryController = inventoryController;
+            _itemController = itemController;
+            _transactionController = transactionController;
+            _locationController = locationController;
+            _serviceProvider = serviceProvider;
+            _employee = employee;
+            _employeeRoles = roles;
             InitializeComponent();
         }
 
@@ -52,14 +58,15 @@ namespace idsp2025_jared_green.Forms
         private async Task LoadItemCbo()
         {
             List<string> items = await _inventoryController.GetInventoryNames();
-            cboProductName.DataSource = items.Order();
+            cboProductName.DataSource = items.Order().ToList();
             cboProductName.SelectedIndex = 0;
         }
 
         private async Task LoadSiteCbo()
         {
             BindingList<Site> sites = await _locationController.GetBullseyeLocations();
-            cboReturnSite.DataSource = sites.Order();
+            //cboReturnSite.DataSource = sites.Order().ToList();
+            cboReturnSite.DataSource = sites;
             cboReturnSite.DisplayMember = "SiteName";
             cboReturnSite.SelectedItem = _employee.Site;
             if (!_employeeRoles.Contains("Administrator"))
@@ -73,8 +80,15 @@ namespace idsp2025_jared_green.Forms
             if (!Helpers.ValidateInput.IsTextFieldEmpty(txtReasonForReturn))
             {
                 _returnItem.Clear();
-                object rtItm = await _itemController.GetItemByName(cboProductName.SelectedText);
-                Txnitem txnitem = rtItm as Txnitem;
+                object rtItm = await _itemController.GetItemByName(cboProductName.Text);
+                Item itm = rtItm as Item;
+                Txnitem txnitem = new Txnitem()
+                {
+                    TxnId = 0,
+                    ItemId = itm.ItemId,
+                    Quantity = 1,
+                    Notes = txtReasonForReturn.Text,
+                };
                 if (txnitem != null) {
                     _returnItem.Add(txnitem);
                 }
@@ -91,7 +105,7 @@ namespace idsp2025_jared_green.Forms
                     TxnType = "Return",
                     BarCode = Guid.NewGuid().ToString(),
                     CreatedDate = DateTime.Now,
-                    DeliveryId = 0,
+                    DeliveryId = 2140000000,
                     EmergencyDelivery = 0,
                     Notes = txtReasonForReturn.Text,
                     Txnitems = _returnItem
@@ -105,6 +119,7 @@ namespace idsp2025_jared_green.Forms
                         try
                         {
                             await _inventoryController.ModifyItemsInCirculation((cboReturnSite.SelectedItem as Site).SiteId, _returnItem[0].ItemId, 1);
+                            this.Close();
                         }
                         catch (Exception ex) {
                             MessageBox.Show("An unexpected error occurred while returning the item to inventory. Please contact your admin.", "Unexpected Inventory Error");
@@ -122,7 +137,7 @@ namespace idsp2025_jared_green.Forms
                             TxnType = "Loss",
                             BarCode = Guid.NewGuid().ToString(),
                             CreatedDate = DateTime.Now,
-                            DeliveryId = 0,
+                            DeliveryId = 2140000000,
                             EmergencyDelivery = 0,
                             Notes = txtReasonForReturn.Text,
                             Txnitems = _returnItem
@@ -131,6 +146,7 @@ namespace idsp2025_jared_green.Forms
                         try
                         {
                            Txn result = await _transactionController.RecordLoss(lossTxn);
+                           this.Close();
                         }
                         catch (Exception ex)
                         {
