@@ -1094,6 +1094,8 @@ namespace idsp2025_jared_green
                         btnEditSupplier.Visible = true;
                         btnAddNewItem.Visible = true;
                         btnUpdateItem.Visible = true;
+                        btnLossOrDamage.Visible = true;
+                        btnReturn.Visible = true;
                         break;
 
                     case "Store Manager":
@@ -1109,6 +1111,8 @@ namespace idsp2025_jared_green
                         btnDeliverStoreOrder.Visible = true;
                         btnPrepareOrder.Visible = true;
                         btnMarkCustPickup.Visible = true;
+                        btnLossOrDamage.Visible = true;
+                        btnReturn.Visible = true;
                         break;
 
                     case "Warehouse Worker":
@@ -1172,6 +1176,8 @@ namespace idsp2025_jared_green
                         btnEditTxn.Visible = true;
                         btnAddNewItem.Visible = true;
                         btnUpdateItem.Visible = true;
+                        btnLossOrDamage.Visible = true;
+                        btnReturn.Visible = true;
                         // cboOnlineOrderStore.Visible = true;
                         break;
 

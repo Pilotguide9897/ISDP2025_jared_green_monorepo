@@ -1,5 +1,6 @@
 ﻿using idsp2025_jared_green.Controllers;
 using idsp2025_jared_green.Entities;
+using idsp2025_jared_green.Entities.dto;
 using idsp2025_jared_green.Interfaces.Controllers;
 using idsp2025_jared_green.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ namespace idsp2025_jared_green.Forms
         private readonly Employee _employee;
         private readonly List<string> _employeeRoles;
         private List<Txnitem> _lossItems;
+        private List<dtoLossItem> _li;
 
         public frmLoss(IItemController itemController, IInventoryController inventoryController, ITransactionController transactionController, ILocationController locationController, IServiceProvider serviceProvider, Employee employee, List<string> roles)
         {
@@ -37,12 +39,15 @@ namespace idsp2025_jared_green.Forms
             _serviceProvider = serviceProvider;
             _employee = employee;
             _employeeRoles = roles;
+            _lossItems = new List<Txnitem>();
+            _li = new List<dtoLossItem>();
             InitializeComponent();
         }
 
         private void frmLoss_Load(object sender, EventArgs e)
         {
             LoadSiteCbo();
+            dgvLossItems.AutoGenerateColumns = false;
             cboLossCategory.SelectedIndex = 0;
         }
 
@@ -114,11 +119,41 @@ namespace idsp2025_jared_green.Forms
             frmSelectItem fsi = formFactory("Loss");
             fsi.Tag = _lossItems;
             fsi.ShowDialog();
-            List<Txnitem> tis = fsi.Tag as List<Txnitem>;
-            if (tis != null && tis.Count > 0)
+            List<Item> tis = fsi.Tag as List<Item>;
+            foreach (Txnitem txi in _lossItems)
             {
-                _lossItems = tis;
+                if (tis.Where(t => t.ItemId == txi.ItemId).FirstOrDefault() == null)
+                {
+                    _lossItems.Remove(txi);
+                }
             }
+
+            foreach (var item in tis)
+            {
+                _lossItems.Add(
+                    new Txnitem {
+                        TxnId = 0,
+                        ItemId = item.ItemId,
+                        Quantity = 1,
+                        Notes = ""
+                    }
+                );
+
+                _li.Add(
+                    new dtoLossItem {
+                        itemID = item.ItemId,
+                        productName = item.Name,
+                        quantity = 1
+                    });
+            }
+
+            dgvLossItems.Columns["Quantity"].DataPropertyName = "quantity";
+            dgvLossItems.Columns["Product"].DataPropertyName = "productName";
+
+            dgvLossItems.DataSource = _li;
+
+
+
         }
 
         private void btnRemoveLossItem_Click(object sender, EventArgs e)

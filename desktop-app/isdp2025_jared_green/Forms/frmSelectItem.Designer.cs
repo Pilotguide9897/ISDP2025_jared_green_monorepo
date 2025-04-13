@@ -38,11 +38,6 @@
             btnConfirm = new Button();
             btnCancel = new Button();
             bsProductSearch = new BindingSource(components);
-            ProductName = new DataGridViewTextBoxColumn();
-            sku = new DataGridViewTextBoxColumn();
-            supplier = new DataGridViewTextBoxColumn();
-            category = new DataGridViewTextBoxColumn();
-            Select = new DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvItemSelect).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bsProductSearch).BeginInit();
@@ -80,6 +75,7 @@
             // 
             // txtSearchItem
             // 
+            txtSearchItem.BorderStyle = BorderStyle.FixedSingle;
             txtSearchItem.Location = new Point(202, 144);
             txtSearchItem.Name = "txtSearchItem";
             txtSearchItem.Size = new Size(1015, 31);
@@ -94,7 +90,6 @@
             dgvItemSelect.AllowUserToResizeRows = false;
             dgvItemSelect.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvItemSelect.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvItemSelect.Columns.AddRange(new DataGridViewColumn[] { ProductName, sku, supplier, category, Select });
             dgvItemSelect.Location = new Point(46, 199);
             dgvItemSelect.MultiSelect = false;
             dgvItemSelect.Name = "dgvItemSelect";
@@ -123,44 +118,6 @@
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
-            // 
-            // ProductName
-            // 
-            ProductName.DataPropertyName = "\"Name\"";
-            ProductName.HeaderText = "Product Name";
-            ProductName.MinimumWidth = 8;
-            ProductName.Name = "ProductName";
-            // 
-            // sku
-            // 
-            sku.DataPropertyName = "\"Sku\"";
-            sku.HeaderText = "SKU";
-            sku.MinimumWidth = 8;
-            sku.Name = "sku";
-            sku.ReadOnly = true;
-            // 
-            // supplier
-            // 
-            supplier.DataPropertyName = "\"Supplier.Name\"";
-            supplier.HeaderText = "Supplier";
-            supplier.MinimumWidth = 8;
-            supplier.Name = "supplier";
-            supplier.ReadOnly = true;
-            // 
-            // category
-            // 
-            category.DataPropertyName = "\"Category\"";
-            category.HeaderText = "Category";
-            category.MinimumWidth = 8;
-            category.Name = "category";
-            category.ReadOnly = true;
-            // 
-            // Select
-            // 
-            Select.DataPropertyName = "\"IsSelected\"";
-            Select.HeaderText = "Select";
-            Select.MinimumWidth = 8;
-            Select.Name = "Select";
             // 
             // frmSelectItem
             // 
@@ -196,10 +153,5 @@
         private Button btnConfirm;
         private Button btnCancel;
         private BindingSource bsProductSearch;
-        private DataGridViewTextBoxColumn ProductName;
-        private DataGridViewTextBoxColumn sku;
-        private DataGridViewTextBoxColumn supplier;
-        private DataGridViewTextBoxColumn category;
-        private DataGridViewCheckBoxColumn Select;
     }
 }

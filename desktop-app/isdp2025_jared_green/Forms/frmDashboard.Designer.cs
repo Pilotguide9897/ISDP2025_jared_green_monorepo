@@ -756,6 +756,7 @@
             btnReturn.TabIndex = 17;
             btnReturn.Text = "Process Return";
             btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Visible = false;
             btnReturn.Click += btnReturn_Click;
             // 
             // btnLossOrDamage
@@ -766,6 +767,7 @@
             btnLossOrDamage.TabIndex = 16;
             btnLossOrDamage.Text = "Record Loss";
             btnLossOrDamage.UseVisualStyleBackColor = true;
+            btnLossOrDamage.Visible = false;
             btnLossOrDamage.Click += btnLossOrDamage_Click;
             // 
             // label12

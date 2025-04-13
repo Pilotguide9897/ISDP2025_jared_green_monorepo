@@ -58,7 +58,7 @@ namespace idsp2025_jared_green.Forms
             bsBullseyeInventory.Filter = "Active = 1";
 
             // Remove unnecessary columns
-            RemoveColumnsFromDGV(new List<string> { "Sku", "Weight", "CostPrice", "RetailPrice", "SupplierId", "Notes", "Active", "ImageLocation", "CategoryNavigation", "Inventories", "Supplier", "Txnitems", "ImagePaths" }, dgvBullseyeInventory);
+            RemoveColumnsFromDGV(new List<string> { "Sku", "Weight", "CostPrice", "RetailPrice", "SupplierId", "Notes", "Active", "ImageLocation", "CategoryNavigation", "Inventories", "Supplier", "Txnitems", "ImagePaths", "isSelected" }, dgvBullseyeInventory);
             dgvBullseyeInventory.Columns["CaseSize"].Visible = false;
             dgvBullseyeInventory.AutoResizeColumns();
 

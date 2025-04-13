@@ -43,10 +43,10 @@
             tabPage1 = new TabPage();
             lstLossItems = new TabPage();
             dgvLossItems = new DataGridView();
-            Product = new DataGridViewTextBoxColumn();
-            Quantity = new CustomControls.DataGridViewNumericUpDownColumn();
             btnRemoveLossItem = new Button();
             btnAddLossItem = new Button();
+            Product = new DataGridViewTextBoxColumn();
+            Quantity = new CustomControls.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -86,6 +86,7 @@
             // 
             // txtLossDescription
             // 
+            txtLossDescription.BorderStyle = BorderStyle.FixedSingle;
             txtLossDescription.Location = new Point(17, 162);
             txtLossDescription.MaxLength = 255;
             txtLossDescription.Multiline = true;
@@ -205,19 +206,6 @@
             dgvLossItems.Size = new Size(474, 337);
             dgvLossItems.TabIndex = 3;
             // 
-            // Product
-            // 
-            Product.HeaderText = "Product Name";
-            Product.MinimumWidth = 8;
-            Product.Name = "Product";
-            Product.ReadOnly = true;
-            // 
-            // Quantity
-            // 
-            Quantity.HeaderText = "Quantity";
-            Quantity.MinimumWidth = 8;
-            Quantity.Name = "Quantity";
-            // 
             // btnRemoveLossItem
             // 
             btnRemoveLossItem.Location = new Point(182, 364);
@@ -237,6 +225,21 @@
             btnAddLossItem.Text = "Add Loss Item";
             btnAddLossItem.UseVisualStyleBackColor = true;
             btnAddLossItem.Click += btnAddLossItem_Click;
+            // 
+            // Product
+            // 
+            Product.DataPropertyName = "\"productName\"";
+            Product.HeaderText = "Product Name";
+            Product.MinimumWidth = 8;
+            Product.Name = "Product";
+            Product.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            Quantity.DataPropertyName = "\"quantity\"";
+            Quantity.HeaderText = "Quantity";
+            Quantity.MinimumWidth = 8;
+            Quantity.Name = "Quantity";
             // 
             // frmLoss
             // 

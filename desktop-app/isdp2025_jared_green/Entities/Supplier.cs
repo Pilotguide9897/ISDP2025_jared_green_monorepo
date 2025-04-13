@@ -29,13 +29,9 @@ public partial class Supplier
 
     public sbyte Active { get; set; }
 
-    //public virtual ICollection<Item> Items { get; set; } = new List<Item>();
+    public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 
-    //public virtual Province ProvinceNavigation { get; set; } = null!;
-
-    public ICollection<Item> Items { get; set; } = new List<Item>();
-
-    public Province ProvinceNavigation { get; set; } = null!;
+    public virtual Province ProvinceNavigation { get; set; } = null!;
 
     public override string ToString()
     {
