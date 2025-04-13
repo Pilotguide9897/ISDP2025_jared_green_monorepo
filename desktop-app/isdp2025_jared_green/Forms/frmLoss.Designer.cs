@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoss));
             pictureBox1 = new PictureBox();
             label1 = new Label();
@@ -43,15 +44,17 @@
             tabPage1 = new TabPage();
             lstLossItems = new TabPage();
             dgvLossItems = new DataGridView();
-            btnRemoveLossItem = new Button();
-            btnAddLossItem = new Button();
             Product = new DataGridViewTextBoxColumn();
             Quantity = new CustomControls.DataGridViewNumericUpDownColumn();
+            btnRemoveLossItem = new Button();
+            btnAddLossItem = new Button();
+            bsLossItems = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             lstLossItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLossItems).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bsLossItems).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -206,6 +209,21 @@
             dgvLossItems.Size = new Size(474, 337);
             dgvLossItems.TabIndex = 3;
             // 
+            // Product
+            // 
+            Product.DataPropertyName = "\"productName\"";
+            Product.HeaderText = "Product Name";
+            Product.MinimumWidth = 8;
+            Product.Name = "Product";
+            Product.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            Quantity.DataPropertyName = "\"quantity\"";
+            Quantity.HeaderText = "Quantity";
+            Quantity.MinimumWidth = 8;
+            Quantity.Name = "Quantity";
+            // 
             // btnRemoveLossItem
             // 
             btnRemoveLossItem.Location = new Point(182, 364);
@@ -225,21 +243,6 @@
             btnAddLossItem.Text = "Add Loss Item";
             btnAddLossItem.UseVisualStyleBackColor = true;
             btnAddLossItem.Click += btnAddLossItem_Click;
-            // 
-            // Product
-            // 
-            Product.DataPropertyName = "\"productName\"";
-            Product.HeaderText = "Product Name";
-            Product.MinimumWidth = 8;
-            Product.Name = "Product";
-            Product.ReadOnly = true;
-            // 
-            // Quantity
-            // 
-            Quantity.DataPropertyName = "\"quantity\"";
-            Quantity.HeaderText = "Quantity";
-            Quantity.MinimumWidth = 8;
-            Quantity.Name = "Quantity";
             // 
             // frmLoss
             // 
@@ -262,6 +265,7 @@
             tabPage1.PerformLayout();
             lstLossItems.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvLossItems).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bsLossItems).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -286,5 +290,6 @@
         private DataGridView dgvLossItems;
         private DataGridViewTextBoxColumn Product;
         private CustomControls.DataGridViewNumericUpDownColumn Quantity;
+        private BindingSource bsLossItems;
     }
 }

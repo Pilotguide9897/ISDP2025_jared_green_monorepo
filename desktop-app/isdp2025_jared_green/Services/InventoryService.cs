@@ -408,10 +408,10 @@ namespace idsp2025_jared_green.Services
                 }
                 else
                 {
-                    if (quantity > 0)
-                    {
-                        inv.Quantity += quantity;
-                    }
+                    //if (quantity > 0)
+                    //{
+                    //    inv.Quantity += quantity;
+                    //}
 
                     if (quantity < 0 && Math.Abs(quantity) > inv.Quantity)
                     {

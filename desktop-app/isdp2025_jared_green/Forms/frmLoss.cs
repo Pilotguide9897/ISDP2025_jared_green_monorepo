@@ -74,6 +74,12 @@ namespace idsp2025_jared_green.Forms
                     return;
                 }
 
+                if (_li.Count < 1)
+                {
+                    MessageBox.Show("One or more loss items must be specified.", "No Loss Items");
+                    return;
+                }
+
                 Txn txn = new Txn()
                 {
                     TxnId = 0,
@@ -85,22 +91,22 @@ namespace idsp2025_jared_green.Forms
                     TxnType = "Loss",
                     BarCode = Guid.NewGuid().ToString(),
                     CreatedDate = DateTime.Now,
-                    DeliveryId = 0,
+                    DeliveryId = 2140000000,
                     EmergencyDelivery = 0,
                     Notes = txtLossDescription.Text,
                     Txnitems = _lossItems
                 };
 
                 // Create Loss
-                var result = _transactionController.RecordLoss(txn);
+                var result = await _transactionController.RecordLoss(txn);
                 // Modify Inventory
                 if (result != null) {
-                    foreach (var item in _lossItems)
+                    foreach (var item in _li)
                     {
-                        await _inventoryController.ModifyItemsInCirculation((cboLossSite.SelectedItem as Site).SiteId, item.ItemId, -(item.Quantity));
+                        await _inventoryController.ModifyItemsInCirculation((cboLossSite.SelectedItem as Site).SiteId, item.itemID, -(item.quantity));
                     }
                 }
-                
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -149,11 +155,8 @@ namespace idsp2025_jared_green.Forms
 
             dgvLossItems.Columns["Quantity"].DataPropertyName = "quantity";
             dgvLossItems.Columns["Product"].DataPropertyName = "productName";
-
-            dgvLossItems.DataSource = _li;
-
-
-
+            bsLossItems.DataSource = _li;
+            dgvLossItems.DataSource = bsLossItems;
         }
 
         private void btnRemoveLossItem_Click(object sender, EventArgs e)
