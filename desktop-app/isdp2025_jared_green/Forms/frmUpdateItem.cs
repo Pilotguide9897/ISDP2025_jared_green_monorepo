@@ -63,17 +63,17 @@ namespace idsp2025_jared_green
                 MessageBox.Show("Item name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else if (cboItemCategory.SelectedIndex > 0)
+            else if (cboItemCategory.SelectedIndex < 0)
             {
                 MessageBox.Show("Category is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else if (nudWeight.Value > 0)
+            else if (nudWeight.Value < 0)
             {
                 MessageBox.Show("Please enter a valid weight.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else if (nudCaseSize.Value > 1)
+            else if (nudCaseSize.Value < 1)
             {
                 MessageBox.Show("Please enter a valid case size.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -84,9 +84,18 @@ namespace idsp2025_jared_green
                 return;
             }
 
+            // Update the new fields
+            _item.Name = txtItemName.Text;
+            _item.Supplier = cboSupplier.SelectedItem as Supplier;
+            _item.CaseSize = Convert.ToInt32(nudCaseSize.Value);
+            _item.Weight = nudWeight.Value;
+
             if (await _itemController.UpdateItem(_item))
             {
                 this.Close();
+            } else
+            {
+                MessageBox.Show("An error occurred updating the item. Please try again.", "Item Update Error");
             }
         }
 

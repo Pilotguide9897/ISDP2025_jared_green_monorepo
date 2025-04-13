@@ -112,7 +112,7 @@ namespace idsp2025_jared_green.Services
             try
             {
                     var items = await (from itm in _bullseyeContext.Items
-                                select itm).Include(i => i.Supplier).ToListAsync();
+                                select itm).Include(i => i.Supplier).OrderBy(e => e.ItemId).ToListAsync();
 
                     var bindingList = new BindingList<Item>(items);
 

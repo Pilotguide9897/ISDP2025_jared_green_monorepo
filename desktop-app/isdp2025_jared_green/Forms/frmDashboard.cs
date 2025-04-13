@@ -2215,7 +2215,7 @@ namespace idsp2025_jared_green
         {
             frmAddSupplierProduct addProductForm = _serviceProvider.GetRequiredService<frmAddSupplierProduct>();
             addProductForm.ShowDialog();
-            await RefreshInventoryTab(tabInventory);
+            await RefreshItemsTab(tabItems);
         }
 
         private void btnPlaceSupplierOrder_Click(object sender, EventArgs e)

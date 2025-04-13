@@ -85,7 +85,7 @@
             btnAddSupplierProduct.Location = new Point(605, 808);
             btnAddSupplierProduct.Name = "btnAddSupplierProduct";
             btnAddSupplierProduct.Size = new Size(112, 34);
-            btnAddSupplierProduct.TabIndex = 2;
+            btnAddSupplierProduct.TabIndex = 9;
             btnAddSupplierProduct.Text = "&Add";
             btnAddSupplierProduct.UseVisualStyleBackColor = true;
             btnAddSupplierProduct.Click += btnAddSupplierProduct_Click;
@@ -95,7 +95,7 @@
             btnExitProductAdd.Location = new Point(605, 868);
             btnExitProductAdd.Name = "btnExitProductAdd";
             btnExitProductAdd.Size = new Size(112, 34);
-            btnExitProductAdd.TabIndex = 3;
+            btnExitProductAdd.TabIndex = 10;
             btnExitProductAdd.Text = "&Exit";
             btnExitProductAdd.UseVisualStyleBackColor = true;
             btnExitProductAdd.Click += btnExitProductAdd_Click;
@@ -107,7 +107,7 @@
             txtNotes.Multiline = true;
             txtNotes.Name = "txtNotes";
             txtNotes.Size = new Size(453, 94);
-            txtNotes.TabIndex = 4;
+            txtNotes.TabIndex = 8;
             // 
             // txtProductName
             // 
@@ -115,7 +115,7 @@
             txtProductName.MaxLength = 100;
             txtProductName.Name = "txtProductName";
             txtProductName.Size = new Size(284, 31);
-            txtProductName.TabIndex = 5;
+            txtProductName.TabIndex = 1;
             // 
             // txtDescription
             // 
@@ -124,14 +124,14 @@
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.Size = new Size(546, 110);
-            txtDescription.TabIndex = 6;
+            txtDescription.TabIndex = 3;
             // 
             // btnAddImage
             // 
             btnAddImage.Location = new Point(537, 165);
             btnAddImage.Name = "btnAddImage";
             btnAddImage.Size = new Size(112, 34);
-            btnAddImage.TabIndex = 8;
+            btnAddImage.TabIndex = 11;
             btnAddImage.Text = "Add Image";
             btnAddImage.UseVisualStyleBackColor = true;
             btnAddImage.Click += btnAddImage_Click;
@@ -143,7 +143,7 @@
             nudRetailPrice.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
             nudRetailPrice.Name = "nudRetailPrice";
             nudRetailPrice.Size = new Size(180, 31);
-            nudRetailPrice.TabIndex = 9;
+            nudRetailPrice.TabIndex = 7;
             nudRetailPrice.Value = new decimal(new int[] { 2000, 0, 0, 131072 });
             // 
             // nudCaseSize
@@ -152,7 +152,7 @@
             nudCaseSize.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudCaseSize.Name = "nudCaseSize";
             nudCaseSize.Size = new Size(180, 31);
-            nudCaseSize.TabIndex = 10;
+            nudCaseSize.TabIndex = 5;
             nudCaseSize.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // nudWeight
@@ -162,7 +162,7 @@
             nudWeight.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
             nudWeight.Name = "nudWeight";
             nudWeight.Size = new Size(165, 31);
-            nudWeight.TabIndex = 11;
+            nudWeight.TabIndex = 4;
             nudWeight.Value = new decimal(new int[] { 100, 0, 0, 131072 });
             // 
             // nudCostPrice
@@ -172,7 +172,7 @@
             nudCostPrice.Maximum = new decimal(new int[] { 1410065407, 2, 0, 131072 });
             nudCostPrice.Name = "nudCostPrice";
             nudCostPrice.Size = new Size(165, 31);
-            nudCostPrice.TabIndex = 12;
+            nudCostPrice.TabIndex = 6;
             nudCostPrice.Value = new decimal(new int[] { 1000, 0, 0, 131072 });
             // 
             // cboSuppliers
@@ -183,7 +183,7 @@
             cboSuppliers.Location = new Point(366, 236);
             cboSuppliers.Name = "cboSuppliers";
             cboSuppliers.Size = new Size(284, 33);
-            cboSuppliers.TabIndex = 13;
+            cboSuppliers.TabIndex = 0;
             // 
             // label2
             // 
@@ -278,7 +278,7 @@
             cboItemCategory.Location = new Point(366, 396);
             cboItemCategory.Name = "cboItemCategory";
             cboItemCategory.Size = new Size(284, 33);
-            cboItemCategory.TabIndex = 23;
+            cboItemCategory.TabIndex = 2;
             // 
             // frmAddSupplierProduct
             // 

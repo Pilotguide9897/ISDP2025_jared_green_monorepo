@@ -78,7 +78,7 @@ namespace idsp2025_jared_green.Forms
                 ImageLocation = null
             };
 
-            _item = (await _itemController.AddProduct(_item)) as Item;
+            //_item = (await _itemController.AddProduct(_item)) as Item;
 
         }
 
@@ -114,27 +114,27 @@ namespace idsp2025_jared_green.Forms
                     MessageBox.Show("Item name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (cboItemCategory.SelectedIndex > 0)
+                else if (cboItemCategory.SelectedIndex < 0)
                 {
                     MessageBox.Show("Category is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (nudWeight.Value > 0)
+                else if (nudWeight.Value < 0)
                 {
                     MessageBox.Show("Please enter a valid weight.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (nudCaseSize.Value > 1)
+                else if (nudCaseSize.Value < 1)
                 {
                     MessageBox.Show("Please enter a valid case size.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (nudCostPrice.Value > 0)
+                else if (nudCostPrice.Value < 0)
                 {
                     MessageBox.Show("Please enter a valid cost price.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                else if (nudRetailPrice.Value > nudCostPrice.Value)
+                else if (nudRetailPrice.Value < nudCostPrice.Value)
                 {
                     MessageBox.Show("Please enter a valid retail price.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -160,8 +160,8 @@ namespace idsp2025_jared_green.Forms
                 _item.SupplierId = ((Supplier)cboSuppliers.SelectedItem).SupplierId;
                 _item.Notes = txtNotes.Text;
 
-                bool res = await _itemController.UpdateItem(_item);
-                if (res) { 
+                Item res = await _itemController.AddProduct(_item);
+                if (res != null) { 
                     this.Close(); 
                 } else
                 {

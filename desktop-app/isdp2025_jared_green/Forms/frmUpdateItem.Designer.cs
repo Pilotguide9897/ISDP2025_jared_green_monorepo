@@ -143,6 +143,7 @@
             // 
             // txtUpdateItemDescription
             // 
+            txtUpdateItemDescription.BorderStyle = BorderStyle.FixedSingle;
             txtUpdateItemDescription.Location = new Point(3, 264);
             txtUpdateItemDescription.MaxLength = 255;
             txtUpdateItemDescription.Multiline = true;
@@ -152,6 +153,7 @@
             // 
             // txtUpdateItemNotes
             // 
+            txtUpdateItemNotes.BorderStyle = BorderStyle.FixedSingle;
             txtUpdateItemNotes.Location = new Point(3, 415);
             txtUpdateItemNotes.MaxLength = 255;
             txtUpdateItemNotes.Multiline = true;
@@ -340,6 +342,7 @@
             // 
             // txtItemName
             // 
+            txtItemName.BorderStyle = BorderStyle.FixedSingle;
             txtItemName.Location = new Point(156, 49);
             txtItemName.MaxLength = 100;
             txtItemName.Name = "txtItemName";
@@ -353,7 +356,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             CancelButton = btnCancelItemUpdate;
-            ClientSize = new Size(585, 842);
+            ClientSize = new Size(585, 854);
             Controls.Add(tabItemDetails);
             Controls.Add(picUpdateItemFrmLogo);
             Controls.Add(btnCancelItemUpdate);
