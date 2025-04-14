@@ -32,9 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSupplierOrder));
             pictureBox1 = new PictureBox();
             dgvSupplierOrderCart = new DataGridView();
-            productName = new DataGridViewTextBoxColumn();
-            supplier = new DataGridViewTextBoxColumn();
-            quantityRequested = new CustomControls.DataGridViewNumericUpDownColumn();
             dgvSupplierInventory = new DataGridView();
             btnCloseSupplierOrder = new Button();
             btnCreateSupplierOrder = new Button();
@@ -47,6 +44,9 @@
             bsSupplierOrderCart = new BindingSource(components);
             bsSupplierInventory = new BindingSource(components);
             label8 = new Label();
+            productName = new DataGridViewTextBoxColumn();
+            supplier = new DataGridViewTextBoxColumn();
+            quantityRequested = new CustomControls.DataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierOrderCart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSupplierInventory).BeginInit();
@@ -80,36 +80,18 @@
             dgvSupplierOrderCart.TabIndex = 1;
             dgvSupplierOrderCart.CellValueChanged += dgvSupplierOrderCart_CellValueChanged;
             // 
-            // productName
-            // 
-            productName.HeaderText = "Product Name";
-            productName.MinimumWidth = 8;
-            productName.Name = "productName";
-            productName.ReadOnly = true;
-            // 
-            // supplier
-            // 
-            supplier.HeaderText = "Supplier";
-            supplier.MinimumWidth = 8;
-            supplier.Name = "supplier";
-            supplier.ReadOnly = true;
-            // 
-            // quantityRequested
-            // 
-            quantityRequested.HeaderText = "Quantity Requested";
-            quantityRequested.MinimumWidth = 8;
-            quantityRequested.Name = "quantityRequested";
-            quantityRequested.ReadOnly = true;
-            // 
             // dgvSupplierInventory
             // 
+            dgvSupplierInventory.AllowUserToAddRows = false;
             dgvSupplierInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSupplierInventory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvSupplierInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSupplierInventory.Location = new Point(896, 272);
             dgvSupplierInventory.MultiSelect = false;
             dgvSupplierInventory.Name = "dgvSupplierInventory";
+            dgvSupplierInventory.RowHeadersVisible = false;
             dgvSupplierInventory.RowHeadersWidth = 62;
+            dgvSupplierInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSupplierInventory.Size = new Size(962, 652);
             dgvSupplierInventory.TabIndex = 2;
             dgvSupplierInventory.CellDoubleClick += dgvSupplierInventory_CellDoubleClick;
@@ -203,6 +185,26 @@
             label8.Size = new Size(90, 45);
             label8.TabIndex = 15;
             label8.Text = "Cart:\r\n";
+            // 
+            // productName
+            // 
+            productName.HeaderText = "Product Name";
+            productName.MinimumWidth = 8;
+            productName.Name = "productName";
+            productName.ReadOnly = true;
+            // 
+            // supplier
+            // 
+            supplier.HeaderText = "Supplier";
+            supplier.MinimumWidth = 8;
+            supplier.Name = "supplier";
+            supplier.ReadOnly = true;
+            // 
+            // quantityRequested
+            // 
+            quantityRequested.HeaderText = "Quantity Requested";
+            quantityRequested.MinimumWidth = 8;
+            quantityRequested.Name = "quantityRequested";
             // 
             // frmSupplierOrder
             // 

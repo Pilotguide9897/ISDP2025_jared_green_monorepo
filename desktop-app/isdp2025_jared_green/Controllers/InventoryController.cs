@@ -126,11 +126,12 @@ namespace idsp2025_jared_green.Controllers
 
             foreach (Item item in it) {
                 if (ids.Contains(item.ItemId)) {
+                    int optimumThreshold = ifrs.Where(k => ids.Contains(k.ItemId)).Select(i => i.OptimumThreshold).FirstOrDefault();
                     dtoSupplierOrderItem orderSupplierItem = new dtoSupplierOrderItem()
                     {
                         itemID = item.ItemId,
                         productName = item.Name,
-                        quantityRequested = ifrs.Where(k => ids.Contains(k.ItemId)).Select(i => i.Quantity).FirstOrDefault(),
+                        quantityRequested = optimumThreshold - (ifrs.Where(k => ids.Contains(k.ItemId)).Select(i => i.Quantity).FirstOrDefault()),
                         supplierName = item.Supplier.Name
                     };
                     items.Add(orderSupplierItem);

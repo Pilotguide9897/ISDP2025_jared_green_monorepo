@@ -50,11 +50,12 @@ namespace idsp2025_jared_green.Forms
                 string itemName = selectedRow.Cells["Name"].Value.ToString();
                 string itemCategory = selectedRow.Cells["Category"].Value.ToString();
                 int caseSize = Convert.ToInt32(selectedRow.Cells["CaseSize"].Value);
+                string supplier = (selectedRow.Cells["Supplier"].Value as Supplier).Name;
 
                 // Check if the item is already in the order
                 foreach (DataGridViewRow orderRow in dgvSupplierOrderCart.Rows)
                 {
-                    if (Convert.ToInt32(orderRow.Cells["itemID"].Value) == itemId)
+                    if (orderRow.Cells["productName"].Value == itemName)
                     {
                         MessageBox.Show("This item is already in the order.", "Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -62,30 +63,30 @@ namespace idsp2025_jared_green.Forms
                 }
 
                 // Create a new order item
-                dtoOrderItem newItem = new dtoOrderItem
+                dtoSupplierOrderItem newItem = new dtoSupplierOrderItem
                 {
                     itemID = itemId,
+                    supplierName = supplier,
                     productName = itemName,
                     quantityRequested = caseSize,
-                    quantityAtWarehouse = 0
                 };
 
                 // Add the new item to the BindingList
-                BindingList<dtoOrderItem> orderItems = bsSupplierOrderCart.DataSource as BindingList<dtoOrderItem>;
+                List<dtoSupplierOrderItem> orderItems = bsSupplierOrderCart.DataSource as List<dtoSupplierOrderItem>;
                 orderItems.Add(newItem);
 
                 // Refresh the DataGridView
                 bsSupplierOrderCart.ResetBindings(false);
 
-                // Set the NumericUpDown Cell for quantity input
-                DataGridViewNumericUpDownCell numericCell = new DataGridViewNumericUpDownCell();
-                numericCell.Value = newItem.quantityRequested;
-                numericCell.Increment = caseSize;
-                numericCell.Minimum = caseSize;
+                //// Set the NumericUpDown Cell for quantity input
+                //DataGridViewNumericUpDownCell numericCell = new DataGridViewNumericUpDownCell();
+                //numericCell.Value = newItem.quantityRequested;
+                //numericCell.Increment = caseSize;
+                //numericCell.Minimum = caseSize;
 
-                // Add the numeric cell to the last added row
-                int newRowIndex = dgvSupplierOrderCart.Rows.Count - 1;
-                dgvSupplierOrderCart.Rows[newRowIndex].Cells["QuantityRequested"] = numericCell;
+                //// Add the numeric cell to the last added row
+                //int newRowIndex = dgvSupplierOrderCart.Rows.Count - 1;
+                //dgvSupplierOrderCart.Rows[newRowIndex].Cells["QuantityRequested"] = numericCell;
             }
             else
             {
@@ -100,6 +101,7 @@ namespace idsp2025_jared_green.Forms
 
         private async void frmSupplierOrder_Load(object sender, EventArgs e)
         {
+            dgvSupplierOrderCart.AutoGenerateColumns = false;
             await LoadData();
             await LoadResupply();
             await LoadSuppliers();
@@ -126,13 +128,21 @@ namespace idsp2025_jared_green.Forms
         private async Task LoadResupply()
         {
             var resupply = await _inventoryController.GetWarehouseResupply();
-            if (resupply is List<Inventory> && ((List<Inventory>)resupply).Count < 0)
+            if (resupply is List<dtoSupplierOrderItem> && ((List<dtoSupplierOrderItem>)resupply).Count > 0)
+            {
+                dgvSupplierOrderCart.Columns["productName"].DataPropertyName = "productName";
+                dgvSupplierOrderCart.Columns["supplier"].DataPropertyName = "supplierName";
+                dgvSupplierOrderCart.Columns["quantityRequested"].DataPropertyName = "quantityRequested";
+
+                bsSupplierOrderCart.DataSource = resupply;
+                dgvSupplierOrderCart.DataSource = bsSupplierOrderCart;
+            } else if (resupply is List<dtoSupplierOrderItem> && ((List<dtoSupplierOrderItem>)resupply).Count < 0)
             {
                 MessageBox.Show("No items in need of resupply by default: All stock above reorder threshold.", "No items automatically added");
             }
             else
             {
-                bsSupplierOrderCart.DataSource = resupply;
+                MessageBox.Show("There was a problem with the data returned when trying to detect the required supply.", "No items automatically added");
             }
         }
 
@@ -158,6 +168,7 @@ namespace idsp2025_jared_green.Forms
             dgvSupplierInventory.Columns["Txnitems"].Visible = false;
             dgvSupplierInventory.Columns["ImagePaths"].Visible = false;
             dgvSupplierInventory.Columns["Supplier"].Visible = false;
+            dgvSupplierInventory.Columns["isSelected"].Visible = false;
             dgvSupplierInventory.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             bsSupplierInventory.Filter = "Active = 1";
         }
@@ -224,7 +235,7 @@ namespace idsp2025_jared_green.Forms
                 // Add Items to it
                 foreach (DataGridViewRow dataGridViewRow in dgvSupplierOrderCart.Rows)
                 {
-                    dtoOrderItem oi = dataGridViewRow.DataBoundItem as dtoOrderItem;
+                    dtoSupplierOrderItem oi = dataGridViewRow.DataBoundItem as dtoSupplierOrderItem;
                     if (oi != null)
                     {
                         Txnitem ti = new Txnitem()
@@ -234,6 +245,8 @@ namespace idsp2025_jared_green.Forms
                             Quantity = oi.quantityRequested,
                             Notes = ""
                         };
+
+                        itemList.Add(ti);
                     }
                 }
 
@@ -252,17 +265,18 @@ namespace idsp2025_jared_green.Forms
                     TxnType = "Supplier Order",
                     BarCode = Guid.NewGuid().ToString(),
                     CreatedDate = DateTime.Now,
-                    DeliveryId = 0,
+                    DeliveryId = 2140000000,
                     EmergencyDelivery = 0,
                     Notes = supplierString,
                     Txnitems = itemList
                 };
 
                 Txn res = await _transactionController.CreateSupplierOrder(txn);
+                this.Close();
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show("An error occurred trying to create the supplier order.", "Error creating Supplier Order");
             }
         }
 
